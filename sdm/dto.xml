@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dto-classes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="dto.xsd">
+
+    <dto-class name="doctrine-Group" ref="groups"/>
+
+    <dto-class name="GroupEx" ref="get_groups.sql"/>
+
+    <dto-class name="doctrine-Task" ref="tasks"/>
+
+</dto-classes>

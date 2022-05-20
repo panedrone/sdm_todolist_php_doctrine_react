@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dao-class xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="dao.xsd">
+
+    <query-dto-list dto="GroupEx" method="get_groups"/>
+
+    <query-dto ref="get_group.sql" dto="GroupEx" method="get_group(g_id)"/>
+
+    <query-list ref="get_groups.sql" method="get_groups_ids"/>
+
+    <query ref="get_group.sql" method="get_group_id(g_id)"/>
+
+</dao-class>
