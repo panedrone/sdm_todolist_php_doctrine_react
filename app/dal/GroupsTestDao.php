@@ -83,4 +83,15 @@ class GroupsTestDao
         return $this->ds->query($sql, array($g_id));
     }
 
+    /**
+     * @param string $g_name
+     * @param string $g_id
+     * @return TRUE|FALSE on success|failure
+     */
+    public function rename_group($g_name, $g_id)
+    {
+        $sql = "update groups set g_name=? where g_id=?";
+        return $this->ds->execDML($sql, array($g_name, $g_id));
+    }
+
 }

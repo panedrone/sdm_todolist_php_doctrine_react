@@ -9,5 +9,7 @@
     <query-list ref="get_groups.sql" method="get_groups_ids"/>
 
     <query ref="get_group.sql" method="get_group_id(g_id)"/>
+    
+    <exec-dml ref="rename_group.sql" method="rename_group(g_name, g_id)"/>
 
 </dao-class>

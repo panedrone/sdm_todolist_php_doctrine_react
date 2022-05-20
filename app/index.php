@@ -39,7 +39,10 @@ $dao = groupsDao();
 $groups = $dao->get_groups();
 print "Groups: " . print_r($groups, true) . PHP_EOL;
 
-$gr = $dao->get_group(21);
+$rows_affected = $dao->rename_group("Hello from Doctrine " . date("Y-m-d H:i:s"), 66);
+print "rows_affected: " . print_r($rows_affected, true) . PHP_EOL;
+
+$gr = $dao->get_group(66);
 print "Group: " . print_r($gr, true) . PHP_EOL;
 
 $group_ids = $dao->get_groups_ids();
