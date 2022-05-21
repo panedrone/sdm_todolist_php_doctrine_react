@@ -3,7 +3,7 @@
 use dal\GroupsTestDao;
 use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\EntityManager;
 
 require_once('DataStore.php');
@@ -29,7 +29,7 @@ function em(): EntityManager
     // https://stackoverflow.com/questions/49937252/slim-3-doctrine-2-class-user-does-not-exist-mappingexception
     $paths = array(__DIR__ . '/app/dal/');
     print "paths: " . print_r($paths, true) . PHP_EOL;
-    $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
+    $config = ORMSetup::createAnnotationMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
     // or if you prefer yaml or XML
     // $config = Setup::createXMLMetadataConfiguration(array(__DIR__."/config/xml"), $isDevMode);
     // $config = Setup::createYAMLMetadataConfiguration(array(__DIR__."/config/yaml"), $isDevMode);
