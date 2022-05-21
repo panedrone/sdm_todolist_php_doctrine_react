@@ -27,7 +27,6 @@ $entity = em()->getPartialReference(dal\Group::class, $g_id);
 em()->remove($entity);
 em()->flush();
     
-$dao = groupsDao();
-$groups = $dao->get_groups(); // raw-SQL
+$groups = groupsDao()->get_groups(); // raw-SQL
 print "Groups: " . print_r($groups, true) . PHP_EOL;
 ```
