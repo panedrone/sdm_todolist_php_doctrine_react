@@ -7,7 +7,7 @@ $gr->setGName("Hello from Doctrine " . date("Y-m-d H:i:s"));
 em()->persist($gr);
 em()->flush();
 
-$g_id = $gr->getGId();  // new id is available now
+$g_id = $gr->getGId();  // generated id is available!
 print_r($g_id . PHP_EOL);
 
 if ($g_id == null){
@@ -30,7 +30,7 @@ $entity = em()->getPartialReference(dal\Group::class, $g_id);
 em()->remove($entity);
 em()->flush();
 
-$dao = groupsDao();
+$dao = groupsDao(); // raw-SQL
 $groups = $dao->get_groups();
 print "Groups: " . print_r($groups, true) . PHP_EOL;
 

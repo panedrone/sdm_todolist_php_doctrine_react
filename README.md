@@ -18,7 +18,7 @@ $gr->setGName("Hello from Doctrine " . date("Y-m-d H:i:s"));
 em()->persist($gr);
 em()->flush();
 
-$g_id = $gr->getGId(); // new id is available now
+$g_id = $gr->getGId(); // generated id is available!
 
 $gr = $groups = groupsRepo()->find($g_id);
 print "Group: " . print_r($gr, true) . PHP_EOL;
