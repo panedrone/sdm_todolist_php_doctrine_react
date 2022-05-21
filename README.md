@@ -30,6 +30,6 @@ em()->flush();
 $groups = groupsDao()->get_groups(); // raw-SQL
 print "Groups: " . print_r($groups, true) . PHP_EOL;
 
-$group_tasks = tasks()->findBy(array('g_id' => 21));
+$group_tasks = tasks()->findBy(array('g_id' => 21), array('t_date' => 'ASC', 't_id' => 'ASC'));
 print "group_tasks: " . print_r($group_tasks, true) . PHP_EOL;
 ```
