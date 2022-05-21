@@ -14,11 +14,11 @@ Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmake
 ```
 ```php
 $gr = new dal\Group();
-$gr->setGName("Hello from Doctrine " . date("Y-m-d H:i:s"));
+$gr->set_g_name("Hello from Doctrine " . date("Y-m-d H:i:s"));
 em()->persist($gr);
 em()->flush();
 
-$g_id = $gr->getGId(); // generated id is available!
+$g_id = $gr->get_g_id(); // generated id is available!
 
 $gr = $groups = groups()->find($g_id);
 print "Group: " . print_r($gr, true) . PHP_EOL;
