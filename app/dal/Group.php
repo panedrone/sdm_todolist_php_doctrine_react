@@ -19,45 +19,45 @@ class Group
      * @ORM\GeneratedValue
      * @var int
      */
-    private $gId;
+    private $g_id;
     /**
      * @ORM\Column(name="g_name", type="string", length=65535, unique=true)
      * @var string
      */
-    private $gName;
+    private $g_name;
     /**
      * @ORM\Column(name="g_comments", type="string", length=65535, nullable=true)
      * @var string
      */
-    private $gComments;
+    private $g_comments;
 
-    public function getGId()
+    public function get_g_id()
     {
-        return $this->gId;
+        return $this->g_id;
     }
 
-    public function setGId($value)
+    public function set_g_id($value)
     {
-        $this->gId = $value;
+        $this->g_id = $value;
     }
 
-    public function getGName()
+    public function get_g_name()
     {
-        return $this->gName;
+        return $this->g_name;
     }
 
-    public function setGName($value)
+    public function set_g_name($value)
     {
-        $this->gName = $value;
+        $this->g_name = $value;
     }
 
-    public function getGComments()
+    public function get_g_comments()
     {
-        return $this->gComments;
+        return $this->g_comments;
     }
 
-    public function setGComments($value)
+    public function set_g_comments($value)
     {
-        $this->gComments = $value;
+        $this->g_comments = $value;
     }
 }

@@ -30,10 +30,10 @@ class GroupsTestDao
         $res = array();
         $_map_cb = function ($row) use (&$res) {
             $obj = new GroupEx();
-            $obj->setGId($row["g_id"]); // q <- q
-            $obj->setGName($row["g_name"]); // q <- q
-            $obj->setGComments($row["g_comments"]); // q <- q
-            $obj->setTasksCount($row["tasks_count"]); // q <- q
+            $obj->set_g_id($row["g_id"]); // q <- q
+            $obj->set_g_name($row["g_name"]); // q <- q
+            $obj->set_g_comments($row["g_comments"]); // q <- q
+            $obj->set_tasks_count($row["tasks_count"]); // q <- q
             array_push($res, $obj);
         };
         $this->ds->queryRowList($sql, array(), $_map_cb);
@@ -53,10 +53,10 @@ class GroupsTestDao
         $row = $this->ds->queryRow($sql, array($g_id));
         if ($row) {
             $obj = new GroupEx();
-            $obj->setGId($row["g_id"]); // q <- q
-            $obj->setGName($row["g_name"]); // q <- q
-            $obj->setGComments($row["g_comments"]); // q <- q
-            $obj->setTasksCount($row["tasks_count"]); // q <- q
+            $obj->set_g_id($row["g_id"]); // q <- q
+            $obj->set_g_name($row["g_name"]); // q <- q
+            $obj->set_g_comments($row["g_comments"]); // q <- q
+            $obj->set_tasks_count($row["tasks_count"]); // q <- q
             return $obj;
         }
         return FALSE;

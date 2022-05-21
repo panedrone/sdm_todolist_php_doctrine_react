@@ -10,57 +10,57 @@ class GroupEx
     /**
      * @var object
      */
-    private $gId;
+    private $g_id;
     /**
      * @var object
      */
-    private $gName;
+    private $g_name;
     /**
      * @var object
      */
-    private $gComments;
+    private $g_comments;
     /**
      * @var object
      */
-    private $tasksCount;
+    private $tasks_count;
 
-    public function getGId()
+    public function get_g_id()
     {
-        return $this->gId;
+        return $this->g_id;
     }
 
-    public function setGId($value)
+    public function set_g_id($value)
     {
-        $this->gId = $value;
+        $this->g_id = $value;
     }
 
-    public function getGName()
+    public function get_g_name()
     {
-        return $this->gName;
+        return $this->g_name;
     }
 
-    public function setGName($value)
+    public function set_g_name($value)
     {
-        $this->gName = $value;
+        $this->g_name = $value;
     }
 
-    public function getGComments()
+    public function get_g_comments()
     {
-        return $this->gComments;
+        return $this->g_comments;
     }
 
-    public function setGComments($value)
+    public function set_g_comments($value)
     {
-        $this->gComments = $value;
+        $this->g_comments = $value;
     }
 
-    public function getTasksCount()
+    public function get_tasks_count()
     {
-        return $this->tasksCount;
+        return $this->tasks_count;
     }
 
-    public function setTasksCount($value)
+    public function set_tasks_count($value)
     {
-        $this->tasksCount = $value;
+        $this->tasks_count = $value;
     }
 }

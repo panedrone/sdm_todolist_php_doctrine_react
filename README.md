@@ -20,7 +20,7 @@ em()->flush();
 
 $g_id = $gr->getGId(); // generated id is available!
 
-$gr = $groups = groupsRepo()->find($g_id);
+$gr = $groups = groups()->find($g_id);
 print "Group: " . print_r($gr, true) . PHP_EOL;
 
 $entity = em()->getPartialReference(dal\Group::class, $g_id);
@@ -29,4 +29,7 @@ em()->flush();
     
 $groups = groupsDao()->get_groups(); // raw-SQL
 print "Groups: " . print_r($groups, true) . PHP_EOL;
+
+$group_tasks = tasks()->findBy(array('g_id' => 21));
+print "group_tasks: " . print_r($group_tasks, true) . PHP_EOL;
 ```

@@ -19,90 +19,90 @@ class Task
      * @ORM\GeneratedValue
      * @var int
      */
-    private $tId;
+    private $t_id;
     /**
      * @ORM\Column(name="g_id", type="integer")
      * @var int
      */
-    private $gId;
+    private $g_id;
     /**
      * @ORM\Column(name="t_priority", type="integer")
      * @var int
      */
-    private $tPriority;
+    private $t_priority;
     /**
      * @ORM\Column(name="t_date", type="string", length=65535)
      * @var string
      */
-    private $tDate;
+    private $t_date;
     /**
      * @ORM\Column(name="t_subject", type="string", length=65535)
      * @var string
      */
-    private $tSubject;
+    private $t_subject;
     /**
      * @ORM\Column(name="t_comments", type="string", length=65535, nullable=true)
      * @var string
      */
-    private $tComments;
+    private $t_comments;
 
-    public function getTId()
+    public function get_t_id()
     {
-        return $this->tId;
+        return $this->t_id;
     }
 
-    public function setTId($value)
+    public function set_t_id($value)
     {
-        $this->tId = $value;
+        $this->t_id = $value;
     }
 
-    public function getGId()
+    public function get_g_id()
     {
-        return $this->gId;
+        return $this->g_id;
     }
 
-    public function setGId($value)
+    public function set_g_id($value)
     {
-        $this->gId = $value;
+        $this->g_id = $value;
     }
 
-    public function getTPriority()
+    public function get_t_priority()
     {
-        return $this->tPriority;
+        return $this->t_priority;
     }
 
-    public function setTPriority($value)
+    public function set_t_priority($value)
     {
-        $this->tPriority = $value;
+        $this->t_priority = $value;
     }
 
-    public function getTDate()
+    public function get_t_date()
     {
-        return $this->tDate;
+        return $this->t_date;
     }
 
-    public function setTDate($value)
+    public function set_t_date($value)
     {
-        $this->tDate = $value;
+        $this->t_date = $value;
     }
 
-    public function getTSubject()
+    public function get_t_subject()
     {
-        return $this->tSubject;
+        return $this->t_subject;
     }
 
-    public function setTSubject($value)
+    public function set_t_subject($value)
     {
-        $this->tSubject = $value;
+        $this->t_subject = $value;
     }
 
-    public function getTComments()
+    public function get_t_comments()
     {
-        return $this->tComments;
+        return $this->t_comments;
     }
 
-    public function setTComments($value)
+    public function set_t_comments($value)
     {
-        $this->tComments = $value;
+        $this->t_comments = $value;
     }
 }

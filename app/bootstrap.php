@@ -44,9 +44,17 @@ function em(): EntityManager
 /**
  * @throws ORMException
  */
-function groupsRepo()
+function groups()
 {
     return em()->getRepository(dal\Group::class);
+}
+
+/**
+ * @throws ORMException
+ */
+function tasks()
+{
+    return em()->getRepository(dal\Task::class);
 }
 
 /**
