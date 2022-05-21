@@ -63,6 +63,14 @@ function groups()
 /**
  * @throws ORMException
  */
+function task_ex()
+{
+    return em()->getRepository(dal\TaskEx::class);
+}
+
+/**
+ * @throws ORMException
+ */
 function tasks()
 {
     return em()->getRepository(dal\Task::class);

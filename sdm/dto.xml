@@ -6,6 +6,14 @@
 
     <dto-class name="GroupEx" ref="get_groups.sql"/>
 
-    <dto-class name="doctrine-Task" ref="tasks"/>
+    <!--    all fields are available: -->
+
+    <dto-class name="doctrine-TaskEx" ref="tasks"/>
+
+    <!--    "reduced" list item: -->
+
+    <dto-class name="doctrine-Task" ref="tasks">
+        <field column="t_comments" type="string"/>
+    </dto-class>
 
 </dto-classes>

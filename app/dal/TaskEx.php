@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="tasks")
  */
-class Task
+class TaskEx
 {
     /**
      * @ORM\Column(name="t_id", type="integer")
@@ -41,7 +41,8 @@ class Task
      */
     private $t_subject;
     /**
-     * string
+     * @ORM\Column(name="t_comments", type="string", length=65535, nullable=true)
+     * @var string
      */
     private $t_comments;
 
