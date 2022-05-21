@@ -2,6 +2,8 @@
 
 require_once(__DIR__ . '/bootstrap.php');
 
+logger(); // just create it before usage
+
 $gr = new dal\Group();
 $gr->set_g_name("Hello from Doctrine " . date("Y-m-d H:i:s"));
 em()->persist($gr);
@@ -46,5 +48,16 @@ print "group_ids: " . print_r($group_ids, true) . PHP_EOL;
 $g_id = $dao->get_group_id(21);
 print "g_id: " . print_r($g_id, true) . PHP_EOL;
 
-$group_tasks = tasks()->findBy(array('g_id' => 21));
+// https://stackoverflow.com/questions/12048452/how-to-order-results-with-findby-in-doctrine
+// The second parameter of findBy is for ORDER.
+$group_tasks = tasks()->findBy(array('g_id' => 21), array('t_date' => 'ASC', 't_id' => 'ASC'));
 print "group_tasks: " . print_r($group_tasks, true) . PHP_EOL;
+
+print "logger()->currentQuery: " . logger()->currentQuery . PHP_EOL;
+$current = logger()->queries[logger()->currentQuery];
+echo sprintf(
+    '%s%sparams: [%s]',
+    $current['sql'], PHP_EOL,
+    implode($current['params'])
+);
+

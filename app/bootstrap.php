@@ -1,6 +1,7 @@
 <?php
 // bootstrap.php
 use dal\GroupsTestDao;
+use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
@@ -41,6 +42,16 @@ function em(): EntityManager
     return $entityManager = EntityManager::create($connectionParams, $config);
 }
 
+function logger() {
+    static $logger = null;
+    if ($logger === null) {
+        $logger = new DebugStack();
+        em()->getConnection()
+            ->getConfiguration()
+            ->setSQLLogger($logger);
+    }
+    return $logger;
+}
 /**
  * @throws ORMException
  */
