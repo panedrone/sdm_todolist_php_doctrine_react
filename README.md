@@ -9,7 +9,7 @@ Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmake
 ```
 ```xml
 <dao-class>
-    <query-dto-list method="getGroups" ref="get_groups.sql" dto="GroupEx"/>
+    <query-dto-list method="getGroups" dto="GroupEx"/>
 </dao-class>
 ```
 ```php
