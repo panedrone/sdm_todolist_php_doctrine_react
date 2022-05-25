@@ -1,7 +1,9 @@
 <?php
 // bootstrap.php
 use dal\GroupsTestDao;
-use Doctrine\DBAL\Logging\DebugStack;
+use dal\models\Group;
+use dal\models\Task;
+use dal\models\TaskEx;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\EntityManager;
@@ -25,11 +27,11 @@ function em(): EntityManager
     $isDevMode = true;
     $proxyDir = null;
     $cache = null;
-    $useSimpleAnnotationReader = false;
+    // $useSimpleAnnotationReader = false;
     // https://stackoverflow.com/questions/49937252/slim-3-doctrine-2-class-user-does-not-exist-mappingexception
     $paths = array(__DIR__ . '/app/dal/');
     print "paths: " . print_r($paths, true) . PHP_EOL;
-    $config = ORMSetup::createAnnotationMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache, $useSimpleAnnotationReader);
+    $config = ORMSetup::createAnnotationMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache); //, $useSimpleAnnotationReader;
     // or if you prefer yaml or XML
     // $config = Setup::createXMLMetadataConfiguration(array(__DIR__."/config/xml"), $isDevMode);
     // $config = Setup::createYAMLMetadataConfiguration(array(__DIR__."/config/yaml"), $isDevMode);
@@ -42,22 +44,39 @@ function em(): EntityManager
     return $entityManager = EntityManager::create($connectionParams, $config);
 }
 
-function logger() {
+function logger()
+{
     static $logger = null;
     if ($logger === null) {
-        $logger = new DebugStack();
+        class MySQLLogger implements Doctrine\DBAL\Logging\SQLLogger
+        {
+            public function startQuery($sql, ?array $params = null, ?array $types = null)
+            {
+//                fwrite(STDERR, print_r($sql, true) . PHP_EOL);
+//                if ($params != null) {
+//                    fwrite(STDERR, sprintf('params: %s', print_r($params, true)));
+//                }
+            }
+
+            public function stopQuery()
+            {
+            }
+        }
+
+        $logger = new MySQLLogger();
         em()->getConnection()
             ->getConfiguration()
             ->setSQLLogger($logger);
     }
     return $logger;
 }
+
 /**
  * @throws ORMException
  */
 function groups()
 {
-    return em()->getRepository(dal\Group::class);
+    return em()->getRepository(Group::class);
 }
 
 /**
@@ -65,7 +84,7 @@ function groups()
  */
 function task_ex()
 {
-    return em()->getRepository(dal\TaskEx::class);
+    return em()->getRepository(TaskEx::class);
 }
 
 /**
@@ -73,13 +92,14 @@ function task_ex()
  */
 function tasks()
 {
-    return em()->getRepository(dal\Task::class);
+    return em()->getRepository(Task::class);
 }
 
 /**
  * @throws ORMException
  */
-function ds() {
+function ds()
+{
     static $dataStore = null;
 
     if ($dataStore !== null) {

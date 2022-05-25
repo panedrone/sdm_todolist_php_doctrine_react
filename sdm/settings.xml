@@ -6,7 +6,7 @@
         to the project root); ensure presence of __init__.py for Python; -->
     <!-- sql: base folder of SQL files (relative to the project root); -->
 
-    <folders target="app/dal" sql="sdm/sql"/>
+    <folders target="app" sql="sdm/sql"/>
 
     <!-- scope (only Java, Go, PHP): the name of package (Java, Go) or name-space
         (PHP) for DTO; -->
@@ -17,7 +17,7 @@
     <!-- single-file: for future use. -->
     <!-- macro: for future use. -->
 
-    <dto scope="dal" inheritance="" field-names-mode="2" single-file="" macro=""/>
+    <dto scope="dal/models" inheritance="" field-names-mode="2" single-file="" macro=""/>
 
     <!-- scope (only Java, Go, PHP): the name of package (Java, Go) or name-space
         (PHP) for DAO; -->
