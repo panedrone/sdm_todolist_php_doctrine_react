@@ -109,7 +109,7 @@ function ds()
     return $dataStore = new DataStore(em()->getConnection());
 }
 
-function groupsDao(): GroupsTestDao
+function groups_dao(): GroupsTestDao
 {
     return new GroupsTestDao(ds());
 }

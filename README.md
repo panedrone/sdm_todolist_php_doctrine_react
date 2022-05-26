@@ -9,7 +9,7 @@ Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmake
 ```
 ```xml
 <dao-class>
-    <query-dto-list method="getGroups" dto="GroupEx"/>
+    <query-dto-list method="get_groups" dto="GroupEx"/>
 </dao-class>
 ```
 ```php
@@ -27,7 +27,7 @@ $entity = em()->getPartialReference(dal\Group::class, $g_id);
 em()->remove($entity);
 em()->flush();
     
-$groups = groupsDao()->get_groups(); // raw-SQL
+$groups = groups_dao()->get_groups(); // raw-SQL
 print "Groups: " . print_r($groups, true) . PHP_EOL;
 
 $group_tasks = tasks()->findBy(array('g_id' => 21), array('t_date' => 'ASC', 't_id' => 'ASC'));
