@@ -18,7 +18,7 @@ Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmake
 </dao-class>
 ```
 ```php
-$gr = new dal\Group();
+$gr = new Group();
 $gr->set_g_name("Hello from Doctrine " . date("Y-m-d H:i:s"));
 em()->persist($gr);
 em()->flush();
@@ -28,7 +28,7 @@ $g_id = $gr->get_g_id(); // generated id is available!
 $gr = $groups = groups()->find($g_id);
 print "Group: " . print_r($gr, true) . PHP_EOL;
 
-$entity = em()->getPartialReference(dal\Group::class, $g_id);
+$entity = em()->getPartialReference(Group::class, $g_id);
 em()->remove($entity);
 em()->flush();
     

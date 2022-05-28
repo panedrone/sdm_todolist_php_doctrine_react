@@ -31,17 +31,17 @@ class TaskEx
      */
     private $t_priority;
     /**
-     * @ORM\Column(name="t_date", type="string")
+     * @ORM\Column(name="t_date", type="string", length=65535)
      * @var string
      */
     private $t_date;
     /**
-     * @ORM\Column(name="t_subject", type="string")
+     * @ORM\Column(name="t_subject", type="string", length=65535)
      * @var string
      */
     private $t_subject;
     /**
-     * @ORM\Column(name="t_comments", type="string", nullable=true)
+     * @ORM\Column(name="t_comments", type="string", length=65535, nullable=true)
      * @var string
      */
     private $t_comments;

@@ -21,12 +21,12 @@ class Group
      */
     private $g_id;
     /**
-     * @ORM\Column(name="g_name", type="string", unique=true)
+     * @ORM\Column(name="g_name", type="string", length=65535, unique=true)
      * @var string
      */
     private $g_name;
     /**
-     * @ORM\Column(name="g_comments", type="string", nullable=true)
+     * @ORM\Column(name="g_comments", type="string", length=65535, nullable=true)
      * @var string
      */
     private $g_comments;
