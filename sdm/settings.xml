@@ -23,7 +23,7 @@
         (PHP) for DAO; -->
     <!-- macro: for future use. -->
 
-    <dao scope="dal" macro=""/>
+    <dao scope="dal/dao" macro=""/>
 
     <!-- location of external VM file (relative to the project root): -->
 
@@ -49,7 +49,7 @@
     <!--          user="root" pwd="root"/>-->
 
     <jdbc jar="sdm/sqlite-jdbc-3.36.0.3.jar" class="org.sqlite.JDBC"
-          url="jdbc:sqlite:$PROJECT_DIR$/todolist.sqlite3" user="" pwd=""/>
+          url="jdbc:sqlite:$PROJECT_DIR$/app/todolist.sqlite3" user="" pwd=""/>
 
     <!-- tag 'type-map' specifies how the types detected by
          code generator (JDBC) are rendered in target code. -->

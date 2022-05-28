@@ -55,12 +55,4 @@ print "g_id: " . print_r($g_id, true) . PHP_EOL;
 $group_tasks = tasks()->findBy(array('g_id' => 21), array('t_date' => 'ASC', 't_id' => 'ASC'));
 print "group_tasks: " . print_r($group_tasks, true) . PHP_EOL;
 
-// <p style="color: lightgray;">
-//            shell_exec('whoami'): <?php print ($processUser); ?><!--, phpversion(): --><?php //print (phpversion()) ?>
-<!--        </p>-->
-<!---->
-<?php
-print "<p>";
-print (phpversion());
-print "</p>";
-?>
+print_r(phpversion());

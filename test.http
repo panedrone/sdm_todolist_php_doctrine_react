@@ -1,0 +1,21 @@
+GET http://localhost/sdm_demo_todolist_php_doctrine/api/groups
+
+############## 405 (Method Not Allowed);
+
+PUT http://localhost/sdm_demo_todolist_php_doctrine/api/groups
+
+############## 404
+
+GET http://localhost/sdm_demo_todolist_php_doctrine/api/groups/4
+
+############## 200
+
+GET http://localhost/sdm_demo_todolist_php_doctrine/api/groups/21
+
+############## 404
+
+GET http://localhost/sdm_demo_todolist_php_doctrine/api/groups/4/tasks
+
+############## 200
+
+GET http://localhost/sdm_demo_todolist_php_doctrine/api/groups/21/tasks

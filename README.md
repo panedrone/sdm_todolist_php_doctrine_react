@@ -1,5 +1,10 @@
 # sdm_demo_todolist_php_doctrine
 Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmaker) + PHP + Doctrine models + DTO and DAO classes for Doctrine raw-SQL.
+
+![demo-go.png](demo-go.png)
+
+![erd.png](erd.png)
+
 ```xml
 <dto-classes>
     <dto-class name="GroupEx" ref="get_groups.sql"/>

@@ -31,12 +31,12 @@ class Task
      */
     private $t_priority;
     /**
-     * @ORM\Column(name="t_date", type="string", length=65535)
+     * @ORM\Column(name="t_date", type="string")
      * @var string
      */
     private $t_date;
     /**
-     * @ORM\Column(name="t_subject", type="string", length=65535)
+     * @ORM\Column(name="t_subject", type="string")
      * @var string
      */
     private $t_subject;
