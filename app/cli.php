@@ -14,29 +14,23 @@ em()->flush();
 $g_id = $gr->get_g_id();  // generated id is available!
 print_r($g_id . PHP_EOL);
 
-if ($g_id == null) {
-    print "null\n";
-}
-
-$groups = groups()->findAll();
-/** @var $gr Group */
-foreach ($groups as $gr) {
-    echo sprintf("-%s\n", $gr->get_g_name());
-}
-// https://blog.programster.org/getting-started-with-doctrine-orm
+$dao = groups_dao(); // raw-SQL
+$groups = $dao->get_groups(); // code-completion is OK
 print "Groups: " . print_r($groups, true) . PHP_EOL;
 
-$gr = $groups = groups()->find($g_id);
+$gr = find_group($g_id);
+print "get_g_name: " . $gr->get_g_name() . PHP_EOL; // code-completion is OK
 print "Group: " . print_r($gr, true) . PHP_EOL;
 
-print Group::class;
-$entity = em()->getPartialReference(Group::class, $g_id);
-em()->remove($entity);
+$gr = em()->getPartialReference(Group::class, $g_id);
+em()->remove($gr);
 em()->flush();
 
-$dao = groups_dao(); // raw-SQL
-$groups = $dao->get_groups();
-print "Groups: " . print_r($groups, true) . PHP_EOL;
+$gr_tasks = get_group_tasks(21);
+print "get_t_subject: " . $gr_tasks[0]->get_t_subject() . PHP_EOL; // code-completion is OK
+print "group_tasks: " . print_r($gr_tasks, true) . PHP_EOL;
+
+// ....................
 
 $rows_affected = $dao->rename_group("Hello from Doctrine " . date("Y-m-d H:i:s"), 66);
 print "rows_affected: " . print_r($rows_affected, true) . PHP_EOL;
@@ -50,9 +44,14 @@ print "group_ids: " . print_r($group_ids, true) . PHP_EOL;
 $g_id = $dao->get_group_id(21);
 print "g_id: " . print_r($g_id, true) . PHP_EOL;
 
-// https://stackoverflow.com/questions/12048452/how-to-order-results-with-findby-in-doctrine
-// The second parameter of findBy is for ORDER.
-$group_tasks = tasks()->findBy(array('g_id' => 21), array('t_date' => 'ASC', 't_id' => 'ASC'));
-print "group_tasks: " . print_r($group_tasks, true) . PHP_EOL;
+// ..... no code-completion :( ...............
+
+$groups = groups()->findAll();
+/** @var $gr Group */
+foreach ($groups as $gr) {
+    echo sprintf("-%s\n", $gr->get_g_name());
+}
+// https://blog.programster.org/getting-started-with-doctrine-orm
+print "Groups: " . print_r($groups, true) . PHP_EOL;
 
 print_r(phpversion());

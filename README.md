@@ -23,18 +23,22 @@ $gr->set_g_name("Hello from Doctrine " . date("Y-m-d H:i:s"));
 em()->persist($gr);
 em()->flush();
 
-$g_id = $gr->get_g_id(); // generated id is available!
+$g_id = $gr->get_g_id();  // generated id is available!
+print_r($g_id . PHP_EOL);
 
-$gr = $groups = groups()->find($g_id);
-print "Group: " . print_r($gr, true) . PHP_EOL;
-
-$entity = em()->getPartialReference(Group::class, $g_id);
-em()->remove($entity);
-em()->flush();
-    
-$groups = groups_dao()->get_groups(); // raw-SQL
+$dao = groups_dao(); // raw-SQL
+$groups = $dao->get_groups(); // code-completion is OK
 print "Groups: " . print_r($groups, true) . PHP_EOL;
 
-$group_tasks = tasks()->findBy(array('g_id' => 21), array('t_date' => 'ASC', 't_id' => 'ASC'));
-print "group_tasks: " . print_r($group_tasks, true) . PHP_EOL;
+$gr = find_group($g_id);
+print "get_g_name: " . $gr->get_g_name() . PHP_EOL; // code-completion is OK
+print "Group: " . print_r($gr, true) . PHP_EOL;
+
+$gr = em()->getPartialReference(Group::class, $g_id);
+em()->remove($gr);
+em()->flush();
+
+$gr_tasks = get_group_tasks(21);
+print "get_t_subject: " . $gr_tasks[0]->get_t_subject() . PHP_EOL; // code-completion is OK
+print "group_tasks: " . print_r($gr_tasks, true) . PHP_EOL;
 ```

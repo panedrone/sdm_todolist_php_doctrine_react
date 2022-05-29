@@ -44,7 +44,8 @@ function em(): EntityManager
     return $entityManager = EntityManager::create($connectionParams, $config);
 }
 
-function log_err(Exception $e) {
+function log_err(Exception $e)
+{
     echo $e->getMessage();
 }
 
