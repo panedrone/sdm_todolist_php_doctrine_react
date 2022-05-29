@@ -33,7 +33,7 @@ class GroupTasksController
     public static function read_group_tasks($g_id): ?array
     {
         try {
-            $tasks = tasks()->findBy(array('g_id' => $g_id), array('t_date' => 'ASC', 't_id' => 'ASC'));
+            $tasks = get_group_tasks($g_id);
         } catch (ORMException $e) {
             log_err($e);
             return null;

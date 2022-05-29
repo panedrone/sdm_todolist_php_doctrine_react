@@ -48,7 +48,7 @@ class GroupsController
     public static function read_group($g_id): ?array
     {
         try {
-            $gr = groups()->find($g_id);
+            $gr = find_group($g_id);
         } catch (ORMException $e) {
             log_err($e);
             return null;
@@ -66,7 +66,7 @@ class GroupsController
     public static function update_group($g_id, $data): bool
     {
         try {
-            $gr = groups()->find($g_id);
+            $gr = find_group($g_id);
         } catch (ORMException $e) {
             log_err($e);
             return false;

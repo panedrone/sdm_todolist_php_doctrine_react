@@ -8,14 +8,13 @@ require_once "../dal/models/TaskEx.php";
 
 use dal\models\TaskEx;
 use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 
 class TaskController
 {
     public static function read_task($t_id): ?array
     {
         try {
-            $t = task_ex()->find($t_id);
+            $t = find_task_ex($t_id);
         } catch (ORMException $e) {
             log_err($e);
             return null;
@@ -36,7 +35,7 @@ class TaskController
     public static function update_task($t_id, $data): bool
     {
         try {
-            $t = task_ex()->find($t_id);
+            $t = find_task_ex($t_id);
         } catch (ORMException $e) {
             log_err($e);
             return false;

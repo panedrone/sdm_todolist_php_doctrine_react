@@ -89,6 +89,14 @@ function groups()
 /**
  * @throws ORMException
  */
+function find_group($g_id): ?Group
+{
+    return groups()->find($g_id);
+}
+
+/**
+ * @throws ORMException
+ */
 function task_ex()
 {
     return em()->getRepository(TaskEx::class);
@@ -97,9 +105,26 @@ function task_ex()
 /**
  * @throws ORMException
  */
+function find_task_ex($t_id): ?TaskEx
+{
+    return task_ex()->find($t_id);
+}
+
+/**
+ * @throws ORMException
+ */
 function tasks()
 {
     return em()->getRepository(Task::class);
+}
+
+/**
+ * @return Task[]
+ * @throws ORMException
+ */
+function get_group_tasks($g_id): array
+{
+    return tasks()->findBy(array('g_id' => $g_id), array('t_date' => 'ASC', 't_id' => 'ASC'));
 }
 
 /**
