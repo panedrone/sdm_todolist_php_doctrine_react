@@ -8,25 +8,31 @@ require_once '../dal/models/Group.php';
 
 use dal\models\Group;
 use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 
 class GroupsController
 {
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
-    public static function createGroup($data)
+    public static function create_group($data): bool
     {
         $gr = new Group();
         $gr->set_g_name($data->g_name);
-        em()->persist($gr);
-        em()->flush();
+        try {
+            em()->persist($gr);
+            em()->flush();
+        } catch (ORMException $e) {
+            log_err($e);
+            return false;
+        }
+        return true;
     }
 
-    public static function readGroups(): array
+    public static function read_groups(): ?array
     {
-        $groups = groups_dao()->get_groups();
+        try {
+            $groups = groups_dao()->get_groups();
+        } catch (ORMException $e) {
+            log_err($e);
+            return null;
+        }
         $arr = array();
         foreach ($groups as $gr) {
             $item = array(
@@ -39,12 +45,14 @@ class GroupsController
         return $arr;
     }
 
-    /**
-     * @throws ORMException
-     */
-    public static function readGroup($g_id): ?array
+    public static function read_group($g_id): ?array
     {
-        $gr = groups()->find($g_id);
+        try {
+            $gr = groups()->find($g_id);
+        } catch (ORMException $e) {
+            log_err($e);
+            return null;
+        }
         if ($gr == null) {
             return null;
         }
@@ -55,35 +63,47 @@ class GroupsController
         return $item;
     }
 
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
-    public static function updateGroup($g_id, $data): bool
+    public static function update_group($g_id, $data): bool
     {
-        $gr = groups()->find($g_id);
+        try {
+            $gr = groups()->find($g_id);
+        } catch (ORMException $e) {
+            log_err($e);
+            return false;
+        }
         if ($gr == null) {
             return false;
         }
         $gr->set_g_id($g_id);
         $gr->set_g_name($data->g_name);
-        em()->persist($gr);
-        em()->flush();
+        try {
+            em()->persist($gr);
+            em()->flush();
+        } catch (ORMException $e) {
+            log_err($e);
+            return false;
+        }
         return true;
     }
 
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
-    public static function deleteGroup($g_id): bool
+    public static function delete_group($g_id): bool
     {
-        $gr = em()->getPartialReference(Group::class, $g_id);
+        try {
+            $gr = em()->getPartialReference(Group::class, $g_id);
+        } catch (ORMException $e) {
+            log_err($e);
+            return false;
+        }
         if ($gr == null) {
             return false;
         }
-        em()->remove($gr);
-        em()->flush();
+        try {
+            em()->remove($gr);
+            em()->flush();
+        } catch (ORMException $e) {
+            log_err($e);
+            return false;
+        }
         return true;
     }
 }

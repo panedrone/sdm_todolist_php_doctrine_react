@@ -2,9 +2,9 @@
 
 namespace controllers;
 
-//require_once "../bootstrap.php";
-//
-//require_once "../dal/models/TaskEx.php";
+require_once "../bootstrap.php";
+
+require_once "../dal/models/TaskEx.php";
 
 use dal\models\TaskEx;
 use Doctrine\ORM\Exception\ORMException;
@@ -12,12 +12,14 @@ use Doctrine\ORM\OptimisticLockException;
 
 class TaskController
 {
-    /**
-     * @throws ORMException
-     */
-    public static function readTask($t_id): ?array
+    public static function read_task($t_id): ?array
     {
-        $t = task_ex()->find($t_id);
+        try {
+            $t = task_ex()->find($t_id);
+        } catch (ORMException $e) {
+            log_err($e);
+            return null;
+        }
         if ($t == null) {
             return null;
         }
@@ -31,13 +33,14 @@ class TaskController
         return $item;
     }
 
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
-    public static function updateTask($t_id, $data): bool
+    public static function update_task($t_id, $data): bool
     {
-        $t = task_ex()->find($t_id);
+        try {
+            $t = task_ex()->find($t_id);
+        } catch (ORMException $e) {
+            log_err($e);
+            return false;
+        }
         if ($t == null) {
             return false;
         }
@@ -45,23 +48,34 @@ class TaskController
         $t->set_t_subject($data->t_subject);
         $t->set_t_priority($data->t_priority);
         $t->set_t_comments($data->t_comments);
-        em()->persist($t);
-        em()->flush();
+        try {
+            em()->persist($t);
+            em()->flush();
+        } catch (ORMException $e) {
+            log_err($e);
+            return false;
+        }
         return true;
     }
 
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
-    public static function deleteTask($t_id): bool
+    public static function delete_task($t_id): bool
     {
-        $t = em()->getPartialReference(TaskEx::class, $t_id);
+        try {
+            $t = em()->getPartialReference(TaskEx::class, $t_id);
+        } catch (ORMException $e) {
+            log_err($e);
+            return false;
+        }
         if ($t == null) {
             return false;
         }
-        em()->remove($t);
-        em()->flush();
+        try {
+            em()->remove($t);
+            em()->flush();
+        } catch (ORMException $e) {
+            log_err($e);
+            return false;
+        }
         return true;
     }
 }

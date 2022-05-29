@@ -8,15 +8,10 @@ require_once '../dal/models/Task.php';
 
 use dal\models\Task;
 use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 
 class GroupTasksController
 {
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
-    public static function createTask($g_id, $data)
+    public static function create_task($g_id, $data): bool
     {
         $t = new Task();
         $t->set_g_id($g_id);
@@ -25,16 +20,22 @@ class GroupTasksController
         $t->set_t_subject($data->t_subject);
         $t->set_t_priority(1);
         $t->set_t_comments("");
-        em()->persist($t);
-        em()->flush();
+        try {
+            em()->persist($t);
+            em()->flush();
+        } catch (ORMException $e) {
+            log_err($e);
+            return false;
+        }
+        return true;
     }
 
-    public static function readGroupTasks($g_id): ?array
+    public static function read_group_tasks($g_id): ?array
     {
         try {
             $tasks = tasks()->findBy(array('g_id' => $g_id), array('t_date' => 'ASC', 't_id' => 'ASC'));
         } catch (ORMException $e) {
-            echo $e->getMessage();
+            log_err($e);
             return null;
         }
         if ($tasks == null) {

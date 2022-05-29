@@ -2,11 +2,11 @@
 
 namespace api;
 
+require_once 'utils.php';
+
 require_once '../controllers/GroupsController.php';
 require_once '../controllers/GroupTasksController.php';
 require_once '../controllers/TaskController.php';
-
-require_once 'utils.php';
 
 use controllers\GroupsController;
 use controllers\GroupTasksController;
@@ -19,11 +19,18 @@ function handle_groups()
     global $method;
     if ($method == "POST") {
         $data = json_decode(file_get_contents("php://input"));
-        GroupsController::createGroup($data);
-        http_response_code(HTTP_CREATED);
+        if (GroupsController::create_group($data)) {
+            http_response_code(HTTP_CREATED);
+        } else {
+            http_response_code(HTTP_INTERNAL_SERVER_ERROR);
+        }
     } else if ($method == "GET") {
-        $arr = GroupsController::readGroups();
-        json_resp($arr);
+        $arr = GroupsController::read_groups();
+        if ($arr === null) {
+            http_response_code(HTTP_INTERNAL_SERVER_ERROR);
+        } else {
+            json_resp($arr);
+        }
     }
 }
 
@@ -31,22 +38,22 @@ function handle_group($g_id)
 {
     global $method;
     if ($method == "GET") {
-        $item = GroupsController::readGroup($g_id);
+        $item = GroupsController::read_group($g_id);
         if ($item === null) {
-            http_response_code(HTTP_BAD_REQUEST);
+            http_response_code(HTTP_INTERNAL_SERVER_ERROR);
         } else {
             json_resp($item);
         }
     } else if ($method == "PUT") {
         $data = json_decode(file_get_contents("php://input"));
-        if (!GroupsController::updateGroup($g_id, $data)) {
-            http_response_code(HTTP_NOT_FOUND);
+        if (!GroupsController::update_group($g_id, $data)) {
+            http_response_code(HTTP_INTERNAL_SERVER_ERROR);
         }
     } else if ($method == "DELETE") {
-        if (GroupsController::deleteGroup($g_id)) {
+        if (GroupsController::delete_group($g_id)) {
             http_response_code(HTTP_NO_CONTENT);
         } else {
-            http_response_code(HTTP_BAD_REQUEST);
+            http_response_code(HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
@@ -56,12 +63,15 @@ function handle_group_tasks($g_id)
     global $method;
     if ($method == "POST") {
         $data = json_decode(file_get_contents("php://input"));
-        GroupTasksController::createTask($g_id, $data);
-        http_response_code(HTTP_CREATED);
+        if (GroupTasksController::create_task($g_id, $data)) {
+            http_response_code(HTTP_CREATED);
+        } else {
+            http_response_code(HTTP_INTERNAL_SERVER_ERROR);
+        }
     } else if ($method == "GET") {
-        $arr = GroupTasksController::readGroupTasks($g_id);
+        $arr = GroupTasksController::read_group_tasks($g_id);
         if ($arr === null) {
-            http_response_code(HTTP_BAD_REQUEST);
+            http_response_code(HTTP_INTERNAL_SERVER_ERROR);
         } else {
             json_resp($arr);
         }
@@ -72,22 +82,22 @@ function handle_task($t_id)
 {
     global $method;
     if ($method == "GET") {
-        $item = TaskController::readTask($t_id);
+        $item = TaskController::read_task($t_id);
         if ($item === null) {
-            http_response_code(HTTP_BAD_REQUEST);
+            http_response_code(HTTP_INTERNAL_SERVER_ERROR);
         } else {
             json_resp($item);
         }
     } else if ($method == "PUT") {
         $data = json_decode(file_get_contents("php://input"));
-        if (!TaskController::updateTask($t_id, $data)) {
-            http_response_code(HTTP_BAD_REQUEST);
+        if (!TaskController::update_task($t_id, $data)) {
+            http_response_code(HTTP_INTERNAL_SERVER_ERROR);
         }
     } else if ($method == "DELETE") {
-        if (TaskController::deleteTask($t_id)) {
+        if (TaskController::delete_task($t_id)) {
             http_response_code(HTTP_NO_CONTENT);
         } else {
-            http_response_code(HTTP_BAD_REQUEST);
+            http_response_code(HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
