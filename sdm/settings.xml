@@ -17,7 +17,7 @@
     <!-- single-file: for future use. -->
     <!-- macro: for future use. -->
 
-    <dto scope="dal/models" inheritance="" field-names-mode="2" single-file="" macro="$doctrine-model"/>
+    <dto scope="dal/models" inheritance="" field-names-mode="2" macro="$doctrine-model"/>
 
     <!-- scope (only Java, Go, PHP): the name of package (Java, Go) or name-space
         (PHP) for DAO; -->
@@ -456,12 +456,15 @@ class ${class_name}
 #end
 #foreach($f in ${fields})
 
-    public function ${f.getterMethod()}()
+    public function ${f.getterMethod()}()#if($f.ScalarType!="object"): $f.ScalarType
+#else
+
+#end
     {
         return ${d}this->$f.getName();
     }
 
-    public function ${f.setterMethod()}(${d}value)
+    public function ${f.setterMethod()}(#if($f.ScalarType!="object")$f.ScalarType #end${d}value)
     {
         ${d}this->$f.getName() = ${d}value;
     }

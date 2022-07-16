@@ -44,62 +44,62 @@ class TaskEx
      */
     private $t_comments;
 
-    public function get_t_id()
+    public function get_t_id(): int
     {
         return $this->t_id;
     }
 
-    public function set_t_id($value)
+    public function set_t_id(int $value)
     {
         $this->t_id = $value;
     }
 
-    public function get_g_id()
+    public function get_g_id(): int
     {
         return $this->g_id;
     }
 
-    public function set_g_id($value)
+    public function set_g_id(int $value)
     {
         $this->g_id = $value;
     }
 
-    public function get_t_priority()
+    public function get_t_priority(): int
     {
         return $this->t_priority;
     }
 
-    public function set_t_priority($value)
+    public function set_t_priority(int $value)
     {
         $this->t_priority = $value;
     }
 
-    public function get_t_date()
+    public function get_t_date(): string
     {
         return $this->t_date;
     }
 
-    public function set_t_date($value)
+    public function set_t_date(string $value)
     {
         $this->t_date = $value;
     }
 
-    public function get_t_subject()
+    public function get_t_subject(): string
     {
         return $this->t_subject;
     }
 
-    public function set_t_subject($value)
+    public function set_t_subject(string $value)
     {
         $this->t_subject = $value;
     }
 
-    public function get_t_comments()
+    public function get_t_comments(): string
     {
         return $this->t_comments;
     }
 
-    public function set_t_comments($value)
+    public function set_t_comments(string $value)
     {
         $this->t_comments = $value;
     }

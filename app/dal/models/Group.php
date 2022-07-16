@@ -29,32 +29,32 @@ class Group
      */
     private $g_comments;
 
-    public function get_g_id()
+    public function get_g_id(): int
     {
         return $this->g_id;
     }
 
-    public function set_g_id($value)
+    public function set_g_id(int $value)
     {
         $this->g_id = $value;
     }
 
-    public function get_g_name()
+    public function get_g_name(): string
     {
         return $this->g_name;
     }
 
-    public function set_g_name($value)
+    public function set_g_name(string $value)
     {
         $this->g_name = $value;
     }
 
-    public function get_g_comments()
+    public function get_g_comments(): string
     {
         return $this->g_comments;
     }
 
-    public function set_g_comments($value)
+    public function set_g_comments(string $value)
     {
         $this->g_comments = $value;
     }
