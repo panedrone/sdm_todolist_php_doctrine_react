@@ -253,6 +253,7 @@
                 class FieldInfo:
                     String getName()
                     String getType()
+                    String getScalarType()
                     String getColumnName()
                     int getColumnSize()
                     boolean isAI()
@@ -433,6 +434,9 @@ namespace ${namespace};
 // http://sqldalmaker.sourceforge.net
 
 #if ($model=="doctrine" || $model=="d")
+use Doctrine\ORM\Mapping as ORM;## don't remove me!
+
+
 /**
  * @ORM\Entity
 #if ($table)
