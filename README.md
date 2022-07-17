@@ -1,5 +1,5 @@
 # sdm_demo_todolist_php_doctrine
-Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmaker) + PHP + Doctrine models + DAO classes which use Doctrine's raw-SQL under the hood.
+Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmaker) + PHP + Doctrine ORM models + DAO classes based Doctrine's raw-SQL.
 
 ![demo-go.png](demo-go.png)
 
