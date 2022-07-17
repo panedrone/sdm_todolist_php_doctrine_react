@@ -4,9 +4,9 @@ namespace controllers;
 
 require_once "../bootstrap.php";
 
-require_once "../dal/models/TaskEx.php";
+require_once "../models/TaskEx.php";
 
-use dal\models\TaskEx;
+use models\TaskEx;
 use Doctrine\ORM\Exception\ORMException;
 
 class TaskController

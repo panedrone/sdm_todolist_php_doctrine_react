@@ -4,9 +4,9 @@ namespace controllers;
 
 require_once "../bootstrap.php";
 
-require_once '../dal/models/Task.php';
+require_once '../models/Task.php';
 
-use dal\models\Task;
+use models\Task;
 use Doctrine\ORM\Exception\ORMException;
 
 class GroupTasksController

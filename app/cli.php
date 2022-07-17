@@ -1,6 +1,6 @@
 <?php
 
-use dal\models\Group;
+use models\Group;
 
 require_once(__DIR__ . '/bootstrap.php');
 

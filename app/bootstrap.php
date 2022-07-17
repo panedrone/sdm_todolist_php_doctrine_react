@@ -1,9 +1,9 @@
 <?php
 // bootstrap.php
-use dal\dao\GroupsDao;
-use dal\models\Group;
-use dal\models\Task;
-use dal\models\TaskEx;
+use dao\GroupsDao;
+use models\Group;
+use models\Task;
+use models\TaskEx;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\EntityManager;
@@ -29,7 +29,7 @@ function em(): EntityManager
     $cache = null;
     // $useSimpleAnnotationReader = false;
     // https://stackoverflow.com/questions/49937252/slim-3-doctrine-2-class-user-does-not-exist-mappingexception
-    $paths = array(__DIR__ . '/app/dal/');
+    $paths = array(__DIR__ . '/app/models/');
 //    print "paths: " . print_r($paths, true) . PHP_EOL;
     $config = ORMSetup::createAnnotationMetadataConfiguration($paths, $isDevMode, $proxyDir, $cache); //, $useSimpleAnnotationReader;
     // or if you prefer yaml or XML

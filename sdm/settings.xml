@@ -4,9 +4,9 @@
 
     <folders target="app" sql="sdm/sql"/>
 
-    <dto scope="dal/models" inheritance="" field-names-mode="2" macro="${doctrine-model}"/>
+    <dto scope="models" inheritance="" field-names-mode="2" macro="${doctrine-model}"/>
 
-    <dao scope="dal/dao" macro=""/>
+    <dao scope="dao" macro=""/>
 
     <external-vm-file path=""/>
 

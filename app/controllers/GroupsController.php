@@ -4,9 +4,9 @@ namespace controllers;
 
 require_once "../bootstrap.php";
 
-require_once '../dal/models/Group.php';
+require_once '../models/Group.php';
 
-use dal\models\Group;
+use models\Group;
 use Doctrine\ORM\Exception\ORMException;
 
 class GroupsController
