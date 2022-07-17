@@ -25,11 +25,6 @@ class Group
      * @var string
      */
     private $g_name;
-    /**
-     * @ORM\Column(name="g_comments", type="string", length=65535, nullable=true)
-     * @var string
-     */
-    private $g_comments;
 
     public function get_g_id(): int
     {
@@ -49,15 +44,5 @@ class Group
     public function set_g_name(string $value)
     {
         $this->g_name = $value;
-    }
-
-    public function get_g_comments(): string
-    {
-        return $this->g_comments;
-    }
-
-    public function set_g_comments(string $value)
-    {
-        $this->g_comments = $value;
     }
 }

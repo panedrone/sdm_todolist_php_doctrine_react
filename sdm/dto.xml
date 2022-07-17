@@ -4,7 +4,11 @@
 
     <dto-class name="doctrine-Group" ref="groups"/>
 
-    <dto-class name="GroupEx" ref="get_groups.sql"/>
+    <dto-class name="GroupEx" ref="get_groups.sql">
+        <field column="g_id" type="int"/>
+        <field column="g_name" type="string"/>
+        <field column="tasks_count" type="int"/>
+    </dto-class>
 
     <!--    all fields are available: -->
 
