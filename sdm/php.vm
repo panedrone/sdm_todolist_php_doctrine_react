@@ -102,6 +102,9 @@ use ${u};
 #end
 class ${class_name}
 {
+    /**
+     * @var \DataStore
+     */
     protected ${d}ds;
 
     public function __construct($ds)
@@ -119,12 +122,13 @@ ${method}
      * (C)RUD: ${table_name}
      * Generated/AI values are passed to ${d}p param
      * @param ${dto_param} ${d}p
-     * @return bool TRUE on success or FALSE on failure
+     * @return void
+     * @throws \Exception
      */
 #if ($crud &&  $model=="doctrine")
     public function ${method_name}(${d}p)
     {
-        return ${d}this->ds->create(${dto_param}::class, ${d}p);
+        ${d}this->ds->create(${d}p);
     }
 #else
     public function ${method_name}(${d}p)

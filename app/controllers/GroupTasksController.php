@@ -7,7 +7,6 @@ require_once "../bootstrap.php";
 require_once '../models/Task.php';
 
 use models\Task;
-use Doctrine\ORM\Exception\ORMException;
 
 class GroupTasksController
 {
@@ -21,9 +20,9 @@ class GroupTasksController
         $t->set_t_priority(1);
         $t->set_t_comments("");
         try {
-            em()->persist($t);
-            em()->flush();
-        } catch (ORMException $e) {
+            tasks_dao()->create_task($t);
+            db_flush();
+        } catch (\Exception $e) {
             log_err($e);
             return false;
         }
@@ -32,7 +31,7 @@ class GroupTasksController
 
     public static function read_group_tasks($g_id): ?array
     {
-        $tasks = get_group_tasks($g_id);
+        $tasks = tasks_dao()->get_group_tasks($g_id);
         if ($tasks == null) {
             return array();
         }

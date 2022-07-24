@@ -2,10 +2,8 @@
 // bootstrap.php
 use dao\GroupsDao;
 use dao\TasksDao;
-use models\Group;
-use models\Task;
-use models\TaskLI;
 use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\EntityManager;
 
@@ -15,9 +13,16 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 
 // require_once 'dal/dao/GroupsDao.php';
 
-$em = null;
-
 $dataStore = null;
+
+/**
+ * GroupsDao
+ */
+$groupsDao = null;
+/**
+ * TasksDao
+ */
+$tasksDao = null;
 
 /**
  * @throws ORMException
@@ -42,22 +47,15 @@ function init_app()
         'driver' => 'pdo_sqlite',
         'path' => __DIR__ . '/todolist.sqlite3',
     );
-    global $em;
     $em = EntityManager::create($connectionParams, $config);
     global $dataStore;
-    $dataStore = new DataStore(em()->getConnection());
-}
-
-function em(): EntityManager
-{
-    global $em;
-    return $em;
-}
-
-function ds()
-{
-    global $dataStore;
-    return $dataStore;
+    $dataStore = new DataStore($em);
+    // ....................
+    global $groupsDao;
+    $groupsDao = new GroupsDao($dataStore);
+    // ....................
+    global $tasksDao;
+    $tasksDao = new TasksDao($dataStore);
 }
 
 function log_err(Exception $e)
@@ -85,52 +83,36 @@ function logger()
         }
 
         $logger = new MySQLLogger();
-        em()->getConnection()
+        ds()->em()->getConnection()
             ->getConfiguration()
             ->setSQLLogger($logger);
     }
     return $logger;
 }
 
-function groups()
-{
-    return em()->getRepository(Group::class);
-}
-
-function find_group($g_id): ?Group
-{
-    return groups()->find($g_id);
-}
-
-function tasks()
-{
-    return em()->getRepository(Task::class);
-}
-
-function find_task($t_id): ?Task
-{
-    return tasks()->find($t_id);
-}
-
-function tasksLI()
-{
-    return em()->getRepository(TaskLI::class);
-}
-
 /**
- * @return Task[]
+ * @throws OptimisticLockException
+ * @throws ORMException
  */
-function get_group_tasks($g_id): array
+function db_flush()
 {
-    return tasks()->findBy(array('g_id' => $g_id), array('t_date' => 'ASC', 't_id' => 'ASC'));
+    ds()->em()->flush();
+}
+
+function ds(): DataStore
+{
+    global $dataStore;
+    return $dataStore;
 }
 
 function groups_dao(): GroupsDao
 {
-    return new GroupsDao(ds());
+    global $groupsDao;
+    return $groupsDao;
 }
 
 function tasks_dao(): TasksDao
 {
-    return new TasksDao(ds());
+    global $tasksDao;
+    return $tasksDao;
 }

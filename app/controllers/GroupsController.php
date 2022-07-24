@@ -6,6 +6,7 @@ require_once "../bootstrap.php";
 
 require_once '../models/Group.php';
 
+use Exception;
 use models\Group;
 use Doctrine\ORM\Exception\ORMException;
 
@@ -16,9 +17,9 @@ class GroupsController
         $gr = new Group();
         $gr->set_g_name($data->g_name);
         try {
-            em()->persist($gr);
-            em()->flush();
-        } catch (ORMException $e) {
+            groups_dao()->create_group($gr);
+            db_flush();
+        } catch (Exception $e) {
             log_err($e);
             return false;
         }
@@ -42,7 +43,7 @@ class GroupsController
 
     public static function read_group($g_id): ?array
     {
-        $gr = find_group($g_id);
+        $gr = groups_dao()->read_group($g_id);
         if ($gr == null) {
             return null;
         }
@@ -55,15 +56,15 @@ class GroupsController
 
     public static function update_group($g_id, $data): bool
     {
-        $gr = find_group($g_id);
+        $gr = groups_dao()->read_group($g_id);
         if ($gr == null) {
             return false;
         }
         $gr->set_g_id($g_id);
         $gr->set_g_name($data->g_name);
         try {
-            em()->persist($gr);
-            em()->flush();
+            groups_dao()->update_group($gr);
+            db_flush();
         } catch (ORMException $e) {
             log_err($e);
             return false;
@@ -73,13 +74,9 @@ class GroupsController
 
     public static function delete_group($g_id): bool
     {
-        $gr = em()->getPartialReference(Group::class, $g_id);
-        if ($gr == null) {
-            return false;
-        }
         try {
-            em()->remove($gr);
-            em()->flush();
+            groups_dao()->delete_group($g_id);
+            db_flush();
         } catch (ORMException $e) {
             log_err($e);
             return false;

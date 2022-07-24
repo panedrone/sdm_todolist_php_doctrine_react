@@ -4,7 +4,7 @@
 
     <crud dto="doctrine-Group" table="groups">
         <create method="createGroup"/>
-        <read-all method="readAllGroups"/>
+        <read-all method="readGroupList"/>
         <read method="readGroup"/>
         <update method="updateGroup"/>
         <delete method="deleteGroup"/>

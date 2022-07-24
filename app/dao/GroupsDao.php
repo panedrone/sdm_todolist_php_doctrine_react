@@ -13,6 +13,9 @@ use models\GroupLI;
 
 class GroupsDao
 {
+    /**
+     * @var \DataStore
+     */
     protected $ds;
 
     public function __construct($ds)
@@ -24,18 +27,19 @@ class GroupsDao
      * (C)RUD: groups
      * Generated/AI values are passed to $p param
      * @param Group $p
-     * @return bool TRUE on success or FALSE on failure
+     * @return void
+     * @throws \Exception
      */
     public function create_group($p)
     {
-        return $this->ds->create(Group::class, $p);
+        $this->ds->create($p);
     }
 
     /**
      * C(R)UD: groups
      * @return Group[]
      */
-    public function read_all_groups()
+    public function read_group_list()
     {
         return $this->ds->readAll(Group::class);
     }
