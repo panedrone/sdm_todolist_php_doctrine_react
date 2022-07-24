@@ -108,11 +108,6 @@ class DataStore
         $this->db->rollback();
     }
 
-//    public function insert($sql, array $params, array &$ai_values)
-//    {
-//        // use Doctrine\ORM instead
-//    }
-
     /**
      * Executes a prepared statement with the given SQL and parameters and returns the affected rows count
      * @throws \Doctrine\DBAL\Exception

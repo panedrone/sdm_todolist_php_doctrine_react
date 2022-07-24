@@ -1,7 +1,5 @@
 <?php
 // bootstrap.php
-use dao\GroupsDao;
-use dao\TasksDao;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMSetup;
@@ -11,8 +9,15 @@ require_once('DataStore.php');
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-// require_once 'dal/dao/GroupsDao.php';
+require_once 'dao/GroupsDao.php';
+require_once 'dao/TasksDao.php';
 
+use dao\GroupsDao;
+use dao\TasksDao;
+
+/**
+ * DataStore
+ */
 $dataStore = null;
 
 /**
@@ -83,9 +88,7 @@ function logger()
         }
 
         $logger = new MySQLLogger();
-        ds()->em()->getConnection()
-            ->getConfiguration()
-            ->setSQLLogger($logger);
+        ds()->em()->getConnection()->getConfiguration()->setSQLLogger($logger);
     }
     return $logger;
 }

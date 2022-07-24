@@ -57,7 +57,7 @@ class GroupsDao
     /**
      * CR(U)D: groups
      * @param Group $p
-     * @return int the affected rows count
+     * @throws \Exception
      */
     public function update_group($p)
     {
@@ -67,7 +67,7 @@ class GroupsDao
     /**
      * CRU(D): groups
      * @param int $g_id
-     * @return int the affected rows count
+     * @throws \Exception
      */
     public function delete_group($g_id)
     {
