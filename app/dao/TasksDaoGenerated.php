@@ -59,7 +59,7 @@ class TasksDaoGenerated
      */
     public function update_task($p)
     {
-        return $this->ds->update(Task::class, $p);
+        return $this->ds->update($p);
     }
 
     /**

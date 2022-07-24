@@ -25,7 +25,7 @@ function handle_groups()
             http_response_code(HTTP_INTERNAL_SERVER_ERROR);
         }
     } else if ($method == "GET") {
-        $arr = GroupsController::read_groups();
+        $arr = GroupsController::read_all_groups();
         if ($arr === null) {
             http_response_code(HTTP_INTERNAL_SERVER_ERROR);
         } else {

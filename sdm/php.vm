@@ -265,7 +265,7 @@ ${method}
     {
 #if ($crud &&  $model=="doctrine")
 #if ($method_type == "CREATE" || $method_type == "UPDATE")
-        return ${d}this->ds->update(${dto_param}::class, ${d}p);
+        return ${d}this->ds->update(${d}p);
 #elseif ( $method_type == "DELETE")
         return ${d}this->ds->delete(${dto_param}::class, #param_decls(false $params));
 #else

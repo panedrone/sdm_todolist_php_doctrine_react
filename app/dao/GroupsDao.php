@@ -61,7 +61,7 @@ class GroupsDao
      */
     public function update_group($p)
     {
-        return $this->ds->update(Group::class, $p);
+        return $this->ds->update($p);
     }
 
     /**
@@ -78,7 +78,7 @@ class GroupsDao
     /**
      * @return GroupLI[]
      */
-    public function get_groups()
+    public function get_all_groups()
     {
         $sql = "select g.*, "
             . "\n (select count(*) from tasks where g_id=g.g_id) as tasks_count"

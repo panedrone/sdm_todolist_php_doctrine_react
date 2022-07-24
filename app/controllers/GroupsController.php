@@ -26,9 +26,9 @@ class GroupsController
         return true;
     }
 
-    public static function read_groups(): ?array
+    public static function read_all_groups(): ?array
     {
-        $groups = groups_dao()->get_groups();
+        $groups = groups_dao()->get_all_groups();
         $arr = array();
         foreach ($groups as $gr) {
             $item = array(
