@@ -255,11 +255,8 @@ ${method}
      * @param ${param.getType()} ${d}${param.getName()}
 #end
 #end
-#if ($crud)
-     * @throws \Exception
-#else
      * @return int the affected rows count
-#end
+     * @throws \Exception
      */
 #if(${dto_param} == "" ||  $method_type == "DELETE")
     public function ${method_name}(#param_decls($is_external_sql $params))

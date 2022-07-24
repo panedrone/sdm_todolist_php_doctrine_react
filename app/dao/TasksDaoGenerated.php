@@ -55,6 +55,7 @@ class TasksDaoGenerated
     /**
      * CR(U)D: tasks
      * @param Task $p
+     * @return int the affected rows count
      * @throws \Exception
      */
     public function update_task($p)
@@ -65,6 +66,7 @@ class TasksDaoGenerated
     /**
      * CRU(D): tasks
      * @param int $t_id
+     * @return int the affected rows count
      * @throws \Exception
      */
     public function delete_task($t_id)
