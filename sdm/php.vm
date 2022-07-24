@@ -238,24 +238,28 @@ ${method}
 #elseif($mode=="dao_exec_dml")
 
     /**
-#if($method_type == "CREATE")
+#if ($method_type == "CREATE")
      * (C)RUD: ${table_name}
-#elseif($method_type == "UPDATE")
+#elseif ($method_type == "UPDATE")
      * CR(U)D: ${table_name}
-#elseif($method_type == "DELETE")
+#elseif ($method_type == "DELETE")
      * CRU(D): ${table_name}
 #end
-#if(${is_external_sql})
+#if (${is_external_sql})
      * @param String ${d}sql external SQL statement
 #end
-#if(${dto_param} != "" && $method_type != "DELETE")
+#if (${dto_param} != "" && $method_type != "DELETE")
      * @param ${dto_param} ${d}p
 #else
 #foreach($param in ${params})
      * @param ${param.getType()} ${d}${param.getName()}
 #end
 #end
+#if ($crud)
+     * @throws \Exception
+#else
      * @return int the affected rows count
+#end
      */
 #if(${dto_param} == "" ||  $method_type == "DELETE")
     public function ${method_name}(#param_decls($is_external_sql $params))

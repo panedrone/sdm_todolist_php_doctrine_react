@@ -56,6 +56,7 @@ class DataStore
     public function read(string $entityName, $id)
     {
         $rp = $this->em->getRepository($entityName);
+        // TODO compound PK?
         return $rp->find($id);
     }
 
@@ -74,6 +75,7 @@ class DataStore
      */
     public function delete($entityName, $id)
     {
+        // TODO compound PK?
         $pr = $this->em->getPartialReference($entityName, $id);
         $this->em->remove($pr);
         return 1;
