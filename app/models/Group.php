@@ -26,22 +26,22 @@ class Group
      */
     private $g_name;
 
-    public function get_g_id(): int
+    public function get_g_id()
     {
         return $this->g_id;
     }
 
-    public function set_g_id(int $value)
+    public function set_g_id($value)
     {
         $this->g_id = $value;
     }
 
-    public function get_g_name(): string
+    public function get_g_name()
     {
         return $this->g_name;
     }
 
-    public function set_g_name(string $value)
+    public function set_g_name($value)
     {
         $this->g_name = $value;
     }

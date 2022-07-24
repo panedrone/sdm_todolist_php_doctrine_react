@@ -5,7 +5,7 @@
 
 namespace models;
 
-class GroupEx
+class GroupLI
 {
     /**
      * @var int
@@ -20,32 +20,32 @@ class GroupEx
      */
     private $tasks_count;
 
-    public function get_g_id(): int
+    public function get_g_id()
     {
         return $this->g_id;
     }
 
-    public function set_g_id(int $value)
+    public function set_g_id($value)
     {
         $this->g_id = $value;
     }
 
-    public function get_g_name(): string
+    public function get_g_name()
     {
         return $this->g_name;
     }
 
-    public function set_g_name(string $value)
+    public function set_g_name($value)
     {
         $this->g_name = $value;
     }
 
-    public function get_tasks_count(): int
+    public function get_tasks_count()
     {
         return $this->tasks_count;
     }
 
-    public function set_tasks_count(int $value)
+    public function set_tasks_count($value)
     {
         $this->tasks_count = $value;
     }

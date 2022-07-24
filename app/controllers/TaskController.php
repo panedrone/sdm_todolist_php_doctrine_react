@@ -4,21 +4,16 @@ namespace controllers;
 
 require_once "../bootstrap.php";
 
-require_once "../models/TaskEx.php";
+require_once "../models/Task.php";
 
-use models\TaskEx;
+use models\Task;
 use Doctrine\ORM\Exception\ORMException;
 
 class TaskController
 {
     public static function read_task($t_id): ?array
     {
-        try {
-            $t = find_task_ex($t_id);
-        } catch (ORMException $e) {
-            log_err($e);
-            return null;
-        }
+        $t = find_task($t_id);
         if ($t == null) {
             return null;
         }
@@ -34,12 +29,7 @@ class TaskController
 
     public static function update_task($t_id, $data): bool
     {
-        try {
-            $t = find_task_ex($t_id);
-        } catch (ORMException $e) {
-            log_err($e);
-            return false;
-        }
+        $t = find_task($t_id);
         if ($t == null) {
             return false;
         }
@@ -59,12 +49,7 @@ class TaskController
 
     public static function delete_task($t_id): bool
     {
-        try {
-            $t = em()->getPartialReference(TaskEx::class, $t_id);
-        } catch (ORMException $e) {
-            log_err($e);
-            return false;
-        }
+        $t = em()->getPartialReference(Task::class, $t_id);
         if ($t == null) {
             return false;
         }

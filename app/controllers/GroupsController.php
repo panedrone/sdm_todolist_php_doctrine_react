@@ -27,12 +27,7 @@ class GroupsController
 
     public static function read_groups(): ?array
     {
-        try {
-            $groups = groups_dao()->get_groups();
-        } catch (ORMException $e) {
-            log_err($e);
-            return null;
-        }
+        $groups = groups_dao()->get_groups();
         $arr = array();
         foreach ($groups as $gr) {
             $item = array(
@@ -47,12 +42,7 @@ class GroupsController
 
     public static function read_group($g_id): ?array
     {
-        try {
-            $gr = find_group($g_id);
-        } catch (ORMException $e) {
-            log_err($e);
-            return null;
-        }
+        $gr = find_group($g_id);
         if ($gr == null) {
             return null;
         }
@@ -65,12 +55,7 @@ class GroupsController
 
     public static function update_group($g_id, $data): bool
     {
-        try {
-            $gr = find_group($g_id);
-        } catch (ORMException $e) {
-            log_err($e);
-            return false;
-        }
+        $gr = find_group($g_id);
         if ($gr == null) {
             return false;
         }
@@ -88,12 +73,7 @@ class GroupsController
 
     public static function delete_group($g_id): bool
     {
-        try {
-            $gr = em()->getPartialReference(Group::class, $g_id);
-        } catch (ORMException $e) {
-            log_err($e);
-            return false;
-        }
+        $gr = em()->getPartialReference(Group::class, $g_id);
         if ($gr == null) {
             return false;
         }

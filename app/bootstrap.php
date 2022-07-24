@@ -1,9 +1,10 @@
 <?php
 // bootstrap.php
 use dao\GroupsDao;
+use dao\TasksDao;
 use models\Group;
 use models\Task;
-use models\TaskEx;
+use models\TaskLI;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\EntityManager;
@@ -14,15 +15,15 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 
 // require_once 'dal/dao/GroupsDao.php';
 
+$em = null;
+
+$dataStore = null;
+
 /**
  * @throws ORMException
  */
-function em(): EntityManager
+function init_app()
 {
-    static $entityManager = null;
-    if ($entityManager !== null) {
-        return $entityManager;
-    }
     // Create a simple "default" Doctrine ORM configuration for Annotations
     $isDevMode = true;
     $proxyDir = null;
@@ -41,7 +42,22 @@ function em(): EntityManager
         'driver' => 'pdo_sqlite',
         'path' => __DIR__ . '/todolist.sqlite3',
     );
-    return $entityManager = EntityManager::create($connectionParams, $config);
+    global $em;
+    $em = EntityManager::create($connectionParams, $config);
+    global $dataStore;
+    $dataStore = new DataStore(em()->getConnection());
+}
+
+function em(): EntityManager
+{
+    global $em;
+    return $em;
+}
+
+function ds()
+{
+    global $dataStore;
+    return $dataStore;
 }
 
 function log_err(Exception $e)
@@ -49,9 +65,6 @@ function log_err(Exception $e)
     echo $e->getMessage();
 }
 
-/**
- * @throws ORMException
- */
 function logger()
 {
     static $logger = null;
@@ -79,71 +92,45 @@ function logger()
     return $logger;
 }
 
-/**
- * @throws ORMException
- */
 function groups()
 {
     return em()->getRepository(Group::class);
 }
 
-/**
- * @throws ORMException
- */
 function find_group($g_id): ?Group
 {
     return groups()->find($g_id);
 }
 
-/**
- * @throws ORMException
- */
-function task_ex()
-{
-    return em()->getRepository(TaskEx::class);
-}
-
-/**
- * @throws ORMException
- */
-function find_task_ex($t_id): ?TaskEx
-{
-    return task_ex()->find($t_id);
-}
-
-/**
- * @throws ORMException
- */
 function tasks()
 {
     return em()->getRepository(Task::class);
 }
 
+function find_task($t_id): ?Task
+{
+    return tasks()->find($t_id);
+}
+
+function tasksLI()
+{
+    return em()->getRepository(TaskLI::class);
+}
+
 /**
  * @return Task[]
- * @throws ORMException
  */
 function get_group_tasks($g_id): array
 {
     return tasks()->findBy(array('g_id' => $g_id), array('t_date' => 'ASC', 't_id' => 'ASC'));
 }
 
-/**
- * @throws ORMException
- */
-function ds()
-{
-    static $dataStore = null;
-    if ($dataStore !== null) {
-        return $dataStore;
-    }
-    return $dataStore = new DataStore(em()->getConnection());
-}
-
-/**
- * @throws ORMException
- */
 function groups_dao(): GroupsDao
 {
     return new GroupsDao(ds());
+}
+
+function tasks_dao(): TasksDao
+{
+    return new TasksDao(ds());
 }

@@ -6,7 +6,15 @@ require_once '../Steampixel/Route.php';
 require_once 'handlers.php';
 require_once 'utils.php';
 
+use Doctrine\ORM\Exception\ORMException;
 use Steampixel\Route;
+
+try {
+    init_app();
+} catch (ORMException $e) {
+    log_err($e);
+    return;
+}
 
 Route::add('/api/groups', function () {
     handle_groups();

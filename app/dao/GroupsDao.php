@@ -5,9 +5,11 @@
 
 namespace dao;
 
-include_once __DIR__ . '/../models/GroupEx.php';
+include_once __DIR__ . '/../models/Group.php';
+include_once __DIR__ . '/../models/GroupLI.php';
 
-use models\GroupEx;
+use models\Group;
+use models\GroupLI;
 
 class GroupsDao
 {
@@ -19,7 +21,58 @@ class GroupsDao
     }
 
     /**
-     * @return GroupEx[]
+     * (C)RUD: groups
+     * Generated/AI values are passed to $p param
+     * @param Group $p
+     * @return bool TRUE on success or FALSE on failure
+     */
+    public function create_group($p)
+    {
+        return $this->ds->create(Group::class, $p);
+    }
+
+    /**
+     * C(R)UD: groups
+     * @return Group[]
+     */
+    public function read_all_groups()
+    {
+        return $this->ds->readAll(Group::class);
+    }
+
+    /**
+     * C(R)UD: groups
+     * @param int $g_id
+     * @return Group|FALSE on failure
+     */
+    public function read_group($g_id)
+    {
+        return $this->ds->read(Group::class, $g_id);
+    }
+
+    /**
+     * CR(U)D: groups
+     * @param Group $p
+     * @return int the affected rows count
+     */
+    public function update_group($p)
+    {
+        return $this->ds->update(Group::class, $p);
+    }
+
+    /**
+     * CRU(D): groups
+     * @param int $g_id
+     * @return int the affected rows count
+     */
+    public function delete_group($g_id)
+    {
+        return $this->ds->delete(Group::class, $g_id);
+    }
+
+
+    /**
+     * @return GroupLI[]
      */
     public function get_groups()
     {
@@ -29,7 +82,7 @@ class GroupsDao
             . "\n order by g.g_id";
         $res = array();
         $_map_cb = function ($row) use (&$res) {
-            $obj = new GroupEx();
+            $obj = new GroupLI();
             $obj->set_g_id($row["g_id"]); // q <- q
             $obj->set_g_name($row["g_name"]); // q <- q
             $obj->set_tasks_count($row["tasks_count"]); // q <- q
@@ -39,9 +92,10 @@ class GroupsDao
         return $res;
     }
 
+
     /**
      * @param string $g_id
-     * @return GroupEx|FALSE on failure
+     * @return GroupLI|FALSE on failure
      */
     public function get_group($g_id)
     {
@@ -51,7 +105,7 @@ class GroupsDao
             . "\n where g.g_id=?";
         $row = $this->ds->queryRow($sql, array($g_id));
         if ($row) {
-            $obj = new GroupEx();
+            $obj = new GroupLI();
             $obj->set_g_id($row["g_id"]); // q <- q
             $obj->set_g_name($row["g_name"]); // q <- q
             $obj->set_tasks_count($row["tasks_count"]); // q <- q
@@ -59,6 +113,7 @@ class GroupsDao
         }
         return FALSE;
     }
+
 
     /**
      * @return array of object g_id
@@ -72,6 +127,7 @@ class GroupsDao
         return $this->ds->queryList($sql, array());
     }
 
+
     /**
      * @param string $g_id
      * @return mixed object g_id or FALSE on failure
@@ -84,6 +140,7 @@ class GroupsDao
             . "\n where g.g_id=?";
         return $this->ds->query($sql, array($g_id));
     }
+
 
     /**
      * @param string $g_name

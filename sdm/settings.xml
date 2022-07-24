@@ -17,7 +17,7 @@
 
     <type-map default="">
 
-        <!-- ******   PHP Doctrine ORM  ****** -->
+        <!-- ******   PHP Doctrine   ****** -->
 
         <!-- https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/types.html-->
 

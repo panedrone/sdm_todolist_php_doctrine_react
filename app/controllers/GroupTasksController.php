@@ -32,12 +32,7 @@ class GroupTasksController
 
     public static function read_group_tasks($g_id): ?array
     {
-        try {
-            $tasks = get_group_tasks($g_id);
-        } catch (ORMException $e) {
-            log_err($e);
-            return null;
-        }
+        $tasks = get_group_tasks($g_id);
         if ($tasks == null) {
             return array();
         }
