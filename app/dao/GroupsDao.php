@@ -51,13 +51,12 @@ class GroupsDao
      */
     public function read_group($g_id)
     {
-        return $this->ds->read(Group::class, $g_id);
+        return $this->ds->read(Group::class, array("g_id" => $g_id));
     }
 
     /**
      * CR(U)D: groups
      * @param Group $p
-     * @return int the affected rows count
      * @throws \Exception
      */
     public function update_group($p)
@@ -68,12 +67,11 @@ class GroupsDao
     /**
      * CRU(D): groups
      * @param int $g_id
-     * @return int the affected rows count
      * @throws \Exception
      */
     public function delete_group($g_id)
     {
-        return $this->ds->delete(Group::class, $g_id);
+        return $this->ds->delete(Group::class, array("g_id" => $g_id));
     }
 
 
@@ -152,7 +150,6 @@ class GroupsDao
      * @param string $g_name
      * @param string $g_id
      * @return int the affected rows count
-     * @throws \Exception
      */
     public function rename_group($g_name, $g_id)
     {
