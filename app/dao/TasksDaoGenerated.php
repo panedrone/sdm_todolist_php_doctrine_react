@@ -36,6 +36,7 @@ class TasksDaoGenerated
     /**
      * C(R)UD: tasks
      * @return Task[]
+     * @throws \Exception
      */
     public function read_task_list()
     {
@@ -46,6 +47,7 @@ class TasksDaoGenerated
      * C(R)UD: tasks
      * @param int $t_id
      * @return Task|FALSE on failure
+     * @throws \Exception
      */
     public function read_task($t_id)
     {
@@ -71,5 +73,4 @@ class TasksDaoGenerated
     {
         return $this->ds->delete(Task::class, array("t_id" => $t_id));
     }
-
 }

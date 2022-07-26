@@ -53,10 +53,9 @@ class DataStore
         return $rep->findAll();
     }
 
-    public function read(string $entityName, $id)
+    public function read(string $entityName, array $id)
     {
         $rp = $this->em->getRepository($entityName);
-        // TODO compound PK?
         return $rp->find($id);
     }
 
@@ -73,9 +72,8 @@ class DataStore
      * For CRUD+Compound_PK, use raw-SQL
      * @throws ORMException
      */
-    public function delete($entityName, $id)
+    public function delete($entityName, array $id)
     {
-        // TODO compound PK?
         $pr = $this->em->getPartialReference($entityName, $id);
         $this->em->remove($pr);
         return 1;

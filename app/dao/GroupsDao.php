@@ -38,6 +38,7 @@ class GroupsDao
     /**
      * C(R)UD: groups
      * @return Group[]
+     * @throws \Exception
      */
     public function read_group_list()
     {
@@ -48,6 +49,7 @@ class GroupsDao
      * C(R)UD: groups
      * @param int $g_id
      * @return Group|FALSE on failure
+     * @throws \Exception
      */
     public function read_group($g_id)
     {
@@ -74,12 +76,11 @@ class GroupsDao
         return $this->ds->delete(Group::class, array("g_id" => $g_id));
     }
 
-
     /**
      * @return GroupLI[]
+     * @throws \Exception
      */
-    public function get_all_groups()
-    {
+    public function get_all_groups()    {
         $sql = "select g.*, "
             . "\n (select count(*) from tasks where g_id=g.g_id) as tasks_count"
             . "\n from groups g"
@@ -96,10 +97,10 @@ class GroupsDao
         return $res;
     }
 
-
     /**
      * @param string $g_id
      * @return GroupLI|FALSE on failure
+     * @throws \Exception
      */
     public function get_group($g_id)
     {
@@ -118,12 +119,11 @@ class GroupsDao
         return FALSE;
     }
 
-
     /**
      * @return array of object g_id
+     * @throws \Exception
      */
-    public function get_groups_ids()
-    {
+    public function get_groups_ids()    {
         $sql = "select g.*, "
             . "\n (select count(*) from tasks where g_id=g.g_id) as tasks_count"
             . "\n from groups g"
@@ -131,10 +131,10 @@ class GroupsDao
         return $this->ds->queryList($sql, array());
     }
 
-
     /**
      * @param string $g_id
      * @return mixed object g_id or FALSE on failure
+     * @throws \Exception
      */
     public function get_group_id($g_id)
     {
@@ -145,16 +145,15 @@ class GroupsDao
         return $this->ds->query($sql, array($g_id));
     }
 
-
     /**
      * @param string $g_name
      * @param string $g_id
      * @return int the affected rows count
+     * @throws \Exception
      */
     public function rename_group($g_name, $g_id)
     {
         $sql = "update groups set g_name=? where g_id=?";
         return $this->ds->execDML($sql, array($g_name, $g_id));
     }
-
 }
