@@ -6,7 +6,7 @@
 
     <dto scope="models" inheritance="" field-names-mode="2" macro="sdm/php.vm"/>
 
-    <dao scope="dao" macro="sdm/php.vm"/>
+    <dao scope="dao" field-assign-mode="0" macro="sdm/php.vm"/>
 
     <ide event-log="true"/>
 

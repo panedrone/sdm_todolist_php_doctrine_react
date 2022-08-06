@@ -2,7 +2,7 @@
 <dao-class xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:noNamespaceSchemaLocation="dao.xsd">
 
-    <crud-auto dto="doctrine-Group" table="groups"/>
+    <crud dto="doctrine-Group" table="groups"/>
 
     <query-dto-list dto="GroupLI" method="get_all_groups"/>
 

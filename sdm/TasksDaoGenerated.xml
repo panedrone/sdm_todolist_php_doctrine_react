@@ -2,6 +2,6 @@
 <dao-class xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:noNamespaceSchemaLocation="dao.xsd">
 
-    <crud-auto dto="doctrine-Task" table="tasks"/>
+    <crud dto="doctrine-Task" table="tasks"/>
 
 </dao-class>
