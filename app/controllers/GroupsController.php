@@ -28,7 +28,12 @@ class GroupsController
 
     public static function read_all_groups(): ?array
     {
-        $groups = groups_dao()->get_all_groups();
+        try {
+            $groups = groups_dao()->get_all_groups();
+        } catch (Exception $e) {
+            log_err($e);
+            return null;
+        }
         $arr = array();
         foreach ($groups as $gr) {
             $item = array(
