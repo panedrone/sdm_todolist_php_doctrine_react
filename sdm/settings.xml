@@ -4,9 +4,9 @@
 
     <folders target="app" sql="sdm/sql"/>
 
-    <dto scope="models" inheritance="" field-names-mode="2" macro="sdm/php.vm"/>
+    <dto scope="models" inheritance="" field-names-mode="2" macro=""/>
 
-    <dao scope="dao" field-assign-mode="0" macro="sdm/php.vm"/>
+    <dao scope="dao" field-assign-mode="0" macro=""/>
 
     <ide event-log="true"/>
 
