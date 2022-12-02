@@ -39,7 +39,7 @@ class GroupsController
             $item = array(
                 "g_id" => $gr->get_g_id(),
                 "g_name" => $gr->get_g_name(),
-                "tasks_count" => $gr->get_tasks_count(),
+                "g_tasks_count" => $gr->get_g_tasks_count(),
             );
             array_push($arr, $item);
         }
