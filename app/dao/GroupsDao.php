@@ -83,7 +83,7 @@ class GroupsDao
     public function get_all_groups()
     {
         $sql = "select g.*, "
-            . "\n (select count(*) from tasks where g_id=g.g_id) as tasks_count"
+            . "\n (select count(*) from tasks where g_id=g.g_id) as g_tasks_count"
             . "\n from groups g"
             . "\n order by g.g_id";
         $res = array();
@@ -91,7 +91,7 @@ class GroupsDao
             $obj = new GroupLI();
             $obj->set_g_id($row["g_id"]); // q <- q
             $obj->set_g_name($row["g_name"]); // q <- q
-            $obj->set_tasks_count($row["tasks_count"]); // q <- q
+            $obj->set_g_tasks_count($row["g_tasks_count"]); // q <- q
             array_push($res, $obj);
         };
         $this->ds->queryRowList($sql, array(), $_map_cb);
@@ -114,7 +114,7 @@ class GroupsDao
             $obj = new GroupLI();
             $obj->set_g_id($row["g_id"]); // q <- q
             $obj->set_g_name($row["g_name"]); // q <- q
-            $obj->set_tasks_count($row["tasks_count"]); // q <- q
+            $obj->set_tasks_count($row["tasks_count"]); // xml(tasks_count) <- q
             return $obj;
         }
         return FALSE;
@@ -127,7 +127,7 @@ class GroupsDao
     public function get_groups_ids()
     {
         $sql = "select g.*, "
-            . "\n (select count(*) from tasks where g_id=g.g_id) as tasks_count"
+            . "\n (select count(*) from tasks where g_id=g.g_id) as g_tasks_count"
             . "\n from groups g"
             . "\n order by g.g_id";
         return $this->ds->queryList($sql, array());

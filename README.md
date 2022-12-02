@@ -7,14 +7,38 @@ Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmake
 
 ```xml
 <dto-classes>
-    <dto-class name="GroupEx" ref="get_groups.sql"/>
+    
     <dto-class name="doctrine-Group" ref="groups"/>
+
+    <!--    list item extended with "tasks_count":   -->
+
+    <dto-class name="GroupLI" ref="get_groups.sql">
+        <field column="g_id" type="int"/>
+        <field column="g_name" type="string"/>
+        <field column="tasks_count" type="int"/>
+    </dto-class>
+
+    <!--    all fields are available: -->
+
     <dto-class name="doctrine-Task" ref="tasks"/>
+
+    <!--    "reduced" list item without fetching of "t_comments":   -->
+
+    <dto-class name="doctrine-TaskLI" ref="tasks">
+        <field column="t_comments" type="string"/>
+    </dto-class>
+    
 </dto-classes>
 ```
 ```xml
 <dao-class>
-    <query-dto-list method="get_groups" dto="GroupEx"/>
+    <crud dto="doctrine-Group" table="groups"/>
+    <query-dto-list dto="GroupLI" method="get_all_groups"/>
+</dao-class>
+```
+```xml
+<dao-class>
+    <crud dto="doctrine-Task" table="tasks"/>
 </dao-class>
 ```
 ```php
