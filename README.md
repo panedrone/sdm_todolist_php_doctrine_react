@@ -42,27 +42,25 @@ Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmake
 </dao-class>
 ```
 ```php
+$dao = groups_dao();
+
 $gr = new Group();
 $gr->set_g_name("Hello from Doctrine " . date("Y-m-d H:i:s"));
-em()->persist($gr);
-em()->flush();
+$dao->create_group($gr);
 
 $g_id = $gr->get_g_id();  // generated id is available!
 print_r($g_id . PHP_EOL);
 
-$dao = groups_dao(); // raw-SQL
-$groups = $dao->get_groups(); // code-completion is OK
+$groups = $dao->get_all_groups(); // code-completion is OK
 print "Groups: " . print_r($groups, true) . PHP_EOL;
 
-$gr = find_group($g_id);
+$gr = $dao->read_group($g_id);
 print "get_g_name: " . $gr->get_g_name() . PHP_EOL; // code-completion is OK
 print "Group: " . print_r($gr, true) . PHP_EOL;
 
-$gr = em()->getPartialReference(Group::class, $g_id);
-em()->remove($gr);
-em()->flush();
+$dao->delete_group($g_id);
 
-$gr_tasks = get_group_tasks(21);
+$gr_tasks = tasks_dao()->get_group_tasks(21);
 print "get_t_subject: " . $gr_tasks[0]->get_t_subject() . PHP_EOL; // code-completion is OK
 print "group_tasks: " . print_r($gr_tasks, true) . PHP_EOL;
 ```
