@@ -114,7 +114,6 @@ class GroupsDao
             $obj = new GroupLI();
             $obj->set_g_id($row["g_id"]); // q <- q
             $obj->set_g_name($row["g_name"]); // q <- q
-            $obj->set_tasks_count($row["tasks_count"]); // xml(tasks_count) <- q
             return $obj;
         }
         return FALSE;

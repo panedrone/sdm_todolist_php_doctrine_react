@@ -16,13 +16,9 @@ class GroupLI
      */
     private $g_name;
     /**
-     * @var object
-     */
-    private $g_tasks_count;
-    /**
      * @var int
      */
-    private $tasks_count;
+    private $g_tasks_count;
 
     public function get_g_id()
     {
@@ -52,15 +48,5 @@ class GroupLI
     public function set_g_tasks_count($value)
     {
         $this->g_tasks_count = $value;
-    }
-
-    public function get_tasks_count()
-    {
-        return $this->tasks_count;
-    }
-
-    public function set_tasks_count($value)
-    {
-        $this->tasks_count = $value;
     }
 }

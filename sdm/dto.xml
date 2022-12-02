@@ -4,12 +4,12 @@
 
     <dto-class name="doctrine-Group" ref="groups"/>
 
-    <!--    list item extended with "tasks_count":   -->
+    <!--    list item extended with "g_tasks_count":   -->
 
     <dto-class name="GroupLI" ref="get_groups.sql">
         <field column="g_id" type="int"/>
         <field column="g_name" type="string"/>
-        <field column="tasks_count" type="int"/>
+        <field column="g_tasks_count" type="int"/>
     </dto-class>
 
     <!--    all fields are available: -->
