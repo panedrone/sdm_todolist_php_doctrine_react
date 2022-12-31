@@ -40,10 +40,6 @@ class TaskLI
      * @var string
      */
     private $t_subject;
-    /**
-     * string
-     */
-    private $t_comments;
 
     public function get_t_id()
     {
@@ -93,15 +89,5 @@ class TaskLI
     public function set_t_subject($value)
     {
         $this->t_subject = $value;
-    }
-
-    public function get_t_comments()
-    {
-        return $this->t_comments;
-    }
-
-    public function set_t_comments($value)
-    {
-        $this->t_comments = $value;
     }
 }
