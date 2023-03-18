@@ -28,7 +28,7 @@ Route::add('/api/groups/([0-9]*)/tasks', function ($g_id) {
     handle_group_tasks($g_id);
 }, ['get', 'post']);
 
-Route::add('/api/task/([0-9]*)', function ($t_id) {
+Route::add('/api/tasks/([0-9]*)', function ($t_id) {
     handle_task($t_id);
 }, ['get', 'put', 'delete']);
 
