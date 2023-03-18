@@ -22,7 +22,12 @@ new Vue({
         renderGroups() {
             fetch("api/groups")
                 .then(async (resp) => {
-                    this.$data.groups = await resp.json()
+                    if (resp.status === 201) {
+                        this.$data.groups = await resp.json()
+                    } else {
+                        let j = await resp.text()
+                        alert(resp.status + "\n" + j);
+                    }
                 })
                 .catch((reason) => {
                     console.log(reason)
@@ -37,7 +42,12 @@ new Vue({
         renderCurrentGroup(g_id) {
             fetch("api/groups/" + g_id)
                 .then(async (resp) => {
-                    this.$data.current_group = await resp.json()
+                    if (resp.status === 201) {
+                        this.$data.current_group = await resp.json()
+                    } else {
+                        let j = await resp.text()
+                        alert(resp.status + "\n" + j);
+                    }
                 })
                 .catch((reason) => {
                     console.log(reason)
@@ -46,7 +56,12 @@ new Vue({
         renderGroupTasks(g_id) {
             fetch("api/groups/" + g_id + "/tasks")
                 .then(async (resp) => {
-                    this.$data.tasks = await resp.json()
+                    if (resp.status === 201) {
+                        this.$data.tasks = await resp.json()
+                    } else {
+                        let j = await resp.text()
+                        alert(resp.status + "\n" + j);
+                    }
                 })
                 .catch((reason) => {
                     console.log(reason)
@@ -55,11 +70,16 @@ new Vue({
         renderTaskDetails(t_id) {
             fetch("api/tasks/" + t_id)
                 .then(async (resp) => {
-                    let task = await resp.json()
-                    let subj = document.getElementById("subj");
-                    subj.innerText = task.t_subject;
-                    this.$data.current_task = task;
-                    showTaskDetails();
+                    if (resp.status === 201) {
+                        let task = await resp.json()
+                        let subj = document.getElementById("subj");
+                        subj.innerText = task.t_subject;
+                        this.$data.current_task = task;
+                        showTaskDetails();
+                    } else {
+                        let j = await resp.text()
+                        alert(resp.status + "\n" + j);
+                    }
                 })
                 .catch((reason) => {
                     console.log(reason)
