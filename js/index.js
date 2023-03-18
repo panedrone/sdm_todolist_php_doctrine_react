@@ -22,7 +22,7 @@ new Vue({
         renderGroups() {
             fetch("api/groups")
                 .then(async (resp) => {
-                    if (resp.status === 201) {
+                    if (resp.status === 200) {
                         this.$data.groups = await resp.json()
                     } else {
                         let j = await resp.text()
@@ -42,7 +42,7 @@ new Vue({
         renderCurrentGroup(g_id) {
             fetch("api/groups/" + g_id)
                 .then(async (resp) => {
-                    if (resp.status === 201) {
+                    if (resp.status === 200) {
                         this.$data.current_group = await resp.json()
                     } else {
                         let j = await resp.text()
@@ -56,7 +56,7 @@ new Vue({
         renderGroupTasks(g_id) {
             fetch("api/groups/" + g_id + "/tasks")
                 .then(async (resp) => {
-                    if (resp.status === 201) {
+                    if (resp.status === 200) {
                         this.$data.tasks = await resp.json()
                     } else {
                         let j = await resp.text()
@@ -70,7 +70,7 @@ new Vue({
         renderTaskDetails(t_id) {
             fetch("api/tasks/" + t_id)
                 .then(async (resp) => {
-                    if (resp.status === 201) {
+                    if (resp.status === 200) {
                         let task = await resp.json()
                         let subj = document.getElementById("subj");
                         subj.innerText = task.t_subject;
