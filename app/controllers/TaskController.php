@@ -11,11 +11,11 @@ class TaskController
     /**
      * @throws \Exception
      */
-    public static function read_task($t_id): ?array
+    public static function read_task($t_id): array
     {
         $t = tasks_dao()->read_task($t_id);
         if ($t == null) {
-            return null;
+            return array();
         }
         $item = array(
             "t_id" => $t->get_t_id(),

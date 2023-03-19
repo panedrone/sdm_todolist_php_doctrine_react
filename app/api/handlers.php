@@ -113,7 +113,10 @@ function handle_task($t_id)
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            TaskController::update_task($t_id, $data);
+            if (!TaskController::update_task($t_id, $data)) {
+                http_response_code(HTTP_BAD_REQUEST);
+                return;
+            }
         } else if ($method == "DELETE") {
             TaskController::delete_task($t_id);
             http_response_code(HTTP_NO_CONTENT);
