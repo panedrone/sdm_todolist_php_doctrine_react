@@ -8,6 +8,7 @@ const NO_GROUP = {"g_id": -1, "g_name": null, "g_tasks_count": -1}
 const NO_TASK = {"t_id": -1, "t_date": null, "t_subject": null, "t_priority": -1, "t_comments": null}
 
 new Vue({
+    delimiters: ['${', '}'],
     el: "#app",
     data: {
         curr_g_id: null,
