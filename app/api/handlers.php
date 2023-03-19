@@ -19,6 +19,14 @@ function handle_groups()
     global $method;
     if ($method == "POST") {
         $data = json_decode(file_get_contents("php://input"));
+        if (json_last_error() != JSON_ERROR_NONE) {
+            http_response_code(HTTP_BAD_REQUEST);
+            return;
+        }
+        if (!validate_group($data)) {
+            http_response_code(HTTP_BAD_REQUEST);
+            return;
+        }
         if (GroupsController::create_group($data)) {
             http_response_code(HTTP_CREATED);
         } else {
@@ -34,6 +42,11 @@ function handle_groups()
     }
 }
 
+function validate_group($data)
+{
+    return true; // TODO
+}
+
 function handle_group($g_id)
 {
     global $method;
@@ -46,6 +59,14 @@ function handle_group($g_id)
         }
     } else if ($method == "PUT") {
         $data = json_decode(file_get_contents("php://input"));
+        if (json_last_error() != JSON_ERROR_NONE) {
+            http_response_code(HTTP_BAD_REQUEST);
+            return;
+        }
+        if (!validate_group($data)) {
+            http_response_code(HTTP_BAD_REQUEST);
+            return;
+        }
         if (!GroupsController::update_group($g_id, $data)) {
             http_response_code(HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -63,6 +84,14 @@ function handle_group_tasks($g_id)
     global $method;
     if ($method == "POST") {
         $data = json_decode(file_get_contents("php://input"));
+        if (json_last_error() != JSON_ERROR_NONE) {
+            http_response_code(HTTP_BAD_REQUEST);
+            return;
+        }
+        if (!validate_task($data)) {
+            http_response_code(HTTP_BAD_REQUEST);
+            return;
+        }
         if (GroupTasksController::create_task($g_id, $data)) {
             http_response_code(HTTP_CREATED);
         } else {
@@ -78,6 +107,11 @@ function handle_group_tasks($g_id)
     }
 }
 
+function validate_task($data)
+{
+    return true; // TODO
+}
+
 function handle_task($t_id)
 {
     global $method;
@@ -90,6 +124,14 @@ function handle_task($t_id)
         }
     } else if ($method == "PUT") {
         $data = json_decode(file_get_contents("php://input"));
+        if (json_last_error() != JSON_ERROR_NONE) {
+            http_response_code(HTTP_BAD_REQUEST);
+            return;
+        }
+        if (!validate_task($data)) {
+            http_response_code(HTTP_BAD_REQUEST);
+            return;
+        }
         if (!TaskController::update_task($t_id, $data)) {
             http_response_code(HTTP_INTERNAL_SERVER_ERROR);
         }
