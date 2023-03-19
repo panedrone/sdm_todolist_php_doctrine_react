@@ -10,7 +10,10 @@ use models\Task;
 
 class GroupTasksController
 {
-    public static function create_task($g_id, $data): bool
+    /**
+     * @throws \Exception
+     */
+    public static function create_task($g_id, $data)
     {
         $t = new Task();
         $t->set_g_id($g_id);
@@ -19,17 +22,14 @@ class GroupTasksController
         $t->set_t_subject($data->t_subject);
         $t->set_t_priority(1);
         $t->set_t_comments("");
-        try {
             tasks_dao()->create_task($t);
             db_flush();
-        } catch (\Exception $e) {
-            log_err($e);
-            return false;
-        }
-        return true;
     }
 
-    public static function read_group_tasks($g_id): ?array
+    /**
+     * @throws \Exception
+     */
+    public static function read_group_tasks($g_id): array
     {
         $tasks = tasks_dao()->get_group_tasks($g_id);
         if ($tasks == null) {

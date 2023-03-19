@@ -6,10 +6,11 @@ require_once "../bootstrap.php";
 
 require_once "../models/Task.php";
 
-use Doctrine\ORM\Exception\ORMException;
-
 class TaskController
 {
+    /**
+     * @throws \Exception
+     */
     public static function read_task($t_id): ?array
     {
         $t = tasks_dao()->read_task($t_id);
@@ -26,6 +27,9 @@ class TaskController
         return $item;
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function update_task($t_id, $data): bool
     {
         $t = tasks_dao()->read_task($t_id);
@@ -36,25 +40,17 @@ class TaskController
         $t->set_t_subject($data->t_subject);
         $t->set_t_priority($data->t_priority);
         $t->set_t_comments($data->t_comments);
-        try {
-            tasks_dao()->update_task($t);
-            db_flush();
-        } catch (ORMException $e) {
-            log_err($e);
-            return false;
-        }
+        tasks_dao()->update_task($t);
+        db_flush();
         return true;
     }
 
-    public static function delete_task($t_id): bool
+    /**
+     * @throws \Exception
+     */
+    public static function delete_task($t_id)
     {
-        try {
-            tasks_dao()->delete_task($t_id);
-            db_flush();
-        } catch (ORMException $e) {
-            log_err($e);
-            return false;
-        }
-        return true;
+        tasks_dao()->delete_task($t_id);
+        db_flush();
     }
 }

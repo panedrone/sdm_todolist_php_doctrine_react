@@ -6,33 +6,29 @@ require_once "../bootstrap.php";
 
 require_once '../models/Group.php';
 
-use Exception;
 use models\Group;
-use Doctrine\ORM\Exception\ORMException;
 
 class GroupsController
 {
-    public static function create_group($data): bool
+    /**
+     * @throws \Exception
+     */
+    public static function create_group($data)
     {
         $gr = new Group();
         $gr->set_g_name($data->g_name);
-        try {
-            groups_dao()->create_group($gr);
-            db_flush();
-        } catch (Exception $e) {
-            log_err($e);
-            return false;
-        }
-        return true;
+        groups_dao()->create_group($gr);
+        db_flush();
     }
 
-    public static function read_all_groups(): ?array
+    /**
+     * @throws \Exception
+     */
+    public static function read_groups(): array
     {
-        try {
-            $groups = groups_dao()->get_all_groups();
-        } catch (Exception $e) {
-            log_err($e);
-            return null;
+        $groups = groups_dao()->get_all_groups();
+        if ($groups == null) {
+            return array();
         }
         $arr = array();
         foreach ($groups as $gr) {
@@ -46,11 +42,14 @@ class GroupsController
         return $arr;
     }
 
-    public static function read_group($g_id): ?array
+    /**
+     * @throws \Exception
+     */
+    public static function read_group($g_id): array
     {
         $gr = groups_dao()->read_group($g_id);
         if ($gr == null) {
-            return null;
+            return array();
         }
         $item = array(
             "g_id" => $gr->get_g_id(),
@@ -59,6 +58,9 @@ class GroupsController
         return $item;
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function update_group($g_id, $data): bool
     {
         $gr = groups_dao()->read_group($g_id);
@@ -67,25 +69,17 @@ class GroupsController
         }
         $gr->set_g_id($g_id);
         $gr->set_g_name($data->g_name);
-        try {
-            groups_dao()->update_group($gr);
-            db_flush();
-        } catch (ORMException $e) {
-            log_err($e);
-            return false;
-        }
+        groups_dao()->update_group($gr);
+        db_flush();
         return true;
     }
 
-    public static function delete_group($g_id): bool
+    /**
+     * @throws \Exception
+     */
+    public static function delete_group($g_id)
     {
-        try {
-            groups_dao()->delete_group($g_id);
-            db_flush();
-        } catch (ORMException $e) {
-            log_err($e);
-            return false;
-        }
-        return true;
+        groups_dao()->delete_group($g_id);
+        db_flush();
     }
 }
