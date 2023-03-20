@@ -27,7 +27,7 @@ Front-end is written in Vue.js, SQLite3 is used as database.
     <!--    "reduced" list item without fetching of "t_comments":   -->
 
     <dto-class name="doctrine-TaskLI" ref="tasks">
-        <field column="t_comments" type="string"/>
+        <field column="t_comments" type="-"/>
     </dto-class>
     
 </dto-classes>
