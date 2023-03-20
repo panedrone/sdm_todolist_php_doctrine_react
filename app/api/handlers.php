@@ -26,7 +26,9 @@ function handle_groups()
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            if (!validate_group($data)) {
+            $err = validate_group($data);
+            if ($err != null) {
+                json_resp($err);
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
@@ -54,7 +56,9 @@ function handle_group($g_id)
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            if (!validate_group($data)) {
+            $err = validate_group($data);
+            if ($err != null) {
+                json_resp($err);
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
@@ -81,7 +85,9 @@ function handle_group_tasks($g_id)
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            if (!validate_task($data)) {
+            $err = validate_task($data, false);
+            if ($err != null) {
+                json_resp($err);
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
@@ -109,7 +115,9 @@ function handle_task($t_id)
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            if (!validate_task($data)) {
+            $err = validate_task($data, true);
+            if ($err != null) {
+                json_resp($err);
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
