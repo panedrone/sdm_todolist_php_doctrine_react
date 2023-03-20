@@ -7,42 +7,39 @@ Front-end is written in Vue.js, SQLite3 is used as database.
 
 ![erd.png](erd.png)
 
+dto.xml
 ```xml
-<dto-classes>
-    
-    <dto-class name="doctrine-Group" ref="groups"/>
+<dto-class name="doctrine-Group" ref="groups"/>
 
-    <!--    list item extended with "g_tasks_count":   -->
+<!--    list item extended with "g_tasks_count":   -->
 
-    <dto-class name="GroupLI" ref="get_groups.sql">
-        <field column="g_id" type="int"/>
-        <field column="g_name" type="string"/>
-        <field column="g_tasks_count" type="int"/>
-    </dto-class>
+<dto-class name="GroupLI" ref="get_groups.sql">
+    <field column="g_id" type="int"/>
+    <field column="g_name" type="string"/>
+    <field column="g_tasks_count" type="int"/>
+</dto-class>
 
-    <!--    all fields are available: -->
+<!--    all fields are available: -->
 
-    <dto-class name="doctrine-Task" ref="tasks"/>
+<dto-class name="doctrine-Task" ref="tasks"/>
 
-    <!--    "reduced" list item without fetching of "t_comments":   -->
+<!--    "reduced" list item without fetching of "t_comments":   -->
 
-    <dto-class name="doctrine-TaskLI" ref="tasks">
-        <field column="t_comments" type="-"/>
-    </dto-class>
-    
-</dto-classes>
+<dto-class name="doctrine-TaskLI" ref="tasks">
+    <field column="t_comments" type="-"/>
+</dto-class>
 ```
+GroupsDao.xml
 ```xml
-<dao-class>
-    <crud dto="doctrine-Group" table="groups"/>
-    <query-dto-list dto="GroupLI" method="get_all_groups"/>
-</dao-class>
+<crud dto="doctrine-Group" table="groups"/>
+<query-dto-list dto="GroupLI" method="get_all_groups"/>
 ```
+TasksDao.xml
 ```xml
-<dao-class>
-    <crud dto="doctrine-Task" table="tasks"/>
-</dao-class>
+<crud table="tasks" dto="Task"/>
+<query-dto-list method="GetGroupTasks(int64 gId)" ref="get_group_tasks.sql" dto="TaskLi"/>
 ```
+Generated code in action:
 ```php
 $dao = groups_dao();
 
