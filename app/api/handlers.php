@@ -2,12 +2,12 @@
 
 namespace api;
 
-require_once 'utils.php';
-
 require_once __DIR__ . '/../controllers/GroupsController.php';
 require_once __DIR__ . '/../controllers/GroupTasksController.php';
 require_once __DIR__ . '/../controllers/TaskController.php';
+
 require_once './validators.php';
+require_once './utils.php';
 
 use controllers\GroupsController;
 use controllers\GroupTasksController;
