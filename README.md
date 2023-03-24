@@ -9,14 +9,14 @@ Front-end is written in Vue.js, SQLite3 is used as database.
 
 dto.xml
 ```xml
-<dto-class name="doctrine-Group" ref="groups"/>
+<dto-class name="doctrine-Project" ref="projects"/>
 
-<!--  not-orm list item extended with "g_tasks_count":  -->
+<!--  not-orm list item extended with "p_tasks_count":  -->
 
-<dto-class name="GroupLI" ref="get_groups.sql">
-    <field column="g_id" type="int"/>
-    <field column="g_name" type="string"/>
-    <field column="g_tasks_count" type="int"/>
+<dto-class name="ProjectLI" ref="get_projects.sql">
+    <field column="p_id" type="int"/>
+    <field column="p_name" type="string"/>
+    <field column="p_tasks_count" type="int"/>
 </dto-class>
 
 <!--  all fields are available:  -->
@@ -29,37 +29,37 @@ dto.xml
     <field column="t_comments" type="-"/>
 </dto-class>
 ```
-GroupsDao.xml
+ProjectsDao.xml
 ```xml
-<crud dto="doctrine-Group" table="groups"/>
-<query-dto-list dto="GroupLI" method="get_all_groups"/>
+<crud dto="doctrine-Project" table="projects"/>
+<query-dto-list dto="ProjectLI" method="get_all_projects"/>
 ```
 TasksDao.xml
 ```xml
 <crud table="tasks" dto="Task"/>
-<query-dto-list method="GetGroupTasks(int64 gId)" ref="get_group_tasks.sql" dto="TaskLi"/>
+<query-dto-list method="GetProjectTasks(int64 gId)" ref="get_project_tasks.sql" dto="TaskLi"/>
 ```
 Generated code in action:
 ```php
-$dao = groups_dao();
+$dao = projects_dao();
 
-$gr = new Group();
-$gr->set_g_name("Hello from Doctrine " . date("Y-m-d H:i:s"));
-$dao->create_group($gr);
+$gr = new Project();
+$gr->set_p_name("Hello from Doctrine " . date("Y-m-d H:i:s"));
+$dao->create_project($gr);
 
-$g_id = $gr->get_g_id();  // generated id is available!
-print_r($g_id . PHP_EOL);
+$p_id = $gr->get_p_id();  // generated id is available!
+print_r($p_id . PHP_EOL);
 
-$groups = $dao->get_all_groups(); // code-completion is OK
-print "Groups: " . print_r($groups, true) . PHP_EOL;
+$projects = $dao->get_all_projects(); // code-completion is OK
+print "Projects: " . print_r($projects, true) . PHP_EOL;
 
-$gr = $dao->read_group($g_id);
-print "get_g_name: " . $gr->get_g_name() . PHP_EOL; // code-completion is OK
-print "Group: " . print_r($gr, true) . PHP_EOL;
+$gr = $dao->read_project($p_id);
+print "get_p_name: " . $gr->get_p_name() . PHP_EOL; // code-completion is OK
+print "Project: " . print_r($gr, true) . PHP_EOL;
 
-$dao->delete_group($g_id);
+$dao->delete_project($p_id);
 
-$gr_tasks = tasks_dao()->get_group_tasks(21);
+$gr_tasks = tasks_dao()->get_project_tasks(21);
 print "get_t_subject: " . $gr_tasks[0]->get_t_subject() . PHP_EOL; // code-completion is OK
-print "group_tasks: " . print_r($gr_tasks, true) . PHP_EOL;
+print "project_tasks: " . print_r($gr_tasks, true) . PHP_EOL;
 ```
