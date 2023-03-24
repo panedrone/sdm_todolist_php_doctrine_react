@@ -11,33 +11,33 @@ dto.xml
 ```xml
 <dto-class name="doctrine-Project" ref="projects"/>
 
-<!--  not-orm list item extended with "p_tasks_count":  -->
+<!--  not-orm Project list item extended with "p_tasks_count":  -->
 
-<dto-class name="ProjectLI" ref="get_projects.sql">
+<dto-class name="ProjectLi" ref="get_projects.sql">
     <field column="p_id" type="int"/>
     <field column="p_name" type="string"/>
     <field column="p_tasks_count" type="int"/>
 </dto-class>
-
+        
 <!--  all fields are available:  -->
 
 <dto-class name="doctrine-Task" ref="tasks"/>
 
 <!--  "reduced" list item without fetching of "t_comments":   -->
 
-<dto-class name="doctrine-TaskLI" ref="tasks">
+<dto-class name="doctrine-TaskLi" ref="tasks">
     <field column="t_comments" type="-"/>
 </dto-class>
 ```
 ProjectsDao.xml
 ```xml
 <crud dto="doctrine-Project" table="projects"/>
-<query-dto-list dto="ProjectLI" method="get_all_projects"/>
+
+<query-dto-list dto="ProjectLI" method="get_projects"/>
 ```
 TasksDao.xml
 ```xml
-<crud table="tasks" dto="Task"/>
-<query-dto-list method="GetProjectTasks(int64 gId)" ref="get_project_tasks.sql" dto="TaskLi"/>
+<crud table="doctrine-tasks" dto="Task"/>
 ```
 Generated code in action:
 ```php

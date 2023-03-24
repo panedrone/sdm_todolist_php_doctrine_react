@@ -4,7 +4,7 @@
 
     <dto-class name="doctrine-Project" ref="projects"/>
 
-    <!--  not-orm list item extended with "g_tasks_count":  -->
+    <!--  not-orm Project list item extended with "p_tasks_count":  -->
 
     <dto-class name="ProjectLi" ref="get_projects.sql">
         <field column="p_id" type="int"/>

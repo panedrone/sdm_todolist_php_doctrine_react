@@ -112,14 +112,14 @@ class ProjectsDao
     }
 
     /**
-     * @param string $g_name
-     * @param string $g_id
+     * @param string $p_name
+     * @param string $p_id
      * @return int the affected rows count
      * @throws \Exception
      */
-    public function rename_project($g_name, $g_id)
+    public function rename_project($p_name, $p_id)
     {
         $sql = "update projects set p_name=? where p_id=?";
-        return $this->ds->execDML($sql, array($g_name, $g_id));
+        return $this->ds->execDML($sql, array($p_name, $p_id));
     }
 }
