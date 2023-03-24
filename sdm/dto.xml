@@ -2,14 +2,14 @@
 <dto-classes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:noNamespaceSchemaLocation="dto.xsd">
 
-    <dto-class name="doctrine-Group" ref="groups"/>
+    <dto-class name="doctrine-Project" ref="projects"/>
 
     <!--  not-orm list item extended with "g_tasks_count":  -->
 
-    <dto-class name="GroupLI" ref="get_groups.sql">
-        <field column="g_id" type="int"/>
-        <field column="g_name" type="string"/>
-        <field column="g_tasks_count" type="int"/>
+    <dto-class name="ProjectLi" ref="get_projects.sql">
+        <field column="p_id" type="int"/>
+        <field column="p_name" type="string"/>
+        <field column="p_tasks_count" type="int"/>
     </dto-class>
 
     <!--  all fields are available:  -->
@@ -18,7 +18,7 @@
 
     <!--  "reduced" list item without fetching of "t_comments":   -->
 
-    <dto-class name="doctrine-TaskLI" ref="tasks">
+    <dto-class name="doctrine-TaskLi" ref="tasks">
         <field column="t_comments" type="-"/>
     </dto-class>
 

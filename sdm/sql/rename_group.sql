@@ -1,1 +1,0 @@
-update groups set g_name=? where g_id=?

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dao-class xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="dao.xsd">
+
+    <crud dto="doctrine-Project" table="projects"/>
+
+    <query-dto-list dto="ProjectLi" method="get_projects"/>
+
+    <!-- next ones are just to try new features -->
+
+    <query-list ref="get_projects.sql" method="get_project_ids"/>
+
+    <exec-dml ref="rename_project.sql" method="rename_project(g_name, g_id)"/>
+
+</dao-class>
