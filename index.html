@@ -22,14 +22,14 @@
                                     <th>Group</th>
                                     <th>Tasks Count</th>
                                 </tr>
-                                <tr v-for="group in $data.groups">
+                                <tr v-for="project in $data.projects">
                                     <td>
-                                        <a href="#" @click="renderGroupDetails(group.g_id)">
-                                            ${ group.g_name }
+                                        <a href="#" @click="renderGroupDetails(project.p_id)">
+                                            ${ project.p_name }
                                         </a>
                                     </td>
                                     <td style="text-align: center;width: 80px;">
-                                        ${ group.g_tasks_count }
+                                        ${ project.p_tasks_count }
                                     </td>
                                 </tr>
                             </table>
@@ -37,16 +37,16 @@
                     </tr>
                     <tr>
                         <td>
-                            <form method="post" enctype="multipart/form-data" name="form_create_group">
+                            <form method="post" enctype="multipart/form-data" name="form_create_project">
                                 <table class="controls">
                                     <tr>
                                         <td>
                                             <label>
-                                                <input type="text" v-model="g_name"/>
+                                                <input type="text" v-model="p_name"/>
                                             </label>
                                         </td>
                                         <td class="w1">
-                                            <a href="#" @click="groupCreate()">
+                                            <a href="#" @click="projectCreate()">
                                                 <input type="button" value="+"/>
                                             </a>
                                         </td>
@@ -58,24 +58,24 @@
                 </table>
             </td>
             <td>
-                <table id="group_details" style="visibility: hidden">
+                <table id="project_details" style="visibility: hidden">
                     <tr>
                         <td>
-                            <form method="post" id="form_update_group">
+                            <form method="post" id="form_update_project">
                                 <table class="controls">
                                     <tr>
                                         <td>
                                             <label>
-                                                <input class="group-header" type="text" v-model="current_group.g_name"/>
+                                                <input class="project-header" type="text" v-model="current_project.p_name"/>
                                             </label>
                                         </td>
                                         <td class="w1">
-                                            <a href="#" @click="groupUpdate()">
+                                            <a href="#" @click="projectUpdate()">
                                                 <input type="button" value="!"/>
                                             </a>
                                         </td>
                                         <td class="w1">
-                                            <a href="#" @click="groupDelete()">
+                                            <a href="#" @click="projectDelete()">
                                                 <input type="button" value="x"/>
                                             </a>
                                         </td>

@@ -3,7 +3,7 @@ const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
 
-const NO_GROUP = {"g_id": -1, "g_name": null, "g_tasks_count": -1}
+const NO_GROUP = {"p_id": -1, "p_name": null, "p_tasks_count": -1}
 
 const NO_TASK = {"t_id": -1, "t_date": null, "t_subject": null, "t_priority": -1, "t_comments": null}
 
@@ -11,9 +11,9 @@ new Vue({
     el: "#app",
     delimiters: ['${', '}'],
     data: {
-        groups: null,
-        g_name: null,
-        current_group: NO_GROUP,
+        projects: null,
+        p_name: null,
+        current_project: NO_GROUP,
         tasks: null,
         t_subject: null,
         current_subject: null,
@@ -37,10 +37,10 @@ new Vue({
                 })
         },
         renderGroups() {
-            fetch("api/groups")
+            fetch("api/projects")
                 .then(async (resp) => {
                     if (resp.status === 200) {
-                        this.$data.groups = await resp.json()
+                        this.$data.projects = await resp.json()
                     } else {
                         let j = await resp.text()
                         alert(resp.status + "\n" + j);
@@ -50,17 +50,17 @@ new Vue({
                     console.log(reason)
                 })
         },
-        renderGroupDetails(g_id) {
-            this.renderCurrentGroup(g_id)
-            this.renderGroupTasks(g_id);
+        renderGroupDetails(p_id) {
+            this.renderCurrentGroup(p_id)
+            this.renderGroupTasks(p_id);
             showGroupDetails();
             hideTaskDetails();
         },
-        renderCurrentGroup(g_id) {
-            fetch("api/groups/" + g_id)
+        renderCurrentGroup(p_id) {
+            fetch("api/projects/" + p_id)
                 .then(async (resp) => {
                     if (resp.status === 200) {
-                        this.$data.current_group = await resp.json()
+                        this.$data.current_project = await resp.json()
                     } else {
                         let j = await resp.text()
                         alert(resp.status + "\n" + j);
@@ -70,8 +70,8 @@ new Vue({
                     console.log(reason)
                 })
         },
-        renderGroupTasks(g_id) {
-            fetch("api/groups/" + g_id + "/tasks")
+        renderGroupTasks(p_id) {
+            fetch("api/projects/" + p_id + "/tasks")
                 .then(async (resp) => {
                     if (resp.status === 200) {
                         this.$data.tasks = await resp.json()
@@ -102,9 +102,9 @@ new Vue({
                     console.log(reason)
                 })
         },
-        groupCreate() {
-            let json = JSON.stringify({"g_name": this.$data.g_name})
-            fetch("api/groups", {
+        projectCreate() {
+            let json = JSON.stringify({"p_name": this.$data.p_name})
+            fetch("api/projects", {
                 method: 'post',
                 headers: JSON_HEADERS,
                 body: json
@@ -121,10 +121,10 @@ new Vue({
                     console.log(reason)
                 })
         },
-        groupUpdate() {
-            let g_id = this.$data.current_group.g_id
-            let json = JSON.stringify(this.$data.current_group)
-            fetch("api/groups/" + g_id, {
+        projectUpdate() {
+            let p_id = this.$data.current_project.p_id
+            let json = JSON.stringify(this.$data.current_project)
+            fetch("api/projects/" + p_id, {
                 method: 'put',
                 headers: JSON_HEADERS,
                 body: json
@@ -141,9 +141,9 @@ new Vue({
                     console.log(reason)
                 })
         },
-        groupDelete() {
-            let g_id = this.$data.current_group.g_id
-            fetch("api/groups/" + g_id, {
+        projectDelete() {
+            let p_id = this.$data.current_project.p_id
+            fetch("api/projects/" + p_id, {
                 method: 'delete'
             })
                 .then(async (resp) => {
@@ -161,9 +161,9 @@ new Vue({
                 })
         },
         taskCreate() {
-            let g_id = this.$data.current_group.g_id
+            let p_id = this.$data.current_project.p_id
             let json = JSON.stringify({"t_subject": this.$data.t_subject})
-            fetch("api/groups/" + g_id + "/tasks", {
+            fetch("api/projects/" + p_id + "/tasks", {
                 method: 'post',
                 headers: JSON_HEADERS,
                 body: json
@@ -171,7 +171,7 @@ new Vue({
                 .then(async (resp) => {
                     if (resp.status === 201) {
                         this.renderGroups(); // update tasks count
-                        this.renderGroupDetails(g_id);
+                        this.renderGroupDetails(p_id);
                     } else {
                         let text = await resp.text()
                         alert(resp.status + "\n" + text);
@@ -186,7 +186,7 @@ new Vue({
                 this.$data.current_task.t_priority = parseInt(this.$data.current_task.t_priority);
             }
             let json = JSON.stringify(this.$data.current_task)
-            let g_id = this.$data.current_group.g_id
+            let p_id = this.$data.current_project.p_id
             let t_id = this.$data.current_task.t_id
             fetch("api/tasks/" + t_id, {
                 method: 'put',
@@ -195,7 +195,7 @@ new Vue({
             })
                 .then(async (resp) => {
                     if (resp.status === 200) {
-                        this.renderGroupTasks(g_id);
+                        this.renderGroupTasks(p_id);
                         this.renderTaskDetails(t_id);
                     } else {
                         let text = await resp.text()
@@ -207,7 +207,7 @@ new Vue({
                 })
         },
         taskDelete() {
-            let g_id = this.$data.current_group.g_id
+            let p_id = this.$data.current_project.p_id
             let t_id = this.$data.current_task.t_id
             fetch("api/tasks/" + t_id, {
                 method: "delete"
@@ -216,7 +216,7 @@ new Vue({
                     if (resp.status === 204) {
                         hideTaskDetails();
                         this.renderGroups(); // update tasks count
-                        this.renderGroupDetails(g_id);
+                        this.renderGroupDetails(p_id);
                     } else {
                         let text = await resp.text()
                         alert(resp.status + "\n" + text);
@@ -248,17 +248,17 @@ function showTaskDetails() {
 }
 
 function hideGroupDetails() {
-    let group_details = document.getElementById("group_details");
-    group_details.style.visibility = "hidden";
+    let project_details = document.getElementById("project_details");
+    project_details.style.visibility = "hidden";
 }
 
 function hideGroupDetails2() {
-    let group_details = document.getElementById("group_details");
-    group_details.style.visibility = "hidden";
+    let project_details = document.getElementById("project_details");
+    project_details.style.visibility = "hidden";
     hideTaskDetails();
 }
 
 function showGroupDetails() {
-    let group_details = document.getElementById("group_details");
-    group_details.style.visibility = "visible";
+    let project_details = document.getElementById("project_details");
+    project_details.style.visibility = "visible";
 }

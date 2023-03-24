@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="tasks")
  */
-class TaskLI
+class TaskLi
 {
     /**
      * @ORM\Column(name="t_id", type="integer")
@@ -21,10 +21,10 @@ class TaskLI
      */
     private $t_id;
     /**
-     * @ORM\Column(name="g_id", type="integer")
+     * @ORM\Column(name="p_id", type="integer", nullable=true)
      * @var int
      */
-    private $g_id;
+    private $p_id;
     /**
      * @ORM\Column(name="t_priority", type="integer")
      * @var int
@@ -51,14 +51,14 @@ class TaskLI
         $this->t_id = $value;
     }
 
-    public function get_g_id()
+    public function get_p_id()
     {
-        return $this->g_id;
+        return $this->p_id;
     }
 
-    public function set_g_id($value)
+    public function set_p_id($value)
     {
-        $this->g_id = $value;
+        $this->p_id = $value;
     }
 
     public function get_t_priority()

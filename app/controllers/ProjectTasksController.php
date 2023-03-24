@@ -8,7 +8,7 @@ require_once '../models/Task.php';
 
 use models\Task;
 
-class GroupTasksController
+class ProjectTasksController
 {
     /**
      * @throws \Exception
@@ -16,7 +16,7 @@ class GroupTasksController
     public static function create_task($g_id, $data)
     {
         $t = new Task();
-        $t->set_g_id($g_id);
+        $t->set_p_id($g_id);
         $t_date = date("Y-m-d H:i:s");
         $t->set_t_date($t_date);
         $t->set_t_subject($data->t_subject);
@@ -29,9 +29,9 @@ class GroupTasksController
     /**
      * @throws \Exception
      */
-    public static function read_group_tasks($g_id): array
+    public static function read_project_tasks($g_id): array
     {
-        $tasks = tasks_dao()->get_group_tasks($g_id);
+        $tasks = tasks_dao()->get_project_tasks($g_id);
         if ($tasks == null) {
             return array();
         }

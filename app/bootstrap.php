@@ -9,10 +9,10 @@ require_once('DataStore.php');
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-require_once 'dao/GroupsDao.php';
+require_once 'dao/ProjectsDao.php';
 require_once 'dao/TasksDao.php';
 
-use dao\GroupsDao;
+use dao\ProjectsDao;
 use dao\TasksDao;
 
 /**
@@ -23,7 +23,7 @@ $dataStore = null;
 /**
  * GroupsDao
  */
-$groupsDao = null;
+$projectsDao = null;
 /**
  * TasksDao
  */
@@ -50,14 +50,14 @@ function init_app()
     // https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/basic-mapping.html
     $connectionParams = array(
         'driver' => 'pdo_sqlite',
-        'path' => __DIR__ . '/todolist.sqlite3',
+        'path' => __DIR__ . '/todolist.sqlite',
     );
     $em = EntityManager::create($connectionParams, $config);
     global $dataStore;
     $dataStore = new DataStore($em);
     // ....................
-    global $groupsDao;
-    $groupsDao = new GroupsDao($dataStore);
+    global $projectsDao;
+    $projectsDao = new ProjectsDao($dataStore);
     // ....................
     global $tasksDao;
     $tasksDao = new TasksDao($dataStore);
@@ -108,10 +108,10 @@ function ds(): DataStore
     return $dataStore;
 }
 
-function groups_dao(): GroupsDao
+function projects_dao(): ProjectsDao
 {
-    global $groupsDao;
-    return $groupsDao;
+    global $projectsDao;
+    return $projectsDao;
 }
 
 function tasks_dao(): TasksDao

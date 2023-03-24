@@ -21,8 +21,8 @@ class TasksDao extends TasksDaoGenerated
     /**
      * @return TaskLI[]
      */
-    function get_group_tasks($g_id): array
+    function get_project_tasks($p_id): array
     {
-        return $this->taskLI()->findBy(array('g_id' => $g_id), array('t_date' => 'ASC', 't_id' => 'ASC'));
+        return $this->taskLI()->findBy(array('p_id' => $p_id), array('t_date' => 'ASC', 't_id' => 'ASC'));
     }
 }

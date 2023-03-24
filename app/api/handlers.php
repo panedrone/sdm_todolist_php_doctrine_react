@@ -2,21 +2,21 @@
 
 namespace api;
 
-require_once __DIR__ . '/../controllers/GroupsController.php';
-require_once __DIR__ . '/../controllers/GroupTasksController.php';
+require_once __DIR__ . '/../controllers/ProjectsController.php';
+require_once __DIR__ . '/../controllers/ProjectTasksController.php';
 require_once __DIR__ . '/../controllers/TaskController.php';
 
 require_once './validators.php';
 require_once './utils.php';
 
-use controllers\GroupsController;
-use controllers\GroupTasksController;
+use controllers\ProjectsController;
+use controllers\ProjectTasksController;
 use controllers\TaskController;
 use Exception;
 
 $method = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_SPECIAL_CHARS);
 
-function handle_groups()
+function handle_projects()
 {
     try {
         global $method;
@@ -26,16 +26,16 @@ function handle_groups()
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            $err = validate_group($data);
+            $err = validate_project($data);
             if ($err != null) {
                 json_resp($err);
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            GroupsController::create_group($data);
+            ProjectsController::create_project($data);
             http_response_code(HTTP_CREATED);
         } else if ($method == "GET") {
-            $arr = GroupsController::read_groups();
+            $arr = ProjectsController::read_projects();
             json_resp($arr);
         }
     } catch (Exception $e) {
@@ -43,12 +43,12 @@ function handle_groups()
     }
 }
 
-function handle_group($g_id)
+function handle_project($g_id)
 {
     try {
         global $method;
         if ($method == "GET") {
-            $item = GroupsController::read_group($g_id);
+            $item = ProjectsController::read_project($g_id);
             json_resp($item);
         } else if ($method == "PUT") {
             $data = json_decode(file_get_contents("php://input"));
@@ -56,18 +56,18 @@ function handle_group($g_id)
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            $err = validate_group($data);
+            $err = validate_project($data);
             if ($err != null) {
                 json_resp($err);
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            if (!GroupsController::update_group($g_id, $data)) {
+            if (!ProjectsController::update_project($g_id, $data)) {
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
         } else if ($method == "DELETE") {
-            GroupsController::delete_group($g_id);
+            ProjectsController::delete_project($g_id);
             http_response_code(HTTP_NO_CONTENT);
         }
     } catch (Exception $e) {
@@ -75,7 +75,7 @@ function handle_group($g_id)
     }
 }
 
-function handle_group_tasks($g_id)
+function handle_project_tasks($g_id)
 {
     try {
         global $method;
@@ -91,10 +91,10 @@ function handle_group_tasks($g_id)
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            GroupTasksController::create_task($g_id, $data);
+            ProjectTasksController::create_task($g_id, $data);
             http_response_code(HTTP_CREATED);
         } else if ($method == "GET") {
-            $arr = GroupTasksController::read_group_tasks($g_id);
+            $arr = ProjectTasksController::read_project_tasks($g_id);
             json_resp($arr);
         }
     } catch (Exception $e) {

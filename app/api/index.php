@@ -16,16 +16,16 @@ try {
     return;
 }
 
-Route::add('/api/groups', function () {
-    handle_groups();
+Route::add('/api/projects', function () {
+    handle_projects();
 }, ['get', 'post']);
 
-Route::add('/api/groups/([0-9]*)', function ($g_id) {
-    handle_group($g_id);
+Route::add('/api/projects/([0-9]*)', function ($p_id) {
+    handle_project($p_id);
 }, ['get', 'put', 'delete']);
 
-Route::add('/api/groups/([0-9]*)/tasks', function ($g_id) {
-    handle_group_tasks($g_id);
+Route::add('/api/projects/([0-9]*)/tasks', function ($p_id) {
+    handle_project_tasks($p_id);
 }, ['get', 'post']);
 
 Route::add('/api/tasks/([0-9]*)', function ($t_id) {

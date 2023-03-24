@@ -21,10 +21,10 @@ class Task
      */
     private $t_id;
     /**
-     * @ORM\Column(name="g_id", type="integer")
+     * @ORM\Column(name="p_id", type="integer", nullable=true)
      * @var int
      */
-    private $g_id;
+    private $p_id;
     /**
      * @ORM\Column(name="t_priority", type="integer")
      * @var int
@@ -41,7 +41,7 @@ class Task
      */
     private $t_subject;
     /**
-     * @ORM\Column(name="t_comments", type="string", length=65535, nullable=true)
+     * @ORM\Column(name="t_comments", type="string", length=65535)
      * @var string
      */
     private $t_comments;
@@ -56,14 +56,14 @@ class Task
         $this->t_id = $value;
     }
 
-    public function get_g_id()
+    public function get_p_id()
     {
-        return $this->g_id;
+        return $this->p_id;
     }
 
-    public function set_g_id($value)
+    public function set_p_id($value)
     {
-        $this->g_id = $value;
+        $this->p_id = $value;
     }
 
     public function get_t_priority()
