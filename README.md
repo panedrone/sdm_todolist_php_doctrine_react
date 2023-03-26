@@ -39,25 +39,89 @@ TasksDao.xml
 ```
 Generated code in action:
 ```php
-$dao = projects_dao();
+<?php
 
-$gr = new Project();
-$gr->set_p_name("Hello from Doctrine " . date("Y-m-d H:i:s"));
-$dao->create_project($gr);
+namespace controllers;
 
-$p_id = $gr->get_p_id();  // generated id is available!
-print_r($p_id . PHP_EOL);
+require_once "../bootstrap.php";
 
-$projects = $dao->get_all_projects(); // code-completion is OK
-print "Projects: " . print_r($projects, true) . PHP_EOL;
+require_once '../models/Project.php';
 
-$gr = $dao->read_project($p_id);
-print "get_p_name: " . $gr->get_p_name() . PHP_EOL; // code-completion is OK
-print "Project: " . print_r($gr, true) . PHP_EOL;
+use models\Project;
 
-$dao->delete_project($p_id);
+class ProjectsController
+{
+    /**
+     * @throws \Exception
+     */
+    public static function create_project($data)
+    {
+        $pr = new Project();
+        $pr->set_p_name($data->p_name);
+        projects_dao()->create_project($pr);
+        db_flush();
+    }
 
-$gr_tasks = tasks_dao()->get_project_tasks(21);
-print "get_t_subject: " . $gr_tasks[0]->get_t_subject() . PHP_EOL; // code-completion is OK
-print "project_tasks: " . print_r($gr_tasks, true) . PHP_EOL;
+    /**
+     * @throws \Exception
+     */
+    public static function read_projects(): array
+    {
+        $projects = projects_dao()->get_projects();
+        if ($projects == null) {
+            return array();
+        }
+        $arr = array();
+        foreach ($projects as $pr) {
+            $item = array(
+                "p_id" => $pr->get_p_id(),
+                "p_name" => $pr->get_p_name(),
+                "p_tasks_count" => $pr->get_p_tasks_count(),
+            );
+            array_push($arr, $item);
+        }
+        return $arr;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public static function read_project($g_id): array
+    {
+        $pr = projects_dao()->read_project($g_id);
+        if ($pr == null) {
+            return array();
+        }
+        $item = array(
+            "p_id" => $pr->get_p_id(),
+            "p_name" => $pr->get_p_name(),
+        );
+        return $item;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public static function update_project($p_id, $data): bool
+    {
+        $gr = projects_dao()->read_project($p_id);
+        if ($gr == null) {
+            return false;
+        }
+        $gr->set_p_id($p_id);
+        $gr->set_p_name($data->p_name);
+        projects_dao()->update_project($gr);
+        db_flush();
+        return true;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public static function delete_project($p_id)
+    {
+        projects_dao()->delete_project($p_id);
+        db_flush();
+    }
+}
 ```
