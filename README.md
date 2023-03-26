@@ -1,11 +1,9 @@
 # sdm_demo_todolist_php_doctrine
 Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmaker) + Doctrine PHP libraries.
 
-Front-end is written in Vue.js, SQLite3 is used as database.
+Front-end is written in Vue.js, SQLite3 is used as a database.
 
 ![demo-go.png](demo-go.png)
-
-![erd.png](erd.png)
 
 dto.xml
 ```xml
