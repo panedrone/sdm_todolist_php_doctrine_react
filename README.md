@@ -35,7 +35,7 @@ ProjectsDao.xml
 ```
 TasksDao.xml
 ```xml
-<crud table="doctrine-tasks"/>
+<crud dto="doctrine-Task"/>
 ```
 Generated code in action:
 ```php
