@@ -29,13 +29,13 @@ dto.xml
 ```
 ProjectsDao.xml
 ```xml
-<crud dto="doctrine-Project" table="projects"/>
+<crud dto="doctrine-Project"/>
 
 <query-dto-list dto="ProjectLI" method="get_projects"/>
 ```
 TasksDao.xml
 ```xml
-<crud table="doctrine-tasks" dto="Task"/>
+<crud table="doctrine-tasks"/>
 ```
 Generated code in action:
 ```php
