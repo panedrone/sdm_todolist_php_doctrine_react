@@ -42,12 +42,25 @@ Route::pathNotFound(function ($path) {
     http_response_code(HTTP_NOT_FOUND);
 });
 
+// === panedrone:
+//
+// 1) while debugging on apache, $uri is like "/<web-site-home>/api/projects",
+//    and $base must be "/<web-site-home>"
+//
+//    at the same time, it must be fetch("api/projects"), not fetch("/api/projects")
+//    because the root is "/<web-site-home>" and there is nothing at "/api/projects"
+//
+// 2) while debugging on built-in web server, $uri is like "/api/projects", so $base is ""
+//
+//    "/api/projects" comes even with fetch("api/projects")
+
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri_parts = explode('/api/', $uri);
 if (count($uri_parts) > 1) {
     $base = $uri_parts[0];
 } else {
-    $base = "/";
+    // $base = "/";
+    $base = ""; // === panedrone: all my routes are started with "/api", so the base is ""
 }
 
 Route::run($base);
