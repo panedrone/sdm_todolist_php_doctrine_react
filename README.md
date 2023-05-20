@@ -73,9 +73,6 @@ use svc\models\Project;
 
 class SvcProjects
 {
-    /**
-     * @throws \Exception
-     */
     public static function create_project($data)
     {
         $pr = new Project();
@@ -84,9 +81,6 @@ class SvcProjects
         db_flush();
     }
 
-    /**
-     * @throws \Exception
-     */
     public static function read_projects(): array
     {
         $projects = projects_dao()->get_projects();
@@ -105,9 +99,6 @@ class SvcProjects
         return $arr;
     }
 
-    /**
-     * @throws \Exception
-     */
     public static function read_project($g_id): array
     {
         $pr = projects_dao()->read_project($g_id);
@@ -121,9 +112,6 @@ class SvcProjects
         return $item;
     }
 
-    /**
-     * @throws \Exception
-     */
     public static function update_project($p_id, $data): bool
     {
         $gr = projects_dao()->read_project($p_id);
@@ -137,9 +125,6 @@ class SvcProjects
         return true;
     }
 
-    /**
-     * @throws \Exception
-     */
     public static function delete_project($p_id)
     {
         projects_dao()->delete_project($p_id);
