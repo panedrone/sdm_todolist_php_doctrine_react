@@ -1,4 +1,5 @@
 # sdm_demo_todolist_php_doctrine
+
 Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmaker) + Doctrine PHP libraries.
 
 Front-end is written in Vue.js, SQLite3 is used as a database.
@@ -6,51 +7,75 @@ Front-end is written in Vue.js, SQLite3 is used as a database.
 ![demo-go.png](demo-go.png)
 
 dto.xml
+
 ```xml
-<dto-class name="doctrine-Project" ref="projects"/>
 
-<!--  not-orm Project list item extended with "p_tasks_count":  -->
+<dto-classes>
 
-<dto-class name="ProjectLi" ref="get_projects.sql">
-    <field column="p_id" type="int"/>
-    <field column="p_name" type="string"/>
-    <field column="p_tasks_count" type="int"/>
-</dto-class>
-        
-<!--  all fields are available:  -->
+    <dto-class name="doctrine-Project" ref="projects"/>
 
-<dto-class name="doctrine-Task" ref="tasks"/>
+    <!--  not-orm Project list item extended with "p_tasks_count":  -->
 
-<!--  "reduced" list item without fetching of "t_comments":   -->
+    <dto-class name="ProjectLi" ref="get_projects.sql">
+        <field column="p_id" type="int"/>
+        <field column="p_name" type="string"/>
+        <field column="p_tasks_count" type="int"/>
+    </dto-class>
 
-<dto-class name="doctrine-TaskLi" ref="tasks">
-    <field column="t_comments" type="-"/>
-</dto-class>
+    <!--  all fields are available:  -->
+
+    <dto-class name="doctrine-Task" ref="tasks"/>
+
+    <!--  "reduced" list item without fetching of "t_comments":   -->
+
+    <dto-class name="doctrine-TaskLi" ref="tasks">
+        <field column="t_comments" type="-"/>
+    </dto-class>
+
+</dto-classes>
 ```
+
 ProjectsDao.xml
-```xml
-<crud dto="doctrine-Project"/>
 
-<query-dto-list dto="ProjectLI" method="get_projects"/>
-```
-TasksDao.xml
 ```xml
-<crud dto="doctrine-Task"/>
+
+<dao-class>
+
+    <crud dto="doctrine-Project"/>
+
+    <query-dto-list dto="ProjectLI" method="get_projects"/>
+
+</dao-class>
 ```
+
+TasksDao.xml
+
+```xml
+
+<dao-class>
+
+    <crud dto="doctrine-Task"/>
+
+</dao-class>
+```
+
 Generated code in action:
+
 ```php
 <?php
 
-namespace controllers;
+namespace svc;
 
-require_once "../bootstrap.php";
+require_once __DIR__ . "/../bootstrap.php";
 
-require_once '../models/Project.php';
+require_once __DIR__ . '/models/Project.php';
+use svc\models\Project;
 
-use models\Project;
-
-class ProjectsController
+class SvcProjects
 {
+    /**
+     * @throws \Exception
+     */
     public static function create_project($data)
     {
         $pr = new Project();
@@ -59,6 +84,9 @@ class ProjectsController
         db_flush();
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function read_projects(): array
     {
         $projects = projects_dao()->get_projects();
@@ -77,6 +105,9 @@ class ProjectsController
         return $arr;
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function read_project($g_id): array
     {
         $pr = projects_dao()->read_project($g_id);
@@ -90,6 +121,9 @@ class ProjectsController
         return $item;
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function update_project($p_id, $data): bool
     {
         $gr = projects_dao()->read_project($p_id);
@@ -103,6 +137,9 @@ class ProjectsController
         return true;
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function delete_project($p_id)
     {
         projects_dao()->delete_project($p_id);

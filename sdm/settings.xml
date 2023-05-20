@@ -2,18 +2,18 @@
 <settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="settings.xsd">
 
-    <folders target="app" sql="sdm/sql"/>
+    <folders target="api" sql="sdm/sql"/>
 
-    <dto scope="models" inheritance="" field-names-mode="2" macro=""/>
+    <dto scope="svc/models" inheritance="" field-names-mode="2" macro=""/>
 
-    <dao scope="dao" field-assign-mode="0" macro=""/>
+    <dao scope="svc/dao" field-assign-mode="0" macro=""/>
 
     <ide event-log="true"/>
 
     <cpp class-prefix=""/>
 
-    <jdbc jar="sdm/sqlite-jdbc-3.40.0.0.jar" class="org.sqlite.JDBC"
-          url="jdbc:sqlite:$PROJECT_DIR$/app/todolist.sqlite" user="" pwd=""/>
+    <jdbc jar="sdm/sqlite-jdbc-3.41.2.1.jar" class="org.sqlite.JDBC"
+          url="jdbc:sqlite:$PROJECT_DIR$/api/todolist.sqlite" user="" pwd=""/>
 
     <type-map default="">
 

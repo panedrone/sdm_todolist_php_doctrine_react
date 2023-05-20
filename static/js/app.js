@@ -23,7 +23,7 @@ new Vue({
     },
     methods: {
         askWhoIAm() {
-            fetch("/whoiam")
+            fetch("api/whoiam")
                 .then(async (resp) => {
                     if (resp.status === 200) {
                         this.whoiam = await resp.text()
