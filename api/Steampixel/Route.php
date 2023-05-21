@@ -130,11 +130,15 @@ class Route
             // But a matching path exists
             if ($path_match_found) {
                 if (self::$methodNotAllowed) {
-                    call_user_func_array(self::$methodNotAllowed, array($path, $method));
+                    if ($return_value = call_user_func_array(self::$methodNotAllowed, array($path, $method))) {
+                        echo $return_value;
+                    }
                 }
             } else {
                 if (self::$pathNotFound) {
-                    call_user_func_array(self::$pathNotFound, array($path));
+                    if ($return_value = call_user_func_array(self::$pathNotFound, array($path))) {
+                        echo $return_value;
+                    }
                 }
             }
 
