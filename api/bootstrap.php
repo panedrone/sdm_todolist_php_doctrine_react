@@ -1,5 +1,5 @@
 <?php
-// bootstrap.php
+
 use svc\dao\TasksDao;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Exception\ORMException;
@@ -14,19 +14,16 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/svc/dao/ProjectsDao.php';
 require_once __DIR__ . '/svc/dao/TasksDao.php';
 
-/**
- * DataStore
- */
-$dataStore = null;
+class bootstrap
+{
+    static DataStore $ds;
 
-/**
- * GroupsDao
- */
-$projectsDao = null;
-/**
- * TasksDao
- */
-$tasksDao = null;
+    static ProjectsDao $projectsDao;
+
+    static TasksDao $tasksDao;
+
+    static MySQLLogger $logger;
+}
 
 /**
  * @throws ORMException
@@ -52,14 +49,30 @@ function init_app()
         'path' => __DIR__ . '/todolist.sqlite',
     );
     $em = EntityManager::create($connectionParams, $config);
-    global $dataStore;
-    $dataStore = new DataStore($em);
-    // ....................
-    global $projectsDao;
-    $projectsDao = new ProjectsDao($dataStore);
-    // ....................
-    global $tasksDao;
-    $tasksDao = new TasksDao($dataStore);
+
+    bootstrap::$ds = new DataStore($em);
+
+    bootstrap::$projectsDao = new ProjectsDao(bootstrap::$ds);
+
+    bootstrap::$tasksDao = new TasksDao(bootstrap::$ds);
+
+    class MySQLLogger implements Doctrine\DBAL\Logging\SQLLogger
+    {
+        public function startQuery($sql, ?array $params = null, ?array $types = null)
+        {
+//                fwrite(STDERR, print_r($sql, true) . PHP_EOL);
+//                if ($params != null) {
+//                    fwrite(STDERR, sprintf('params: %s', print_r($params, true)));
+//                }
+        }
+
+        public function stopQuery()
+        {
+        }
+    }
+
+    bootstrap::$logger = new MySQLLogger();
+    bootstrap::$ds->em()->getConnection()->getConfiguration()->setSQLLogger(bootstrap::$logger);
 }
 
 function log_err(Exception $e)
@@ -69,27 +82,7 @@ function log_err(Exception $e)
 
 function logger()
 {
-    static $logger = null;
-    if ($logger === null) {
-        class MySQLLogger implements Doctrine\DBAL\Logging\SQLLogger
-        {
-            public function startQuery($sql, ?array $params = null, ?array $types = null)
-            {
-//                fwrite(STDERR, print_r($sql, true) . PHP_EOL);
-//                if ($params != null) {
-//                    fwrite(STDERR, sprintf('params: %s', print_r($params, true)));
-//                }
-            }
-
-            public function stopQuery()
-            {
-            }
-        }
-
-        $logger = new MySQLLogger();
-        ds()->em()->getConnection()->getConfiguration()->setSQLLogger($logger);
-    }
-    return $logger;
+    return bootstrap::$logger;
 }
 
 /**
@@ -103,18 +96,15 @@ function db_flush()
 
 function ds(): DataStore
 {
-    global $dataStore;
-    return $dataStore;
+    return bootstrap::$ds;
 }
 
 function projects_dao(): ProjectsDao
 {
-    global $projectsDao;
-    return $projectsDao;
+    return bootstrap::$projectsDao;
 }
 
 function tasks_dao(): TasksDao
 {
-    global $tasksDao;
-    return $tasksDao;
+    return bootstrap::$tasksDao;
 }
