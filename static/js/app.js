@@ -3,7 +3,7 @@ const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
 
-const NO_GROUP = {"p_id": -1, "p_name": null, "p_tasks_count": -1}
+const NO_PROJECT = {"p_id": -1, "p_name": null, "p_tasks_count": -1}
 
 const NO_TASK = {"t_id": -1, "t_date": null, "t_subject": null, "t_priority": -1, "t_comments": null}
 
@@ -11,11 +11,11 @@ new Vue({
     el: "#app",
     delimiters: ['${', '}'],
     data: {
-        projects: null,
+        projects: [NO_PROJECT],
         p_name: null,
-        current_project: NO_GROUP,
+        current_project: NO_PROJECT,
         project_details: false,
-        tasks: null,
+        tasks: [NO_TASK],
         t_subject: null,
         current_subject: null,
         current_task: NO_TASK,
