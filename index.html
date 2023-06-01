@@ -58,7 +58,7 @@
                 </table>
             </td>
             <td>
-                <table id="project_details" style="visibility: hidden">
+                <table v-if="project_details">
                     <tr>
                         <td>
                             <form method="post" id="form_update_project">
@@ -66,7 +66,8 @@
                                     <tr>
                                         <td>
                                             <label>
-                                                <input class="project-header" type="text" v-model="current_project.p_name"/>
+                                                <input class="project-header" type="text"
+                                                       v-model="current_project.p_name"/>
                                             </label>
                                         </td>
                                         <td class="w1">
@@ -80,8 +81,9 @@
                                             </a>
                                         </td>
                                         <td class="w1">
-                                            <a href="javascript:hideGroupDetails2();"><input type="button"
-                                                                                             value="&lt;"/></a>
+                                            <a href="#" @click="hideProjectDetails()">
+                                                <input type="button" value="&lt;"/>
+                                            </a>
                                         </td>
                                     </tr>
                                 </table>
@@ -135,67 +137,67 @@
                     </tr>
                 </table>
             </td>
-            <td>
-                <form id="form_task_details" style="visibility: hidden">
-                    <table class="controls">
-                        <tr>
-                            <td>
-                                <div class="title">
-                                    ${ current_subject }
-                                </div>
-                            </td>
-                            <td class="w1">
-                                <a href="#" @click="taskUpdate()">
-                                    <input type="button" value="!"/>
-                                </a>
-                            </td>
-                            <td class="w1">
-                                <a href="#" @click="taskDelete()">
-                                    <input type="button" value="x"/>
-                                </a>
-                            </td>
-                            <td class="w1">
-                                <a href="javascript:hideTaskDetails();"><input type="button" value="&lt;"/> </a>
-                            </td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td class="form-label">Date</td>
-                            <td>
-                                <label for="t_date">
-                                    <input type="text" id="t_date" v-model="current_task.t_date"/>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="form-label">Subject</td>
-                            <td class="w100">
-                                <label>
-                                    <input type="text" v-model="current_task.t_subject"/>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="form-label">Priority</td>
-                            <td>
-                                <label>
-                                    <input type="text" v-model="current_task.t_priority"/>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <label>
-                                    <textarea cols="40" rows="10" v-model="current_task.t_comments"></textarea>
-                                </label>
-                            </td>
-                        </tr>
-                    </table>
-                    <div style="color: crimson;max-width: 310px;">
-                        ${ task_error }
-                    </div>
-                </form>
+            <td v-if="task_edit">
+                <table class="controls">
+                    <tr>
+                        <td>
+                            <div class="title">
+                                ${ current_subject }
+                            </div>
+                        </td>
+                        <td class="w1">
+                            <a href="#" @click="taskUpdate()">
+                                <input type="button" value="!"/>
+                            </a>
+                        </td>
+                        <td class="w1">
+                            <a href="#" @click="taskDelete()">
+                                <input type="button" value="x"/>
+                            </a>
+                        </td>
+                        <td class="w1">
+                            <a href="#" @click="hideTaskDetails()">
+                                <input type="button" value="&lt;"/>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td class="form-label">Date</td>
+                        <td>
+                            <label for="t_date">
+                                <input type="text" id="t_date" v-model="current_task.t_date"/>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form-label">Subject</td>
+                        <td class="w100">
+                            <label>
+                                <input type="text" v-model="current_task.t_subject"/>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form-label">Priority</td>
+                        <td>
+                            <label>
+                                <input type="text" v-model="current_task.t_priority"/>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label>
+                                <textarea cols="40" rows="10" v-model="current_task.t_comments"></textarea>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <div style="color: crimson;max-width: 310px;">
+                    ${ task_error }
+                </div>
             </td>
         </tr>
     </table>

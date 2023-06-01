@@ -14,12 +14,14 @@ new Vue({
         projects: null,
         p_name: null,
         current_project: NO_GROUP,
+        project_details: false,
         tasks: null,
         t_subject: null,
         current_subject: null,
         current_task: NO_TASK,
         whoiam: "?",
         task_error: null,
+        task_edit: false,
     },
     methods: {
         askWhoIAm() {
@@ -53,8 +55,8 @@ new Vue({
         renderGroupDetails(p_id) {
             this.renderCurrentGroup(p_id)
             this.renderGroupTasks(p_id);
-            showGroupDetails();
-            hideTaskDetails();
+            this.project_details = true;
+            this.task_edit = false;
         },
         renderCurrentGroup(p_id) {
             fetch("api/projects/" + p_id)
@@ -89,10 +91,10 @@ new Vue({
                 .then(async (resp) => {
                     if (resp.status === 200) {
                         let task = await resp.json()
-                        this.$data.current_subject = task.t_subject;
-                        this.$data.current_task = task;
-                        this.$data.task_error = null;
-                        showTaskDetails();
+                        this.current_subject = task.t_subject;
+                        this.current_task = task;
+                        this.task_error = null;
+                        this.task_edit = true;
                     } else {
                         let j = await resp.text()
                         alert(resp.status + "\n" + j);
@@ -148,8 +150,8 @@ new Vue({
             })
                 .then(async (resp) => {
                     if (resp.status === 204) {
-                        hideTaskDetails();
-                        hideGroupDetails();
+                        this.task_edit = false;
+                        this.project_details = false;
                         this.renderGroups();
                     } else {
                         let j = await resp.text()
@@ -214,7 +216,7 @@ new Vue({
             })
                 .then(async (resp) => {
                     if (resp.status === 204) {
-                        hideTaskDetails();
+                        this.task_edit = true;
                         this.renderGroups(); // update tasks count
                         this.renderGroupDetails(p_id);
                     } else {
@@ -226,6 +228,13 @@ new Vue({
                     console.log(reason)
                 })
         },
+        hideProjectDetails() {
+            this.project_details = false
+            this.task_edit = false
+        },
+        hideTaskDetails() {
+            this.task_edit = false
+        },
     },
     created() {
     },
@@ -236,29 +245,3 @@ new Vue({
         this.renderGroups();
     },
 })
-
-function hideTaskDetails() {
-    let form = document.getElementById("form_task_details");
-    form.style.visibility = "hidden";
-}
-
-function showTaskDetails() {
-    let form = document.getElementById("form_task_details");
-    form.style.visibility = "visible";
-}
-
-function hideGroupDetails() {
-    let project_details = document.getElementById("project_details");
-    project_details.style.visibility = "hidden";
-}
-
-function hideGroupDetails2() {
-    let project_details = document.getElementById("project_details");
-    project_details.style.visibility = "hidden";
-    hideTaskDetails();
-}
-
-function showGroupDetails() {
-    let project_details = document.getElementById("project_details");
-    project_details.style.visibility = "visible";
-}
