@@ -241,7 +241,7 @@ new Vue({
     updated() {
     },
     mounted() { // https://codepen.io/g2g/pen/mdyeoXB
-        //this.askWhoIAm();
+        this.askWhoIAm();
         this.renderGroups();
     },
 })

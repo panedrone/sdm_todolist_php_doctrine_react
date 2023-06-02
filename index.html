@@ -8,9 +8,10 @@
 
 <body>
 
-<h2>SDM + Doctrine PHP libraries + SQLite3 + Vue.js</h2>
-
 <div id="app" v-cloak>
+    <h2>
+        ${ whoiam }
+    </h2>
     <table class="bg" style="padding: 4px;">
         <tr>
             <td>
@@ -61,33 +62,31 @@
                 <table v-if="project_details">
                     <tr>
                         <td>
-                            <form method="post" id="form_update_project">
-                                <table class="controls">
-                                    <tr>
-                                        <td>
-                                            <label>
-                                                <input class="project-header" type="text"
-                                                       v-model="current_project.p_name"/>
-                                            </label>
-                                        </td>
-                                        <td class="w1">
-                                            <a href="#" @click="projectUpdate()">
-                                                <input type="button" value="!"/>
-                                            </a>
-                                        </td>
-                                        <td class="w1">
-                                            <a href="#" @click="projectDelete()">
-                                                <input type="button" value="x"/>
-                                            </a>
-                                        </td>
-                                        <td class="w1">
-                                            <a href="#" @click="hideProjectDetails()">
-                                                <input type="button" value="&lt;"/>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
+                            <table class="controls">
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input class="project-header" type="text"
+                                                   v-model="current_project.p_name"/>
+                                        </label>
+                                    </td>
+                                    <td class="w1">
+                                        <a href="#" @click="projectUpdate()">
+                                            <input type="button" value="!"/>
+                                        </a>
+                                    </td>
+                                    <td class="w1">
+                                        <a href="#" @click="projectDelete()">
+                                            <input type="button" value="x"/>
+                                        </a>
+                                    </td>
+                                    <td class="w1">
+                                        <a href="#" @click="hideProjectDetails()">
+                                            <input type="button" value="&lt;"/>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     <tr>
@@ -117,22 +116,20 @@
                     </tr>
                     <tr>
                         <td>
-                            <form method="post" id="form_create_task">
-                                <table class="controls">
-                                    <tr>
-                                        <td>
-                                            <label>
-                                                <input type="text" v-model="t_subject"/>
-                                            </label>
-                                        </td>
-                                        <td class="w1">
-                                            <a href="#" @click="taskCreate()">
-                                                <input type="button" value="+"/>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
+                            <table class="controls">
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input type="text" v-model="t_subject"/>
+                                        </label>
+                                    </td>
+                                    <td class="w1">
+                                        <a href="#" @click="taskCreate()">
+                                            <input type="button" value="+"/>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 </table>

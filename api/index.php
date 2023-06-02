@@ -16,6 +16,10 @@ try {
     return;
 }
 
+Route::add('/api/whoiam', function () {
+    echo 'SDM + Doctrine PHP libraries + SQLite3 + Vue.js';
+}, ['get', 'post']);
+
 Route::add('/api/projects', function () {
     handle_projects();
 }, ['get', 'post']);
