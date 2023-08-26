@@ -4,7 +4,7 @@
 
     <crud dto="doctrine-Project"/>
 
-    <query-dto-list dto="ProjectLi" method="get_projects"/>
+    <query-dto-list dto="ProjectLi" method="get_projects" ref="get_projects.sql"/>
 
     <!-- next ones are just to try new features -->
 

@@ -10,9 +10,6 @@ require_once __DIR__ . '/validators.php';
 require_once __DIR__ . '/utils.php';
 
 use Exception;
-use svc\SvcProjects;
-use svc\SvcProjectTasks;
-use svc\SvcTasks;
 
 function handle_projects()
 {
@@ -30,10 +27,10 @@ function handle_projects()
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            SvcProjects::create_project($data);
+            project_create($data);
             http_response_code(HTTP_CREATED);
         } else if ($method == "GET") {
-            $arr = SvcProjects::read_projects();
+            $arr = projects_read_all();
             json_resp($arr);
         }
     } catch (Exception $e) {
@@ -46,7 +43,7 @@ function handle_project($g_id)
     try {
         $method = get_request_method();
         if ($method == "GET") {
-            $item = SvcProjects::read_project($g_id);
+            $item = project_read($g_id);
             json_resp($item);
         } else if ($method == "PUT") {
             $data = json_decode(file_get_contents("php://input"));
@@ -60,12 +57,12 @@ function handle_project($g_id)
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            if (!SvcProjects::update_project($g_id, $data)) {
+            if (!project_update($g_id, $data)) {
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
         } else if ($method == "DELETE") {
-            SvcProjects::delete_project($g_id);
+            project_delete($g_id);
             http_response_code(HTTP_NO_CONTENT);
         }
     } catch (Exception $e) {
@@ -89,10 +86,10 @@ function handle_project_tasks($g_id)
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            SvcProjectTasks::create_task($g_id, $data);
+            project_task_create($g_id, $data);
             http_response_code(HTTP_CREATED);
         } else if ($method == "GET") {
-            $arr = SvcProjectTasks::read_project_tasks($g_id);
+            $arr = project_tasks_read($g_id);
             json_resp($arr);
         }
     } catch (Exception $e) {
@@ -105,7 +102,7 @@ function handle_task($t_id)
     try {
         $method = get_request_method();
         if ($method == "GET") {
-            $item = SvcTasks::read_task($t_id);
+            $item = read_task($t_id);
             json_resp($item);
         } else if ($method == "PUT") {
             $data = json_decode(file_get_contents("php://input"));
@@ -119,12 +116,12 @@ function handle_task($t_id)
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            if (!SvcTasks::update_task($t_id, $data)) {
+            if (!update_task($t_id, $data)) {
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
         } else if ($method == "DELETE") {
-            SvcTasks::delete_task($t_id);
+            delete_task($t_id);
             http_response_code(HTTP_NO_CONTENT);
         }
     } catch (Exception $e) {

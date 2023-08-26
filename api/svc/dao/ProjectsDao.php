@@ -89,9 +89,9 @@ class ProjectsDao
         $res = array();
         $_map_cb = function ($row) use (&$res) {
             $obj = new ProjectLi();
-            $obj->set_p_id($row["p_id"]); // q <- q
-            $obj->set_p_name($row["p_name"]); // q <- q
-            $obj->set_p_tasks_count($row["p_tasks_count"]); // q <- q
+            $obj->set_p_id($row["p_id"]); // t <- q
+            $obj->set_p_name($row["p_name"]); // t <- q
+            $obj->set_p_tasks_count($row["p_tasks_count"]); // xml(p_tasks_count) <- q
             array_push($res, $obj);
         };
         $this->ds->queryRowList($sql, array(), $_map_cb);

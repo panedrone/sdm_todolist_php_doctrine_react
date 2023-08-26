@@ -16,13 +16,13 @@ require_once __DIR__ . '/svc/dao/TasksDao.php';
 
 class bootstrap
 {
-    static DataStore $ds;
+    static $ds;
 
-    static ProjectsDao $projectsDao;
+    static $projectsDao;
 
-    static TasksDao $tasksDao;
+    static $tasksDao;
 
-    static MySQLLogger $logger;
+    static $logger;
 }
 
 /**
