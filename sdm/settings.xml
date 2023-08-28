@@ -2,9 +2,17 @@
 <settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="settings.xsd">
 
+    <!-- target: base folder of generated files (relative to the project root). -->
+
+    <!-- sql: base folder of SQL files (relative to the project root) -->
+
     <folders target="api" sql="sdm/sql"/>
 
+    <!-- scope: the name of DTO namespace. An empty one is OK. -->
+
     <dto scope="svc/models" inheritance="" field-names-mode="2" macro=""/>
+
+    <!-- scope: the name of DTO namespace. An empty one is OK. -->
 
     <dao scope="svc/dao" field-assign-mode="0" macro=""/>
 
@@ -12,7 +20,7 @@
 
     <cpp class-prefix=""/>
 
-    <jdbc jar="sdm/sqlite-jdbc-3.41.2.1.jar" class="org.sqlite.JDBC"
+    <jdbc jar="sdm/sqlite-jdbc-3.42.0.0.jar" class="org.sqlite.JDBC"
           url="jdbc:sqlite:$PROJECT_DIR$/api/todolist.sqlite" user="" pwd=""/>
 
     <type-map default="">
