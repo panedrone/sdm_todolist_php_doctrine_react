@@ -14,19 +14,11 @@ dto.xml
 
     <dto-class name="doctrine-Project" ref="projects"/>
 
-    <!--  not-orm Project list item extended with "p_tasks_count":  -->
-
-    <dto-class name="ProjectLi" ref="get_projects.sql">
-        <field column="p_id" type="int"/>
-        <field column="p_name" type="string"/>
+    <dto-class name="ProjectLi" ref="projects">
         <field column="p_tasks_count" type="int"/>
     </dto-class>
 
-    <!--  all fields are available:  -->
-
     <dto-class name="doctrine-Task" ref="tasks"/>
-
-    <!--  "reduced" list item without fetching of "t_comments":   -->
 
     <dto-class name="doctrine-TaskLi" ref="tasks">
         <field column="t_comments" type="-"/>
@@ -43,7 +35,7 @@ ProjectsDao.xml
 
     <crud dto="doctrine-Project"/>
 
-    <query-dto-list dto="ProjectLI" method="get_projects"/>
+    <query-dto-list dto="ProjectLi" method="get_projects" ref="get_projects.sql"/>
 
 </dao-class>
 ```
