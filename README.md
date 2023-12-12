@@ -15,31 +15,22 @@ sdm.xml
     <dto-class name="doctrine-Project" ref="projects"/>
 
     <dto-class name="ProjectLi" ref="projects">
-
         <field column="p_tasks_count" type="int"/>
-
     </dto-class>
 
     <dto-class name="doctrine-Task" ref="tasks"/>
 
     <dto-class name="doctrine-TaskLi" ref="tasks">
-
         <field column="t_comments" type="-"/>
-
     </dto-class>
 
     <dao-class name="ProjectsDao">
-
         <crud dto="doctrine-Project"/>
-
         <query-dto-list dto="ProjectLi" method="get_projects" ref="get_projects.sql"/>
-
     </dao-class>
 
     <dao-class name="TasksDaoGenerated">
-
         <crud dto="doctrine-Task"/>
-
     </dao-class>
 
 </sdm>
