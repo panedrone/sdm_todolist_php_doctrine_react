@@ -1,8 +1,6 @@
-# sdm_todolist_php_doctrine
-
 A project demonstrating how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmaker) + Doctrine PHP libraries.
 
-Front-end is written in Vue.js 2.7. RDBMS is SQLite3.
+Front-end is written in React.js. RDBMS is SQLite3.
 
 demo-go.png
 ![demo-go.png](demo-go.png)

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/sdm_demo_todolist_php_doctrine.iml" filepath="$PROJECT_DIR$/.idea/sdm_demo_todolist_php_doctrine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/sdm_demo_todolist_php_doctrine_react.iml" filepath="$PROJECT_DIR$/.idea/sdm_demo_todolist_php_doctrine_react.iml" />
     </modules>
   </component>
 </project>

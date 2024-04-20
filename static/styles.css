@@ -12,10 +12,16 @@ body {
 }
 
 .bg {
+    padding: 4px;
 }
 
-h2 {
-    margin: 8px;
+h3 {
+    margin: 4px;
+}
+
+h3 a {
+    color: #555;
+    text-decoration: underline;
 }
 
 table.bg td {
@@ -61,6 +67,7 @@ table {
 a {
     color: #2389D7;
     text-decoration: none;
+    cursor: pointer;
 }
 
 div.title {
@@ -74,7 +81,7 @@ div.title {
     background-color: #eee;
 }
 
-.group-header {
+.project-header {
     font-size: 12pt;
     padding: 6px;
 }
@@ -88,9 +95,21 @@ div.title {
     vertical-align: middle;
 }
 
+.edit-form {
+    min-width: 380px;
+}
+
+.red-banner {
+    color: crimson;
+}
+
+.task-error {
+    color: crimson;
+    max-width: 380px;
+}
+
 .section {
-    /*margin-bottom: 10px;*/
-    min-width: 320px;
+    min-width: 380px;
 }
 
 .section th {
@@ -108,6 +127,7 @@ div.title {
 
 .w1 {
     width: 1px;
+    white-space: nowrap;
 }
 
 .w100 {

@@ -1,217 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
-
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="static/styles.css" type="text/css"/>
-    <title>TODO: PHP, Doctrine</title>
-</head>
 
+    <title>SDM ToDo Demo App</title>
+
+    <link rel="stylesheet" href="static/styles.css" type="text/css"/>
+
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+
+    <!--
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    -->
+
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
+    <script src="https://unpkg.com/babel-standalone/babel.min.js"></script>
+
+</head>
 <body>
 
-<div id="app" v-cloak>
-    <table>
-        <tr>
-            <td>
-                <img src="static/favicon.ico" alt=""/>
-            </td>
-            <td>
-                <h2>
-                    ${ whoiam }
-                </h2>
-            </td>
-        </tr>
-    </table>
-    <table class="bg" style="padding: 4px;">
-        <tr>
-            <td>
-                <table>
-                    <tr>
-                        <td>
-                            <table class="section">
-                                <tr>
-                                    <th>Group</th>
-                                    <th>Tasks Count</th>
-                                </tr>
-                                <tr v-for="project in $data.projects">
-                                    <td>
-                                        <a href="#" @click="renderGroupDetails(project.p_id)">
-                                            ${ project.p_name }
-                                        </a>
-                                    </td>
-                                    <td style="text-align: center;width: 80px;">
-                                        ${ project.p_tasks_count }
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <form method="post" enctype="multipart/form-data" name="form_create_project">
-                                <table class="controls">
-                                    <tr>
-                                        <td>
-                                            <label>
-                                                <input type="text" v-model="p_name"/>
-                                            </label>
-                                        </td>
-                                        <td class="w1">
-                                            <a href="#" @click="projectCreate()">
-                                                <input type="button" value="+"/>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td>
-                <table v-if="project_details">
-                    <tr>
-                        <td>
-                            <table class="controls">
-                                <tr>
-                                    <td>
-                                        <label>
-                                            <input class="project-header" type="text"
-                                                   v-model="current_project.p_name"/>
-                                        </label>
-                                    </td>
-                                    <td class="w1">
-                                        <a href="#" @click="projectUpdate()">
-                                            <input type="button" value="!"/>
-                                        </a>
-                                    </td>
-                                    <td class="w1">
-                                        <a href="#" @click="projectDelete()">
-                                            <input type="button" value="x"/>
-                                        </a>
-                                    </td>
-                                    <td class="w1">
-                                        <a href="#" @click="hideProjectDetails()">
-                                            <input type="button" value="&lt;"/>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <table class="section">
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Subject</th>
-                                    <th>Priority</th>
-                                </tr>
-                                <tr v-for="t in $data.tasks">
-                                    <td>
-                                        ${ t.t_date }
-                                    </td>
-                                    <td>
-                                        <a href="#" @click="renderTaskDetails(t.t_id)">
-                                            ${ t.t_subject }
-                                        </a>
-                                    </td>
+<script src="static/app.js" type="text/babel"></script>
 
-                                    <td style="text-align: center;">
-                                        ${ t.t_priority }
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <table class="controls">
-                                <tr>
-                                    <td>
-                                        <label>
-                                            <input type="text" v-model="t_subject"/>
-                                        </label>
-                                    </td>
-                                    <td class="w1">
-                                        <a href="#" @click="taskCreate()">
-                                            <input type="button" value="+"/>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td v-if="task_edit">
-                <table class="controls">
-                    <tr>
-                        <td>
-                            <div class="title">
-                                ${ current_subject }
-                            </div>
-                        </td>
-                        <td class="w1">
-                            <a href="#" @click="taskUpdate()">
-                                <input type="button" value="!"/>
-                            </a>
-                        </td>
-                        <td class="w1">
-                            <a href="#" @click="taskDelete()">
-                                <input type="button" value="x"/>
-                            </a>
-                        </td>
-                        <td class="w1">
-                            <a href="#" @click="hideTaskDetails()">
-                                <input type="button" value="&lt;"/>
-                            </a>
-                        </td>
-                    </tr>
-                </table>
-                <table>
-                    <tr>
-                        <td class="form-label">Date</td>
-                        <td>
-                            <label for="t_date">
-                                <input type="text" id="t_date" v-model="current_task.t_date"/>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="form-label">Subject</td>
-                        <td class="w100">
-                            <label>
-                                <input type="text" v-model="current_task.t_subject"/>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="form-label">Priority</td>
-                        <td>
-                            <label>
-                                <input type="text" v-model="current_task.t_priority"/>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <label>
-                                <textarea cols="40" rows="10" v-model="current_task.t_comments"></textarea>
-                            </label>
-                        </td>
-                    </tr>
-                </table>
-                <div style="color: crimson;max-width: 310px;">
-                    ${ task_error }
-                </div>
-            </td>
-        </tr>
-    </table>
-</div>
+<!--  not working
+<script src="app.js"></script>
+-->
 
-<script src="static/js/vue.js"></script>
-<script src="static/js/app.js"></script>
+<div id="loader"></div>
+
+<div class="red-banner" id="serverError"></div>
+
+<h2 id="who-I-am"></h2>
+
+<table class="bg">
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <td>
+                        <table class="section">
+                            <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th class="w1">Tasks Count</th>
+                            </tr>
+                            </thead>
+                            <tbody id="projects">
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table class="controls">
+                            <tr>
+                                <td id="new_project_name">
+                                </td>
+                                <td class="w1" id="projectCreate">
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td id="projectDetails" style="display:none;">
+            <table>
+                <tr>
+                    <td id="projectActions">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table class="section">
+                            <tr>
+                                <th class="w1">Date</th>
+                                <th>Subject</th>
+                                <th class="w1">Priority</th>
+                            </tr>
+                            <tbody id="tasks">
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table class="controls">
+                            <tr>
+                                <td id="new_task_subject">
+                                </td>
+                                <td class="w1" id="taskCreate">
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td id="taskForm" style="padding:2px;display:none;">
+
+            <div id="taskActions"></div>
+
+            <table class="edit-form">
+                <tr>
+                    <td class="form-label">Date</td>
+                    <td id="t_date">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-label">Subject</td>
+                    <td class="w100" id="t_subject">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-label w1">Priority 1..10</td>
+                    <td id="t_priority">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="t_comments">
+                    </td>
+                </tr>
+            </table>
+            <div class="task-error" id="taskError">
+            </div>
+        </td>
+    </tr>
+</table>
 
 </body>
+</html>
