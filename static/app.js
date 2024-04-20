@@ -13,13 +13,13 @@ const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
 
-let current_project = {
+let currentProject = {
     "p_id": 0,
     "p_name": "---",
     "p_tasks_count": 0
 }
 
-let current_task = {
+let currentTask = {
     "t_id": 286,
     "p_id": 1,
     "t_priority": 4,
@@ -94,8 +94,6 @@ class FieldState {
 
     constructor(initial, onChange, saveUpdater, isValid = null) {
 
-        // === panedrone: "useState" allows to implement "FieldState" without inheritance from "Component"
-
         [this.value, this.setValue] = React.useState(initial)
 
         if (saveUpdater) {
@@ -169,7 +167,10 @@ const IntegerField = ({initial, onChange, saveUpdater}) => {
 
     const state = new FieldState(initial, onChange, saveUpdater, isInteger)
 
-    // === panedrone: it is buggy because it allows typing not numerical strings without triggering "onChange"
+    // === panedrone: it is buggy:
+    //
+    //      1. it allows typing not numerical strings
+    //      2. "onChange" is not triggered while such typing
 
     // return (
     //     <label>
@@ -184,7 +185,7 @@ const IntegerField = ({initial, onChange, saveUpdater}) => {
     )
 }
 
-const MultilineStringField = ({initial, onChange, saveUpdater}) => {
+const MultilineField = ({initial, onChange, saveUpdater}) => {
 
     const state = new FieldState(initial, onChange, saveUpdater)
 
@@ -196,7 +197,6 @@ const MultilineStringField = ({initial, onChange, saveUpdater}) => {
 }
 
 function fetchProjectTasks(p_id) {
-    // console.log(p_id.toString());
     fetch("api/projects/" + p_id + "/tasks")
         .then(async (resp) => {
             if (resp.status === 200) {
@@ -222,9 +222,9 @@ const ProjectDetails = ({data}) => {
         fetch("api/projects/" + p_id)
             .then(async (resp) => {
                 if (resp.status === 200) {
-                    current_project = await resp.json()
-                    if (current_project) {
-                        updateCurrentProjectName(current_project.p_name)
+                    currentProject = await resp.json()
+                    if (currentProject) {
+                        updateCurrentProjectName(currentProject.p_name)
                     }
                 } else {
                     let j = await resp.text()
@@ -267,15 +267,15 @@ function fetchTask(t_id) {
         .then(async (resp) => {
             if (resp.status === 200) {
                 setVisibleTaskForm(true)
-                current_task = await resp.json()
-                if (!current_task) {
+                currentTask = await resp.json()
+                if (!currentTask) {
                     return
                 }
-                render(<TaskTitle initial={current_task.t_subject}/>, 'subj')
-                updateSubject(current_task.t_subject)
-                updateDate(current_task.t_date)
-                updatePriority(current_task.t_priority)
-                updateComments(current_task.t_comments)
+                render(<TaskTitle initial={currentTask.t_subject}/>, 'taskTitle')
+                updateSubject(currentTask.t_subject)
+                updateDate(currentTask.t_date)
+                updatePriority(currentTask.t_priority)
+                updateComments(currentTask.t_comments)
             } else {
                 let j = await resp.text()
                 showServerError(resp.status + " " + j);
@@ -306,13 +306,13 @@ const ProjectTasks = ({data}) => {
     )
 }
 
-function CreateProjectButton() {
+function ProjectCreateButton() {
 
     function handleClick(_) {
-        if (new_project_name.length === 0) {
-            new_project_name = '?'
+        if (newProjectName.length === 0) {
+            newProjectName = '?'
         }
-        let json = JSON.stringify({"p_name": new_project_name})
+        let json = JSON.stringify({"p_name": newProjectName})
         fetch("api/projects", {
             method: 'post',
             headers: JSON_HEADERS,
@@ -338,11 +338,11 @@ function CreateProjectButton() {
     )
 }
 
-const CreateTaskButton = () => {
+const TaskCreateButton = () => {
 
     function handleClick(_) {
-        let p_id = current_project.p_id
-        let json = JSON.stringify({"t_subject": new_task_subject})
+        let p_id = currentProject.p_id
+        let json = JSON.stringify({"t_subject": newTaskSubject})
         fetch("api/projects/" + p_id + "/tasks", {
             method: 'post',
             headers: JSON_HEADERS,
@@ -372,8 +372,8 @@ const CreateTaskButton = () => {
 const ProjectButtons = () => {
 
     function projectUpdate(_) {
-        let p_id = current_project.p_id
-        let json = JSON.stringify(current_project)
+        let p_id = currentProject.p_id
+        let json = JSON.stringify(currentProject)
         fetch("api/projects/" + p_id, {
             method: 'put',
             headers: JSON_HEADERS,
@@ -393,7 +393,7 @@ const ProjectButtons = () => {
     }
 
     function projectDelete(_) {
-        let p_id = current_project.p_id
+        let p_id = currentProject.p_id
         fetch("api/projects/" + p_id, {
             method: 'delete'
         })
@@ -419,7 +419,7 @@ const ProjectButtons = () => {
         <table className="controls">
             <tbody>
             <tr>
-                <td id="curr_project">
+                <td id="currentProjectName">
                 </td>
                 <td className="w1">
                     <a href="#">
@@ -445,15 +445,15 @@ const ProjectButtons = () => {
 const TaskButtons = () => {
 
     function taskUpdate(_) {
-        if (!isNaN(current_task.t_priority)) {
-            current_task.t_priority = parseInt(current_task.t_priority);
-            if (!current_task.t_priority) {
-                current_task.t_priority = 1
+        if (!isNaN(currentTask.t_priority)) {
+            currentTask.t_priority = parseInt(currentTask.t_priority);
+            if (!currentTask.t_priority) {
+                currentTask.t_priority = 1
             }
         }
-        let json = JSON.stringify(current_task)
-        let p_id = current_project.p_id
-        let t_id_s = current_task.t_id.toString()
+        let json = JSON.stringify(currentTask)
+        let p_id = currentProject.p_id
+        let t_id_s = currentTask.t_id.toString()
         fetch("api/tasks/" + t_id_s, {
             method: 'put',
             headers: JSON_HEADERS,
@@ -462,7 +462,7 @@ const TaskButtons = () => {
             .then(async (resp) => {
                 if (resp.status === 200) {
                     fetchProjectTasks(p_id);
-                    fetchTask(current_task.t_id);
+                    fetchTask(currentTask.t_id);
                     hideTaskError()
                 } else {
                     let msg = await resp.text()
@@ -475,8 +475,8 @@ const TaskButtons = () => {
     }
 
     function taskDelete(_) {
-        let p_id = current_project.p_id
-        let t_id = current_task.t_id
+        let p_id = currentProject.p_id
+        let t_id = currentTask.t_id
         fetch("api/tasks/" + t_id, {
             method: "delete"
         })
@@ -505,7 +505,7 @@ const TaskButtons = () => {
             <tbody>
             <tr>
                 <td className="w100">
-                    <div className="title" id="subj">
+                    <div className="title" id="taskTitle">
                     </div>
                 </td>
                 <td className="w1">
@@ -618,20 +618,20 @@ function render(component, containerID) {
 
 //////////////////////////////////////////////////////////////////////////
 
-let new_project_name = ""
+let newProjectName = ""
 
 render(<StringField onChange={v => {
-    new_project_name = v
-}}/>, 'new_project_name')
+    newProjectName = v
+}}/>, 'newProjectName')
 
-let new_task_subject = ""
+let newTaskSubject = ""
 
 render(<StringField onChange={v => {
-    new_task_subject = v
-}}/>, 'new_task_subject')
+    newTaskSubject = v
+}}/>, 'newTaskSubject')
 
-render(<CreateProjectButton/>, 'projectCreate')
-render(<CreateTaskButton/>, 'taskCreate')
+render(<ProjectCreateButton/>, 'projectCreate')
+render(<TaskCreateButton/>, 'taskCreate')
 
 render(<ProjectButtons/>, 'projectActions')
 render(<TaskButtons/>, 'taskActions')
@@ -639,17 +639,17 @@ render(<TaskButtons/>, 'taskActions')
 let updateCurrentProjectName = null
 
 let fieldCurrentProjectName = <StringField initial="" onChange={v => {
-    current_project.p_name = v
+    currentProject.p_name = v
 }} saveUpdater={(updater) => {
     updateCurrentProjectName = updater
 }}/>
 
-render(fieldCurrentProjectName, 'curr_project')
+render(fieldCurrentProjectName, 'currentProjectName')
 
 let updateSubject = null
 
 let fieldSubject = <StringField initial="" onChange={v => {
-    current_task.t_subject = v
+    currentTask.t_subject = v
 }} saveUpdater={(updater) => {
     updateSubject = updater
 }}/>
@@ -659,7 +659,7 @@ render(fieldSubject, 't_subject')
 let updateDate = null
 
 let fieldDate = <StringField initial="" onChange={v => {
-    current_task.t_date = v
+    currentTask.t_date = v
 }} saveUpdater={(updater) => {
     updateDate = updater
 }}/>
@@ -669,7 +669,7 @@ render(fieldDate, 't_date')
 let updatePriority = null
 
 let fieldPriority = <IntegerField initial="" onChange={v => {
-    current_task.t_priority = v
+    currentTask.t_priority = v
 }} saveUpdater={(updater) => {
     updatePriority = updater
 }}/>
@@ -678,8 +678,8 @@ render(fieldPriority, 't_priority')
 
 let updateComments = null
 
-let areaComments = < MultilineStringField initial="" onChange={v => {
-    current_task.t_comments = v
+let areaComments = < MultilineField initial="" onChange={v => {
+    currentTask.t_comments = v
 }} saveUpdater={(updater) => {
     updateComments = updater
 }}/>

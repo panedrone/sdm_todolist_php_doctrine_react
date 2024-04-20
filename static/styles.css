@@ -19,9 +19,11 @@ h3 {
     margin: 4px;
 }
 
-h3 a {
+span a {
     color: #555;
-    text-decoration: underline;
+    background: #eee;
+    border-radius: 4px;
+    padding: 4px;
 }
 
 table.bg td {
