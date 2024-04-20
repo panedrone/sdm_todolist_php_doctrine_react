@@ -107,7 +107,7 @@ class FieldState {
 
         this.handleChange = this.handleChange.bind(this);
         this.getValue = this.getValue.bind(this);
-        this.setValue = this.setValue.bind(this);
+        this.updateValue = this.updateValue.bind(this);
     }
 
     handleChange(event) {
@@ -128,8 +128,8 @@ class FieldState {
         return this.value
     }
 
-    setValue(value) {
-        this.value = value
+    updateValue(value) {
+        this.setValue(value)
     }
 }
 
@@ -208,11 +208,11 @@ function fetchProjectTasks(p_id) {
                 render(<ProjectTasks data={res}/>, 'tasks')
             } else {
                 let j = await resp.text()
-                alert(resp.status + " " + j);
+                showServerError(resp.status + " " + j);
             }
         })
         .catch((reason) => {
-            console.log(reason)
+            showServerError(reason)
         })
 }
 
@@ -236,7 +236,7 @@ const ProjectDetails = ({data}) => {
             })
     }
 
-    function fetchProjectData(project) {
+    function handleClick(project) {
         setVisibleTaskForm(false)
         fetchCurrentProject(project.p_id)
         fetchProjectTasks(project.p_id)
@@ -245,7 +245,7 @@ const ProjectDetails = ({data}) => {
     return data.map((project) => {
             return (
                 <tr>
-                    <td onClick={() => fetchProjectData(project)}>
+                    <td onClick={() => handleClick(project)}>
                         <a>{project.p_name}</a>
                     </td>
                     <td className="center w1">
@@ -308,7 +308,7 @@ const ProjectTasks = ({data}) => {
 
 function ProjectCreateButton() {
 
-    function handleClick(_) {
+    function projectCreate() {
         if (newProjectName.length === 0) {
             newProjectName = '?'
         }
@@ -333,14 +333,14 @@ function ProjectCreateButton() {
 
     return (
         <a href="#">
-            <input type="button" value="+" onClick={handleClick}/>
+            <input type="button" value="+" onClick={() => projectCreate()}/>
         </a>
     )
 }
 
 const TaskCreateButton = () => {
 
-    function handleClick(_) {
+    function taskCreate() {
         let p_id = currentProject.p_id
         let json = JSON.stringify({"t_subject": newTaskSubject})
         fetch("api/projects/" + p_id + "/tasks", {
@@ -364,14 +364,14 @@ const TaskCreateButton = () => {
 
     return (
         <a href="#">
-            <input type="button" value="+" onClick={handleClick}/>
+            <input type="button" value="+" onClick={() => taskCreate()}/>
         </a>
     )
 }
 
 const ProjectButtons = () => {
 
-    function projectUpdate(_) {
+    function projectUpdate() {
         let p_id = currentProject.p_id
         let json = JSON.stringify(currentProject)
         fetch("api/projects/" + p_id, {
@@ -392,7 +392,7 @@ const ProjectButtons = () => {
             })
     }
 
-    function projectDelete(_) {
+    function projectDelete() {
         let p_id = currentProject.p_id
         fetch("api/projects/" + p_id, {
             method: 'delete'
@@ -411,10 +411,6 @@ const ProjectButtons = () => {
             })
     }
 
-    function hideProjectDetails(_) {
-        setVisibleProjectDetails(false)
-    }
-
     return (
         <table className="controls">
             <tbody>
@@ -423,17 +419,17 @@ const ProjectButtons = () => {
                 </td>
                 <td className="w1">
                     <a href="#">
-                        <input type="button" value="&#x2713;" onClick={projectUpdate}/>
+                        <input type="button" value="&#x2713;" onClick={() => projectUpdate()}/>
                     </a>
                 </td>
                 <td className="w1">
                     <a href="#">
-                        <input type="button" value="x" onClick={projectDelete}/>
+                        <input type="button" value="x" onClick={() => projectDelete()}/>
                     </a>
                 </td>
                 <td className="w1">
                     <a href="#">
-                        <input type="button" value="&lt;" onClick={hideProjectDetails}/>
+                        <input type="button" value="&lt;" onClick={() => setVisibleProjectDetails(false)}/>
                     </a>
                 </td>
             </tr>
@@ -444,7 +440,7 @@ const ProjectButtons = () => {
 
 const TaskButtons = () => {
 
-    function taskUpdate(_) {
+    function taskUpdate() {
         if (!isNaN(currentTask.t_priority)) {
             currentTask.t_priority = parseInt(currentTask.t_priority);
             if (!currentTask.t_priority) {
@@ -474,7 +470,7 @@ const TaskButtons = () => {
             })
     }
 
-    function taskDelete(_) {
+    function taskDelete() {
         let p_id = currentProject.p_id
         let t_id = currentTask.t_id
         fetch("api/tasks/" + t_id, {
@@ -496,10 +492,6 @@ const TaskButtons = () => {
             })
     }
 
-    function hideTaskDetails(_) {
-        setVisibleTaskForm(false)
-    }
-
     return (
         <table className="controls">
             <tbody>
@@ -510,17 +502,17 @@ const TaskButtons = () => {
                 </td>
                 <td className="w1">
                     <a href="#">
-                        <input type="button" value="&#x2713;" onClick={taskUpdate}/>
+                        <input type="button" value="&#x2713;" onClick={() => taskUpdate()}/>
                     </a>
                 </td>
                 <td className="w1">
                     <a href="#">
-                        <input type="button" value="x" onClick={taskDelete}/>
+                        <input type="button" value="x" onClick={() => taskDelete()}/>
                     </a>
                 </td>
                 <td className="w1">
                     <a href="#">
-                        <input type="button" value="&lt;" onClick={hideTaskDetails}/>
+                        <input type="button" value="&lt;" onClick={() => setVisibleTaskForm(false)}/>
                     </a>
                 </td>
             </tr>
@@ -536,7 +528,7 @@ const ErrorArea = ({initial, saveUpdater}) => {
     return (
         <div>
             {state.getValue().length > 0 && <p>
-                <button onClick={(_)=>state.setValue("")}>&#x2713;</button>
+                <button onClick={()=>state.updateValue("")}>&#x2713;</button>
                 &nbsp;
                 <strong>Error:</strong>&nbsp;{state.getValue()}
             </p>}
