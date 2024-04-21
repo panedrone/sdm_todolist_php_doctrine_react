@@ -13,21 +13,6 @@ const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
 
-let currentProject = {
-    "p_id": 0,
-    "p_name": "---",
-    "p_tasks_count": 0
-}
-
-let currentTask = {
-    "t_id": 286,
-    "p_id": 1,
-    "t_priority": 4,
-    "t_date": "2024-02-12 03:34:16",
-    "t_subject": "t 1 4",
-    "t_comments": "------"
-}
-
 function Loader() {
 
     React.useEffect(() => windowOnLoad());
@@ -262,8 +247,7 @@ const TaskTitle = ({initial}) => {
 }
 
 function fetchTask(t_id) {
-    let t_id_s = t_id.toString()
-    fetch("api/tasks/" + t_id_s)
+    fetch("api/tasks/" + t_id)
         .then(async (resp) => {
             if (resp.status === 200) {
                 setVisibleTaskForm(true)
@@ -338,37 +322,6 @@ function ProjectCreateButton() {
     )
 }
 
-const TaskCreateButton = () => {
-
-    function taskCreate() {
-        let p_id = currentProject.p_id
-        let json = JSON.stringify({"t_subject": newTaskSubject})
-        fetch("api/projects/" + p_id + "/tasks", {
-            method: 'post',
-            headers: JSON_HEADERS,
-            body: json
-        })
-            .then(async (resp) => {
-                if (resp.status === 201) {
-                    fetchProjects();
-                    fetchProjectTasks(p_id); // update tasks count
-                } else {
-                    let text = await resp.text()
-                    showServerError(resp.status + " " + text);
-                }
-            })
-            .catch((reason) => {
-                showServerError(reason)
-            })
-    }
-
-    return (
-        <a href="#">
-            <input type="button" value="+" onClick={() => taskCreate()}/>
-        </a>
-    )
-}
-
 const ProjectButtons = () => {
 
     function projectUpdate() {
@@ -435,6 +388,37 @@ const ProjectButtons = () => {
             </tr>
             </tbody>
         </table>
+    )
+}
+
+const TaskCreateButton = () => {
+
+    function taskCreate() {
+        let p_id = currentProject.p_id
+        let json = JSON.stringify({"t_subject": newTaskSubject})
+        fetch("api/projects/" + p_id + "/tasks", {
+            method: 'post',
+            headers: JSON_HEADERS,
+            body: json
+        })
+            .then(async (resp) => {
+                if (resp.status === 201) {
+                    fetchProjects();
+                    fetchProjectTasks(p_id); // update tasks count
+                } else {
+                    let text = await resp.text()
+                    showServerError(resp.status + " " + text);
+                }
+            })
+            .catch((reason) => {
+                showServerError(reason)
+            })
+    }
+
+    return (
+        <a href="#">
+            <input type="button" value="+" onClick={() => taskCreate()}/>
+        </a>
     )
 }
 
@@ -528,7 +512,7 @@ const ErrorArea = ({initial, saveUpdater}) => {
     return (
         <div>
             {state.getValue().length > 0 && <p>
-                <button onClick={()=>state.updateValue("")}>&#x2713;</button>
+                <button onClick={() => state.updateValue("")}>&#x2713;</button>
                 &nbsp;
                 <strong>Error:</strong>&nbsp;{state.getValue()}
             </p>}
@@ -608,7 +592,7 @@ function render(component, containerID) {
     ReactDOM.render(component, elementById(containerID))
 }
 
-//////////////////////////////////////////////////////////////////////////
+// Project List ===========================
 
 let newProjectName = ""
 
@@ -616,64 +600,72 @@ render(<StringField onChange={v => {
     newProjectName = v
 }}/>, 'newProjectName')
 
+render(<ProjectCreateButton/>, 'projectCreate')
+
+// Project Details =======================
+
+let currentProject = {
+    "p_id": 0,
+    "p_name": "---",
+    "p_tasks_count": 0
+}
+
+let updateCurrentProjectName = null
+
+render(<StringField initial="" onChange={v => {
+    currentProject.p_name = v
+}} saveUpdater={(updater) => {
+    updateCurrentProjectName = updater
+}}/>, 'currentProjectName')
+
+render(<ProjectButtons/>, 'projectActions')
+
 let newTaskSubject = ""
 
 render(<StringField onChange={v => {
     newTaskSubject = v
 }}/>, 'newTaskSubject')
 
-render(<ProjectCreateButton/>, 'projectCreate')
 render(<TaskCreateButton/>, 'taskCreate')
 
-render(<ProjectButtons/>, 'projectActions')
-render(<TaskButtons/>, 'taskActions')
+// Task Form ==============================
 
-let updateCurrentProjectName = null
-
-let fieldCurrentProjectName = <StringField initial="" onChange={v => {
-    currentProject.p_name = v
-}} saveUpdater={(updater) => {
-    updateCurrentProjectName = updater
-}}/>
-
-render(fieldCurrentProjectName, 'currentProjectName')
+let currentTask = {
+    "t_id": 0,
+    "p_id": 0,
+    "t_priority": 0,
+    "t_date": "2024-02-12 03:34:16",
+    "t_subject": "-",
+    "t_comments": "-"
+}
 
 let updateSubject = null
+let updateDate = null
+let updatePriority = null
+let updateComments = null
 
-let fieldSubject = <StringField initial="" onChange={v => {
+render(<StringField initial="" onChange={v => {
     currentTask.t_subject = v
 }} saveUpdater={(updater) => {
     updateSubject = updater
-}}/>
+}}/>, 't_subject')
 
-render(fieldSubject, 't_subject')
-
-let updateDate = null
-
-let fieldDate = <StringField initial="" onChange={v => {
+render(<StringField initial="" onChange={v => {
     currentTask.t_date = v
 }} saveUpdater={(updater) => {
     updateDate = updater
-}}/>
+}}/>, 't_date')
 
-render(fieldDate, 't_date')
-
-let updatePriority = null
-
-let fieldPriority = <IntegerField initial="" onChange={v => {
+render(<IntegerField initial="" onChange={v => {
     currentTask.t_priority = v
 }} saveUpdater={(updater) => {
     updatePriority = updater
-}}/>
+}}/>, 't_priority')
 
-render(fieldPriority, 't_priority')
-
-let updateComments = null
-
-let areaComments = < MultilineField initial="" onChange={v => {
+render(<MultilineField initial="" onChange={v => {
     currentTask.t_comments = v
 }} saveUpdater={(updater) => {
     updateComments = updater
-}}/>
+}}/>, 't_comments')
 
-render(areaComments, 't_comments')
+render(<TaskButtons/>, 'taskActions')
