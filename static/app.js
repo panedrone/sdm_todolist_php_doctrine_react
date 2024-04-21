@@ -170,7 +170,7 @@ const IntegerField = ({initial, onChange, saveUpdater}) => {
     )
 }
 
-const MultilineField = ({initial, onChange, saveUpdater}) => {
+const TextAreaField = ({initial, onChange, saveUpdater}) => {
 
     const state = new FieldState(initial, onChange, saveUpdater)
 
@@ -247,7 +247,8 @@ const TaskTitle = ({initial}) => {
 }
 
 function fetchTask(t_id) {
-    fetch("api/tasks/" + t_id)
+    let t_id_s = t_id.toString()
+    fetch("api/tasks/" + t_id_s)
         .then(async (resp) => {
             if (resp.status === 200) {
                 setVisibleTaskForm(true)
@@ -322,6 +323,37 @@ function ProjectCreateButton() {
     )
 }
 
+const TaskCreateButton = () => {
+
+    function taskCreate() {
+        let p_id = currentProject.p_id
+        let json = JSON.stringify({"t_subject": newTaskSubject})
+        fetch("api/projects/" + p_id + "/tasks", {
+            method: 'post',
+            headers: JSON_HEADERS,
+            body: json
+        })
+            .then(async (resp) => {
+                if (resp.status === 201) {
+                    fetchProjects();
+                    fetchProjectTasks(p_id); // update tasks count
+                } else {
+                    let text = await resp.text()
+                    showServerError(resp.status + " " + text);
+                }
+            })
+            .catch((reason) => {
+                showServerError(reason)
+            })
+    }
+
+    return (
+        <a href="#">
+            <input type="button" value="+" onClick={() => taskCreate()}/>
+        </a>
+    )
+}
+
 const ProjectButtons = () => {
 
     function projectUpdate() {
@@ -388,37 +420,6 @@ const ProjectButtons = () => {
             </tr>
             </tbody>
         </table>
-    )
-}
-
-const TaskCreateButton = () => {
-
-    function taskCreate() {
-        let p_id = currentProject.p_id
-        let json = JSON.stringify({"t_subject": newTaskSubject})
-        fetch("api/projects/" + p_id + "/tasks", {
-            method: 'post',
-            headers: JSON_HEADERS,
-            body: json
-        })
-            .then(async (resp) => {
-                if (resp.status === 201) {
-                    fetchProjects();
-                    fetchProjectTasks(p_id); // update tasks count
-                } else {
-                    let text = await resp.text()
-                    showServerError(resp.status + " " + text);
-                }
-            })
-            .catch((reason) => {
-                showServerError(reason)
-            })
-    }
-
-    return (
-        <a href="#">
-            <input type="button" value="+" onClick={() => taskCreate()}/>
-        </a>
     )
 }
 
@@ -592,17 +593,20 @@ function render(component, containerID) {
     ReactDOM.render(component, elementById(containerID))
 }
 
-// Project List ===========================
+// Project List Panel =============================================================
 
 let newProjectName = ""
 
-render(<StringField onChange={v => {
-    newProjectName = v
-}}/>, 'newProjectName')
+// the instances of Field Components must be global:
 
+const fieldNewProjectName = <StringField onChange={v => {
+    newProjectName = v
+}}/>
+
+render(fieldNewProjectName, 'newProjectName')
 render(<ProjectCreateButton/>, 'projectCreate')
 
-// Project Details =======================
+// Current Project including Tasks ================================================
 
 let currentProject = {
     "p_id": 0,
@@ -612,31 +616,35 @@ let currentProject = {
 
 let updateCurrentProjectName = null
 
-render(<StringField initial="" onChange={v => {
+let newTaskSubject = ""
+
+// the instances of Field Components must be global:
+
+const fieldCurrentProjectName = <StringField onChange={v => {
     currentProject.p_name = v
 }} saveUpdater={(updater) => {
     updateCurrentProjectName = updater
-}}/>, 'currentProjectName')
+}}/>
+
+const fieldNewTaskSubject = <StringField onChange={v => {
+    newTaskSubject = v
+}}/>
 
 render(<ProjectButtons/>, 'projectActions')
+render(fieldCurrentProjectName, 'currentProjectName') // after "ProjectButtons"!
 
-let newTaskSubject = ""
-
-render(<StringField onChange={v => {
-    newTaskSubject = v
-}}/>, 'newTaskSubject')
-
+render(fieldNewTaskSubject, 'newTaskSubject')
 render(<TaskCreateButton/>, 'taskCreate')
 
-// Task Form ==============================
+// Current Task ===================================================================
 
 let currentTask = {
-    "t_id": 0,
-    "p_id": 0,
-    "t_priority": 0,
+    "t_id": 286,
+    "p_id": 1,
+    "t_priority": 4,
     "t_date": "2024-02-12 03:34:16",
-    "t_subject": "-",
-    "t_comments": "-"
+    "t_subject": "t 1 4",
+    "t_comments": "------"
 }
 
 let updateSubject = null
@@ -644,28 +652,35 @@ let updateDate = null
 let updatePriority = null
 let updateComments = null
 
-render(<StringField initial="" onChange={v => {
+// the instances of Field Components must be global:
+
+const fieldSubject = <StringField initial="" onChange={v => {
     currentTask.t_subject = v
 }} saveUpdater={(updater) => {
     updateSubject = updater
-}}/>, 't_subject')
+}}/>
 
-render(<StringField initial="" onChange={v => {
+const fieldDate = <StringField initial="" onChange={v => {
     currentTask.t_date = v
 }} saveUpdater={(updater) => {
     updateDate = updater
-}}/>, 't_date')
+}}/>
 
-render(<IntegerField initial="" onChange={v => {
+const fieldPriority = <IntegerField initial="" onChange={v => {
     currentTask.t_priority = v
 }} saveUpdater={(updater) => {
     updatePriority = updater
-}}/>, 't_priority')
+}}/>
 
-render(<MultilineField initial="" onChange={v => {
+const areaComments = < TextAreaField initial="" onChange={v => {
     currentTask.t_comments = v
 }} saveUpdater={(updater) => {
     updateComments = updater
-}}/>, 't_comments')
+}}/>
+
+render(fieldSubject, 't_subject')
+render(fieldDate, 't_date')
+render(fieldPriority, 't_priority')
+render(areaComments, 't_comments')
 
 render(<TaskButtons/>, 'taskActions')
