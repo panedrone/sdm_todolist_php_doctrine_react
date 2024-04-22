@@ -13,20 +13,6 @@ const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
 
-function Loader() {
-
-    React.useEffect(() => windowOnLoad());
-
-    return "";
-}
-
-render(<Loader/>, "loader")
-
-function windowOnLoad() {
-    fetchWhoIAm()
-    fetchProjects()
-}
-
 const RawHtml = ({rawHtml}) => {
     const __html = html => ({
         // === panedrone: wrap it just to get rid of ide warnings
@@ -684,3 +670,19 @@ render(fieldPriority, 't_priority')
 render(areaComments, 't_comments')
 
 render(<TaskButtons/>, 'taskActions')
+
+// Render "Loader" at the very end. It ensures existence of all dependencies.
+
+function Loader() {
+
+    React.useEffect(() => windowOnLoad());
+
+    return "";
+}
+
+render(<Loader/>, "loader")
+
+function windowOnLoad() {
+    fetchWhoIAm()
+    fetchProjects()
+}
