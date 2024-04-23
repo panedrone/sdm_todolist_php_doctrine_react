@@ -32,52 +32,13 @@ function fetchWhoIAm() {
                     res = '== unknown =='
                 }
                 render(<RawHtml rawHtml={res}/>, 'who-I-am')
-            } else {
-                let j = await resp.text()
-                showServerError(resp.status + " " + j);
+                return
             }
+            await showStatusError(resp);
         })
         .catch((reason) => {
-            showServerError(reason)
+            showException(reason)
         })
-}
-
-async function responseToArray(resp) {
-    let contentType = resp.headers.get('content-type')
-    if (!contentType) {
-        console.log("no 'content-type' ==> ")
-        console.log(resp)
-        let msg = resp.status.toString() + " ==> no 'content-type' ==>" + resp.toString()
-        showServerError(msg)
-        return []
-    }
-    if (contentType.includes("application/json")) {
-        let j = await resp.json()
-        if (Array.isArray(j)) {
-            // console.log(contentType)
-            // console.log(j)
-            return j
-        }
-        let msg = resp.status.toString() + " ==> not an Array ==> "
-        console.log(msg)
-        console.log(j)
-        showServerError(msg + JSON.stringify(j))
-        return []
-    }
-    let text = await resp.text()
-    showServerError(resp.status.toString() + " ==> " + contentType + " ==> " + text)
-    return []
-}
-
-async function showStatusError(resp) {
-    let j = await resp.text()
-    showServerError(resp.status.toString() + " ==> " + j);
-}
-
-function showException(reason) {
-    console.log(".catch((reason) => {")
-    console.log(reason)
-    showServerError(reason.toString())
 }
 
 function fetchProjects() {
@@ -86,9 +47,9 @@ function fetchProjects() {
             if (resp.status === 200) {
                 let res = await responseToArray(resp)
                 render(<ProjectDetails data={res}/>, 'projects')
-            } else {
-                await showStatusError(resp);
+                return
             }
+            await showStatusError(resp);
         })
         .catch((reason) => {
             showException(reason)
@@ -100,18 +61,14 @@ function fetchProjectTasks(p_id) {
         .then(async (resp) => {
             if (resp.status === 200) {
                 setVisibleProjectDetails(true)
-                let res = await resp.json()
-                if (!res) {
-                    res = []
-                }
+                let res = await responseToArray(resp)
                 render(<ProjectTasks data={res}/>, 'tasks')
-            } else {
-                let j = await resp.text()
-                showServerError(resp.status + " " + j);
+                return
             }
+            await showStatusError(resp);
         })
         .catch((reason) => {
-            showServerError(reason)
+            showException(reason)
         })
 }
 
@@ -122,16 +79,17 @@ const ProjectDetails = ({data}) => {
             .then(async (resp) => {
                 if (resp.status === 200) {
                     currentProject = await resp.json()
-                    if (currentProject) {
-                        updateCurrentProjectName(currentProject.p_name)
+                    if (!currentProject) {
+                        showServerError("failed to get project data")
+                        return
                     }
-                } else {
-                    let j = await resp.text()
-                    showServerError(resp.status + " " + j);
+                    updateCurrentProjectName(currentProject.p_name)
+                    return
                 }
+                await showStatusError(resp);
             })
             .catch((reason) => {
-                showServerError(reason)
+                showException(reason)
             })
     }
 
@@ -168,6 +126,7 @@ function fetchTask(t_id) {
                 setVisibleTaskForm(true)
                 currentTask = await resp.json()
                 if (!currentTask) {
+                    showServerError("failed to get task data")
                     return
                 }
                 render(<TaskTitle initial={currentTask.t_subject}/>, 'taskTitle')
@@ -175,13 +134,12 @@ function fetchTask(t_id) {
                 updateDate(currentTask.t_date)
                 updatePriority(currentTask.t_priority)
                 updateComments(currentTask.t_comments)
-            } else {
-                let j = await resp.text()
-                showServerError(resp.status + " " + j);
+                return
             }
+            await showStatusError(resp);
         })
         .catch((reason) => {
-            showServerError(reason)
+            showException(reason)
         })
 }
 
@@ -220,13 +178,12 @@ function ProjectCreateButton() {
             .then(async (resp) => {
                 if (resp.status === 201) {
                     fetchProjects();
-                } else {
-                    let j = await resp.text()
-                    showServerError(resp.status + " " + j);
+                    return
                 }
+                await showStatusError(resp)
             })
             .catch((reason) => {
-                showServerError(reason)
+                showException(reason)
             })
     }
 
@@ -251,13 +208,12 @@ const TaskCreateButton = () => {
                 if (resp.status === 201) {
                     fetchProjects();
                     fetchProjectTasks(p_id); // update tasks count
-                } else {
-                    let text = await resp.text()
-                    showServerError(resp.status + " " + text);
+                    return
                 }
+                await showStatusError(resp)
             })
             .catch((reason) => {
-                showServerError(reason)
+                showException(reason)
             })
     }
 
@@ -281,13 +237,12 @@ const ProjectButtons = () => {
             .then(async (resp) => {
                 if (resp.status === 200) {
                     fetchProjects();
-                } else {
-                    let j = await resp.text()
-                    showServerError(resp.status + " " + j);
+                    return
                 }
+                await showStatusError(resp)
             })
             .catch((reason) => {
-                showServerError(reason)
+                showException(reason)
             })
     }
 
@@ -300,13 +255,12 @@ const ProjectButtons = () => {
                 if (resp.status === 204) {
                     setVisibleProjectDetails(false)
                     fetchProjects();
-                } else {
-                    let j = await resp.text()
-                    showServerError(resp.status + " " + j);
+                    return
                 }
+                await showStatusError(resp)
             })
             .catch((reason) => {
-                showServerError(reason)
+                showException(reason)
             })
     }
 
@@ -359,13 +313,12 @@ const TaskButtons = () => {
                     fetchProjectTasks(p_id);
                     fetchTask(currentTask.t_id);
                     hideTaskError()
-                } else {
-                    let msg = await resp.text()
-                    showTaskError(resp.status, msg)
+                    return
                 }
+                await showTaskError(resp)
             })
             .catch((reason) => {
-                showServerError(reason)
+                showException(reason)
             })
     }
 
@@ -387,7 +340,7 @@ const TaskButtons = () => {
                 }
             })
             .catch((reason) => {
-                showServerError(reason)
+                showException(reason)
             })
     }
 
@@ -433,11 +386,11 @@ const ErrorArea = ({saveUpdater}) => {
             {
                 value.length > 0
                 &&
-                <p>
+                <div>
                     <button onClick={() => setValue("")}>&#x2713;</button>
                     &nbsp;
                     <strong>Error:</strong>&nbsp;{value}
-                </p>}
+                </div>}
         </div>
     );
 }
@@ -478,13 +431,55 @@ function hideTaskError() {
     updateTaskError("")
 }
 
-function showTaskError(code, msg) {
+async function showTaskError(resp) {
+    let msg = await resp.text()
     msg = unicodeToChar(msg);
     // https://stackoverflow.com/questions/6640382/how-to-remove-backslash-escaping-from-a-javascript-var
     msg = msg.replace(/\\\\"/g, '"');
     msg = msg.replace(/\\"/g, '"');
-    msg = code.toString() + " " + msg
+    msg = resp.status.toString() + " ==> " + msg
     updateTaskError(msg)
+}
+
+async function responseToArray(resp) {
+    let contentType = resp.headers.get('content-type')
+    if (!contentType) {
+        console.log("no 'content-type' ==> ")
+        console.log(resp)
+        let msg = resp.status.toString() + " ==> (no 'content-type') ==>" + resp.toString()
+        showServerError(msg)
+        return []
+    }
+    if (contentType.includes("application/json")) {
+        let json = await resp.json()
+        if (Array.isArray(json)) {
+            // console.log(contentType)
+            // console.log(json)
+            return json
+        }
+        let msg = resp.status.toString() + " ==> (not an Array) ==> "
+        console.log(msg)
+        console.log(j)
+        showServerError(msg + JSON.stringify(j))
+        return []
+    }
+    let text = await resp.text()
+    showServerError(resp.status.toString() + " ==> (" + contentType + ") ==> " + text)
+    return []
+}
+
+async function showStatusError(resp) {
+    let msg = await resp.text()
+    if (!msg) {
+        msg = "(no message)"
+    }
+    showServerError(resp.status.toString() + " ==> " + msg);
+}
+
+function showException(reason) {
+    console.log(".catch((reason) => {")
+    console.log(reason)
+    showServerError(reason.toString())
 }
 
 function setVisibleProjectDetails(yes) {
@@ -527,11 +522,11 @@ const StringField = ({onChange, saveUpdater}) => {
     }
 
     function handleChange(event) {
-        let targetValue = event.target.value
+        let target = event.target.value
         if (onChange) {
-            onChange(targetValue)
+            onChange(target)
         }
-        setValue(targetValue);
+        setValue(target);
     }
 
     // <p>
@@ -554,36 +549,34 @@ const IntegerField = ({onChange, saveUpdater}) => {
         saveUpdater(setValue)
     }
 
-    function isInteger(str) {
+    function isInteger(target) {
 
-        // === panedrone: "str" is always a string
+        // === panedrone: "target" is always a string
 
-        if (!str) {
+        if (!target) {
             return true // === panedrone: allow typing from scratch
         }
 
-        let parsed = parseInt(str)
-        let equal = parsed.toString() === str
+        let parsed = parseInt(target)
+        let equal = parsed.toString() === target
 
         return parsed && parsed <= 10 && equal
     }
 
     function handleChange(event) {
-        let targetValue = event.target.value
-        let valid = isInteger(targetValue)
+        let target = event.target.value
+        let valid = isInteger(target)
         if (!valid) {
             return
         }
         if (onChange) {
-            onChange(targetValue)
+            onChange(target)
         }
-        setValue(targetValue);
+        setValue(target);
     }
 
     // === panedrone: <input type="number" is buggy:
-    //
-    //      1. it allows typing not numerical strings
-    //      2. "onChange" is not triggered while such typing
+    //      it allows typing not numerical strings + "onChange" is not triggered while such typing
 
     // return (
     //     <label>
@@ -607,11 +600,11 @@ const TextAreaField = ({onChange, saveUpdater}) => {
     }
 
     function handleChange(event) {
-        let targetValue = event.target.value
+        let target = event.target.value
         if (onChange) {
-            onChange(targetValue)
+            onChange(target)
         }
-        setValue(targetValue);
+        setValue(target);
     }
 
     return (
@@ -623,7 +616,7 @@ const TextAreaField = ({onChange, saveUpdater}) => {
 
 // Project List Panel =============================================================
 
-let newProjectName = ""
+let newProjectName
 
 const fieldNewProjectName = <StringField onChange={v => newProjectName = v}/>
 
@@ -638,7 +631,7 @@ let currentProject = {
     "p_tasks_count": 0
 }
 
-let updateCurrentProjectName = null
+let updateCurrentProjectName
 
 const fieldCurrentProjectName = <StringField onChange={v => {
     currentProject.p_name = v
@@ -646,7 +639,7 @@ const fieldCurrentProjectName = <StringField onChange={v => {
     updateCurrentProjectName = updater
 }}/>
 
-let newTaskSubject = ""
+let newTaskSubject
 
 const fieldNewTaskSubject = <StringField onChange={v => newTaskSubject = v}/>
 
@@ -667,10 +660,7 @@ let currentTask = {
     "t_comments": ""
 }
 
-let updateSubject = null
-let updateDate = null
-let updatePriority = null
-let updateComments = null
+let updateSubject, updateDate, updatePriority, updateComments
 
 const fieldSubject = <StringField onChange={v => {
     currentTask.t_subject = v
@@ -703,9 +693,9 @@ render(areaComments, 't_comments')
 
 render(<TaskButtons/>, 'taskActions')
 
-// Render "Loader" at the very end: it ensures existence of all dependencies.
+// Render "Loader" at the very end: it ensures existence of all dependencies:
 
-function Loader() {
+const Loader = () => {
 
     fetchWhoIAm()
     fetchProjects()
