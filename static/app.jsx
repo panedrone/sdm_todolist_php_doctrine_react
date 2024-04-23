@@ -699,10 +699,22 @@ render(<TaskButtons/>, 'taskActions')
 
 const Loader = () => {
 
-    fetchWhoIAm()
-    fetchProjects()
+    // direct call of windowOnLoad() may cause something like:
+    //
+    // Warning: Cannot update a component (`Wait`) while rendering a different component (`Loader`). To locate the bad setState() call inside `Loader`...
+    //
+    // === panedrone: cannot call "setState()" of other component inside function "Loader"
+    //
+    // windowOnLoad()
+
+    React.useEffect(() => windowOnLoad());
 
     return "";
 }
 
 render(<Loader/>, "loader")
+
+function windowOnLoad() {
+    fetchWhoIAm()
+    fetchProjects()
+}
