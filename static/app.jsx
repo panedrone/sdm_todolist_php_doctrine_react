@@ -119,8 +119,7 @@ const TaskTitle = ({initial}) => {
 }
 
 function fetchTask(t_id) {
-    let t_id_s = t_id.toString()
-    fetch("api/tasks/" + t_id_s)
+    fetch("api/tasks/" + t_id.toString())
         .then(async (resp) => {
             if (resp.status === 200) {
                 setVisibleTaskForm(true)
@@ -462,7 +461,7 @@ async function responseToArray(resp) {
         }
         let msg = resp.status.toString() + " ==> (not an Array) ==> "
         console.log(msg)
-        console.log(j)
+        console.log(json)
         showServerError(msg + JSON.stringify(json))
         return []
     }
