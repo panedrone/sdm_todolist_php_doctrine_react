@@ -42,129 +42,57 @@ function fetchWhoIAm() {
         })
 }
 
+async function responseToArray(resp) {
+    let contentType = resp.headers.get('content-type')
+    if (!contentType) {
+        console.log("no 'content-type' ==> ")
+        console.log(resp)
+        let msg = resp.status.toString() + " ==> no 'content-type' ==>" + resp.toString()
+        showServerError(msg)
+        return []
+    }
+    if (contentType.includes("application/json")) {
+        let j = await resp.json()
+        if (Array.isArray(j)) {
+            // console.log(contentType)
+            // console.log(j)
+            return j
+        }
+        let msg = resp.status.toString() + " ==> not an Array ==> "
+        console.log(msg)
+        console.log(j)
+        showServerError(msg + JSON.stringify(j))
+        return []
+    }
+    let text = await resp.text()
+    showServerError(resp.status.toString() + " ==> " + contentType + " ==> " + text)
+    return []
+}
+
+async function showStatusError(resp) {
+    let j = await resp.text()
+    showServerError(resp.status.toString() + " ==> " + j);
+}
+
+function showException(reason) {
+    console.log(".catch((reason) => {")
+    console.log(reason)
+    showServerError(reason.toString())
+}
+
 function fetchProjects() {
     fetch("api/projects")
         .then(async (resp) => {
             if (resp.status === 200) {
-                let res = await resp.json()
-                if (!res) {
-                    res = []
-                }
+                let res = await responseToArray(resp)
                 render(<ProjectDetails data={res}/>, 'projects')
             } else {
-                let j = await resp.text()
-                showServerError(resp.status + " " + j);
+                await showStatusError(resp);
             }
         })
         .catch((reason) => {
-            showServerError(reason)
+            showException(reason)
         })
-}
-
-class FieldState {
-
-    constructor(initial, onChange, saveUpdater, isValid = null) {
-
-        [this.value, this.setValue] = React.useState(initial)
-
-        if (saveUpdater) {
-            saveUpdater(this.setValue)
-        }
-
-        this.onChange = onChange
-        this.isValid = isValid
-
-        // === panedrone: "bind" allows to use "this" inside of methods
-
-        this.handleChange = this.handleChange.bind(this);
-        this.getValue = this.getValue.bind(this);
-        this.updateValue = this.updateValue.bind(this);
-    }
-
-    handleChange(event) {
-        let targetValue = event.target.value
-        if (this.isValid) {
-            let valid = this.isValid(targetValue)
-            if (!valid) {
-                return
-            }
-        }
-        if (this.onChange) {
-            this.onChange(targetValue);
-        }
-        this.setValue(targetValue);
-    }
-
-    getValue() {
-        return this.value
-    }
-
-    updateValue(value) {
-        this.setValue(value)
-    }
-}
-
-const StringField = ({initial, onChange, saveUpdater}) => {
-
-    const state = new FieldState(initial, onChange, saveUpdater)
-
-    // <p>
-    //     <strong>Current value:</strong>
-    //     {state.getValue() || '(empty)'}
-    // </p>
-
-    return (
-        <label>
-            <input value={state.getValue()} onChange={state.handleChange}/>
-        </label>
-    )
-}
-
-const IntegerField = ({initial, onChange, saveUpdater}) => {
-
-    function isInteger(value) {
-
-        // === panedrone: "value" is always a string
-
-        if (!value) {
-            return true // === panedrone: allow typing from scratch
-        }
-
-        let parsed = parseInt(value)
-        let equal = parsed.toString() === value
-
-        return parsed && parsed <= 10 && equal
-    }
-
-    const state = new FieldState(initial, onChange, saveUpdater, isInteger)
-
-    // === panedrone: it is buggy:
-    //
-    //      1. it allows typing not numerical strings
-    //      2. "onChange" is not triggered while such typing
-
-    // return (
-    //     <label>
-    //         <input type="number" min="1" max="10" pattern="[0-9\s]" value={state.getValue()} onChange={state.handleChange}/>
-    //     </label>
-    // )
-
-    return (
-        <label>
-            <input pattern="[0-9\s]" value={state.getValue()} onChange={state.handleChange}/>
-        </label>
-    )
-}
-
-const TextAreaField = ({initial, onChange, saveUpdater}) => {
-
-    const state = new FieldState(initial, onChange, saveUpdater)
-
-    return (
-        <label>
-            <textarea cols="40" rows="10" value={state.getValue()} onChange={state.handleChange}></textarea>
-        </label>
-    )
 }
 
 function fetchProjectTasks(p_id) {
@@ -492,17 +420,24 @@ const TaskButtons = () => {
     )
 }
 
-const ErrorArea = ({initial, saveUpdater}) => {
+const ErrorArea = ({saveUpdater}) => {
 
-    const state = new FieldState(initial, null, saveUpdater)
+    const [value, setValue] = React.useState("")
+
+    if (saveUpdater) {
+        saveUpdater(setValue)
+    }
 
     return (
         <div>
-            {state.getValue().length > 0 && <p>
-                <button onClick={() => state.updateValue("")}>&#x2713;</button>
-                &nbsp;
-                <strong>Error:</strong>&nbsp;{state.getValue()}
-            </p>}
+            {
+                value.length > 0
+                &&
+                <p>
+                    <button onClick={() => setValue("")}>&#x2713;</button>
+                    &nbsp;
+                    <strong>Error:</strong>&nbsp;{value}
+                </p>}
         </div>
     );
 }
@@ -510,6 +445,10 @@ const ErrorArea = ({initial, saveUpdater}) => {
 // https://stackoverflow.com/questions/17267329/converting-unicode-character-to-string-format
 
 function unicodeToChar(text) {
+    if (!text) {
+        return ""
+    }
+    text = text.toString()
     return text.replace(/\\u[\dA-F]{4}/gi,
         function (match) {
             return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
@@ -518,9 +457,7 @@ function unicodeToChar(text) {
 
 let updateServerError = null
 
-const serverError = <ErrorArea initial={""} saveUpdater={(updater) => {
-    updateServerError = updater
-}}/>
+const serverError = <ErrorArea saveUpdater={(updater) => updateServerError = updater}/>
 
 render(serverError, 'serverError');
 
@@ -533,9 +470,7 @@ function showServerError(msg) {
 
 let updateTaskError = null
 
-const taskError = <ErrorArea initial={""} saveUpdater={(updater) => {
-    updateTaskError = updater
-}}/>
+const taskError = <ErrorArea saveUpdater={(updater) => updateTaskError = updater}/>
 
 render(taskError, 'taskError');
 
@@ -571,6 +506,8 @@ function setVisibleTaskForm(yes) {
     }
 }
 
+// ================================================================================
+
 function elementById(id) {
     return document.getElementById(id)
 }
@@ -579,15 +516,116 @@ function render(component, containerID) {
     ReactDOM.render(component, elementById(containerID))
 }
 
+// Components =====================================================================
+
+const StringField = ({onChange, saveUpdater}) => {
+
+    const [value, setValue] = React.useState("")
+
+    if (saveUpdater) {
+        saveUpdater(setValue)
+    }
+
+    function handleChange(event) {
+        let targetValue = event.target.value
+        if (onChange) {
+            onChange(targetValue)
+        }
+        setValue(targetValue);
+    }
+
+    // <p>
+    //     <strong>Current value:</strong>
+    //     {value || '(empty)'}
+    // </p>
+
+    return (
+        <label>
+            <input value={value} onChange={handleChange}/>
+        </label>
+    )
+}
+
+const IntegerField = ({onChange, saveUpdater}) => {
+
+    const [value, setValue] = React.useState("")
+
+    if (saveUpdater) {
+        saveUpdater(setValue)
+    }
+
+    function isInteger(str) {
+
+        // === panedrone: "str" is always a string
+
+        if (!str) {
+            return true // === panedrone: allow typing from scratch
+        }
+
+        let parsed = parseInt(str)
+        let equal = parsed.toString() === str
+
+        return parsed && parsed <= 10 && equal
+    }
+
+    function handleChange(event) {
+        let targetValue = event.target.value
+        let valid = isInteger(targetValue)
+        if (!valid) {
+            return
+        }
+        if (onChange) {
+            onChange(targetValue)
+        }
+        setValue(targetValue);
+    }
+
+    // === panedrone: <input type="number" is buggy:
+    //
+    //      1. it allows typing not numerical strings
+    //      2. "onChange" is not triggered while such typing
+
+    // return (
+    //     <label>
+    //         <input type="number" min="1" max="10" pattern="[0-9\s]" value={value)} onChange={handleChange}/>
+    //     </label>
+    // )
+
+    return (
+        <label>
+            <input pattern="[0-9\s]" value={value} onChange={handleChange}/>
+        </label>
+    )
+}
+
+const TextAreaField = ({onChange, saveUpdater}) => {
+
+    const [value, setValue] = React.useState("")
+
+    if (saveUpdater) {
+        saveUpdater(setValue)
+    }
+
+    function handleChange(event) {
+        let targetValue = event.target.value
+        if (onChange) {
+            onChange(targetValue)
+        }
+        setValue(targetValue);
+    }
+
+    return (
+        <label>
+            <textarea cols="40" rows="10" value={value} onChange={handleChange}></textarea>
+        </label>
+    )
+}
+
 // Project List Panel =============================================================
 
 let newProjectName = ""
 
-// the instances of Field Components must be global:
-
-const fieldNewProjectName = <StringField onChange={v => {
-    newProjectName = v
-}}/>
+const fieldNewProjectName = <StringField onChange={v => newProjectName = v}/>
 
 render(fieldNewProjectName, 'newProjectName')
 render(<ProjectCreateButton/>, 'projectCreate')
@@ -596,15 +634,11 @@ render(<ProjectCreateButton/>, 'projectCreate')
 
 let currentProject = {
     "p_id": 0,
-    "p_name": "---",
+    "p_name": "",
     "p_tasks_count": 0
 }
 
 let updateCurrentProjectName = null
-
-let newTaskSubject = ""
-
-// the instances of Field Components must be global:
 
 const fieldCurrentProjectName = <StringField onChange={v => {
     currentProject.p_name = v
@@ -612,9 +646,9 @@ const fieldCurrentProjectName = <StringField onChange={v => {
     updateCurrentProjectName = updater
 }}/>
 
-const fieldNewTaskSubject = <StringField onChange={v => {
-    newTaskSubject = v
-}}/>
+let newTaskSubject = ""
+
+const fieldNewTaskSubject = <StringField onChange={v => newTaskSubject = v}/>
 
 render(<ProjectButtons/>, 'projectActions')
 render(fieldCurrentProjectName, 'currentProjectName') // after "ProjectButtons"!
@@ -625,12 +659,12 @@ render(<TaskCreateButton/>, 'taskCreate')
 // Current Task ===================================================================
 
 let currentTask = {
-    "t_id": 286,
-    "p_id": 1,
-    "t_priority": 4,
+    "t_id": 0,
+    "p_id": 0,
+    "t_priority": 0,
     "t_date": "2024-02-12 03:34:16",
-    "t_subject": "t 1 4",
-    "t_comments": "------"
+    "t_subject": "",
+    "t_comments": ""
 }
 
 let updateSubject = null
@@ -638,27 +672,25 @@ let updateDate = null
 let updatePriority = null
 let updateComments = null
 
-// the instances of Field Components must be global:
-
-const fieldSubject = <StringField initial="" onChange={v => {
+const fieldSubject = <StringField onChange={v => {
     currentTask.t_subject = v
 }} saveUpdater={(updater) => {
     updateSubject = updater
 }}/>
 
-const fieldDate = <StringField initial="" onChange={v => {
+const fieldDate = <StringField onChange={v => {
     currentTask.t_date = v
 }} saveUpdater={(updater) => {
     updateDate = updater
 }}/>
 
-const fieldPriority = <IntegerField initial="" onChange={v => {
+const fieldPriority = <IntegerField onChange={v => {
     currentTask.t_priority = v
 }} saveUpdater={(updater) => {
     updatePriority = updater
 }}/>
 
-const areaComments = < TextAreaField initial="" onChange={v => {
+const areaComments = <TextAreaField onChange={v => {
     currentTask.t_comments = v
 }} saveUpdater={(updater) => {
     updateComments = updater
@@ -671,18 +703,14 @@ render(areaComments, 't_comments')
 
 render(<TaskButtons/>, 'taskActions')
 
-// Render "Loader" at the very end. It ensures existence of all dependencies.
+// Render "Loader" at the very end: it ensures existence of all dependencies.
 
 function Loader() {
 
-    React.useEffect(() => windowOnLoad());
+    fetchWhoIAm()
+    fetchProjects()
 
     return "";
 }
 
 render(<Loader/>, "loader")
-
-function windowOnLoad() {
-    fetchWhoIAm()
-    fetchProjects()
-}

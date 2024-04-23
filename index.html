@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <title>SDM ToDo</title>
+    <title>SDM Todo App</title>
 
     <link rel="icon" type="image/x-icon" href="static/favicon.ico"/>
 
@@ -17,19 +17,15 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     -->
 
-    <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="static/react.production.min.js"></script>
+    <script src="static/react-dom.production.min.js"></script>
 
-    <script src="https://unpkg.com/babel-standalone/babel.min.js"></script>
+    <script src="static/babel.min.js"></script>
 
 </head>
 <body>
 
-<script src="static/app.js" type="text/babel"></script>
-
-<!--  not working
-<script src="app.js"></script>
--->
+<script src="static/app.jsx" type="text/babel"></script>
 
 <div id="loader"></div>
 
@@ -118,7 +114,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="form-label w1">Priority 1..10</td>
+                    <td class="form-label w1">Priority [1..10]</td>
                     <td id="t_priority">
                     </td>
                 </tr>
