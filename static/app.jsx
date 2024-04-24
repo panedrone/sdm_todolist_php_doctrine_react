@@ -697,24 +697,26 @@ render(<TaskButtons/>, 'taskActions')
 
 // Render "Loader" at the very end: it ensures existence of all dependencies:
 
-const Loader = () => {
+// const Loader = () => {
+//
+//     // direct call of windowOnLoad() may cause something like:
+//     //
+//     // Warning: Cannot update a component (`Wait`) while rendering a different component (`Loader`). To locate the bad setState() call inside `Loader`...
+//     //
+//     // === panedrone: cannot call "setState()" of other component inside function "Loader"
+//     //
+//     // windowOnLoad() === wrong!
+//
+//     React.useEffect(() => windowOnLoad());
+//
+//     return "";
+// }
+//
+// render(<Loader/>, "loader")
 
-    // direct call of windowOnLoad() may cause something like:
-    //
-    // Warning: Cannot update a component (`Wait`) while rendering a different component (`Loader`). To locate the bad setState() call inside `Loader`...
-    //
-    // === panedrone: cannot call "setState()" of other component inside function "Loader"
-    //
-    // windowOnLoad()
-
-    React.useEffect(() => windowOnLoad());
-
-    return "";
-}
-
-render(<Loader/>, "loader")
-
-function windowOnLoad() {
+async function windowOnLoad() {
     fetchWhoIAm()
     fetchProjects()
 }
+
+windowOnLoad().then(() => console.log('== loaded =='))
