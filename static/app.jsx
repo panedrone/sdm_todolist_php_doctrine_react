@@ -31,6 +31,7 @@ function fetchWhoIAm() {
                 if (!res) {
                     res = '== unknown =='
                 }
+                res += ", React " + React.version
                 render(<RawHtml rawHtml={res}/>, 'who-I-am')
                 return
             }

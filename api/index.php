@@ -17,7 +17,7 @@ try {
 }
 
 Route::add('/api/whoiam', function () {
-    echo 'SDM, Doctrine PHP libraries, SQLite3, React.js';
+    echo 'SDM, Doctrine PHP libraries, SQLite3';
 }, ['get', 'post']);
 
 Route::add('/api/projects', function () {
