@@ -47,7 +47,9 @@ function fetchProjects() {
         .then(async (resp) => {
             if (resp.status === 200) {
                 let res = await responseToArray(resp)
-                render(<ProjectDetails data={res}/>, 'projects')
+                if (res) {
+                    updateProjects(res)
+                }
                 return
             }
             await showStatusError(resp);
@@ -63,7 +65,9 @@ function fetchProjectTasks(p_id) {
             if (resp.status === 200) {
                 setVisibleProjectDetails(true)
                 let res = await responseToArray(resp)
-                render(<ProjectTasks data={res}/>, 'tasks')
+                if (res) {
+                    updaterProjectTasks(res)
+                }
                 return
             }
             await showStatusError(resp);
@@ -73,7 +77,7 @@ function fetchProjectTasks(p_id) {
         })
 }
 
-const ProjectDetails = ({data}) => {
+const Projects = () => {
 
     function fetchCurrentProject(p_id) {
         fetch("api/projects/" + p_id)
@@ -100,9 +104,13 @@ const ProjectDetails = ({data}) => {
         fetchProjectTasks(project.p_id)
     }
 
-    return data.map((project) => {
+    const [data, setData] = React.useState([])
+
+    updateProjects = setData
+
+    return data.map((project, index) => {
             return (
-                <tr>
+                <tr key={index}>
                     <td onClick={() => handleClick(project)}>
                         <a>{project.p_name}</a>
                     </td>
@@ -114,6 +122,10 @@ const ProjectDetails = ({data}) => {
         }
     )
 }
+
+let updateProjects
+
+render(<Projects/>, 'projects')
 
 const TaskTitle = ({initial}) => {
     return <span>{initial}</span>
@@ -143,11 +155,17 @@ function fetchTask(t_id) {
         })
 }
 
-const ProjectTasks = ({data}) => {
+let updaterProjectTasks
 
-    return data.map((task) => {
+const ProjectTasks = () => {
+
+    const [data, setData] = React.useState([])
+
+    updaterProjectTasks = setData
+
+    return data.map((task, index) => {
             return (
-                <tr>
+                <tr key={index}>
                     <td className="w1">
                         {task.t_date}
                     </td>
@@ -162,6 +180,10 @@ const ProjectTasks = ({data}) => {
         }
     )
 }
+
+const projectTasks = <ProjectTasks/>
+
+render(projectTasks, 'tasks')
 
 function ProjectCreateButton() {
 
