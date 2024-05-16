@@ -16,7 +16,7 @@ function handle_projects()
     try {
         $method = get_request_method();
         if ($method == "POST") {
-            $data = json_decode(file_get_contents("php://input"));
+            $data = get_json();
             if (json_last_error() != JSON_ERROR_NONE) {
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
@@ -46,7 +46,7 @@ function handle_project($g_id)
             $item = project_read($g_id);
             json_resp($item);
         } else if ($method == "PUT") {
-            $data = json_decode(file_get_contents("php://input"));
+            $data = get_json();
             if (json_last_error() != JSON_ERROR_NONE) {
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
@@ -75,7 +75,7 @@ function handle_project_tasks($g_id)
     try {
         $method = get_request_method();
         if ($method == "POST") {
-            $data = json_decode(file_get_contents("php://input"));
+            $data = get_json();
             if (json_last_error() != JSON_ERROR_NONE) {
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
@@ -105,7 +105,7 @@ function handle_task($t_id)
             $item = read_task($t_id);
             json_resp($item);
         } else if ($method == "PUT") {
-            $data = json_decode(file_get_contents("php://input"));
+            $data = get_json();
             if (json_last_error() != JSON_ERROR_NONE) {
                 http_response_code(HTTP_BAD_REQUEST);
                 return;

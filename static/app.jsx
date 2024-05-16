@@ -600,8 +600,41 @@ const IntegerField = ({onChange, saveUpdater}) => {
         setValue(target);
     }
 
+    function handleUp() {
+        let target = value
+        let parsed = parseInt(target)
+        if (!parsed) {
+            parsed = 0
+        }
+        if (parsed === 10) {
+            return
+        }
+        target = (parsed + 1).toString()
+        if (onChange) {
+            onChange(target)
+        }
+        setValue(target);
+    }
+
+    function handleDown() {
+        let target = value
+        let parsed = parseInt(value)
+        if (!parsed) {
+            parsed = 10
+        }
+        if (parsed < 2) {
+            return
+        }
+        target = (parsed - 1).toString()
+        if (onChange) {
+            onChange(target)
+        }
+        setValue(target);
+    }
+
     // === panedrone: <input type="number" is buggy:
-    //      it allows typing not numerical strings + "onChange" is not triggered while such typing
+    //      - impossible to disable typing of not-numbers
+    //      - with invalid values, "onChange" is not fired
 
     // return (
     //     <label>
@@ -610,9 +643,17 @@ const IntegerField = ({onChange, saveUpdater}) => {
     // )
 
     return (
-        <label>
-            <input pattern="[0-9\s]" value={value} onChange={handleChange}/>
-        </label>
+        <div style={{display: "flex"}}>
+            <input value={value} placeholder="Type a number..." onChange={handleChange} style={{flex: 1}}/>
+            <div>
+                <button style={{padding: 0, margin: 1, display: "block", lineHeight: "0.7em"}} onClick={handleUp}>
+                    &#x25B4;
+                </button>
+                <button style={{padding: 0, margin: 1, display: "block", lineHeight: "0.7em"}} onClick={handleDown}>
+                    &#x25BE;
+                </button>
+            </div>
+        </div>
     )
 }
 
@@ -742,4 +783,4 @@ async function windowOnLoad() {
     fetchProjects()
 }
 
-windowOnLoad().then(() => console.log('== loaded =='))
+windowOnLoad().then(() => console.log('== windowOnLoad() completed =='))

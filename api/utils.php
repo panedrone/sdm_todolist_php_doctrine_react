@@ -23,3 +23,8 @@ function get_request_method()
 {
     return filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_SPECIAL_CHARS);
 }
+
+function get_json()
+{
+    return json_decode(file_get_contents("php://input"));
+}

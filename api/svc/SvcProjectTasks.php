@@ -14,7 +14,7 @@ function project_task_create($g_id, $data)
 {
     $t = new Task();
     $t->set_p_id($g_id);
-    $t_date = date("Y-m-d H:i:s");
+    $t_date = date("Y-m-d");
     $t->set_t_date($t_date);
     $t->set_t_subject($data->t_subject);
     $t->set_t_priority(1);

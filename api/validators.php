@@ -16,7 +16,7 @@ function validate_task($data, $existing) : ?array
     }
     if ($existing) {
         if (!is_int($data->t_priority) || $data->t_priority < 1 || $data->t_priority > 10) {
-            array_push($err, array("priority" => "need an integer 1..10"));
+            array_push($err, array("priority" => "expected an integer 1..10"));
         }
         if (!validateDate($data->t_date)) {
             array_push($err, array("date" => "invalid date; expected format is 2020-12-31"));
