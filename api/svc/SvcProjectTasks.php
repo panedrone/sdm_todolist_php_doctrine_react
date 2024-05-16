@@ -10,10 +10,10 @@ use svc\models\Task;
 /**
  * @throws \Exception
  */
-function project_task_create($g_id, $data)
+function project_task_create($p_id, $data)
 {
     $t = new Task();
-    $t->set_p_id($g_id);
+    $t->set_p_id($p_id);
     $t_date = date("Y-m-d");
     $t->set_t_date($t_date);
     $t->set_t_subject($data->t_subject);
@@ -26,9 +26,9 @@ function project_task_create($g_id, $data)
 /**
  * @throws \Exception
  */
-function project_tasks_read($g_id): array
+function project_tasks_read($p_id): array
 {
-    $tasks = tasks_dao()->get_project_tasks($g_id);
+    $tasks = tasks_dao()->get_project_tasks($p_id);
     if ($tasks == null) {
         return array();
     }

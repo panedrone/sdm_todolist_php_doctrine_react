@@ -38,9 +38,9 @@ function projects_read_all(): array
 /**
  * @throws Exception
  */
-function project_read($g_id): array
+function project_read($p_id): array
 {
-    $pr = projects_dao()->read_project($g_id);
+    $pr = projects_dao()->read_project($p_id);
     if ($pr == null) {
         return array();
     }

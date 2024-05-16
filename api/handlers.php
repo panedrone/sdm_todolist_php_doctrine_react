@@ -38,12 +38,12 @@ function handle_projects()
     }
 }
 
-function handle_project($g_id)
+function handle_project($p_id)
 {
     try {
         $method = get_request_method();
         if ($method == "GET") {
-            $item = project_read($g_id);
+            $item = project_read($p_id);
             json_resp($item);
         } else if ($method == "PUT") {
             $data = get_json();
@@ -57,12 +57,12 @@ function handle_project($g_id)
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            if (!project_update($g_id, $data)) {
+            if (!project_update($p_id, $data)) {
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
         } else if ($method == "DELETE") {
-            project_delete($g_id);
+            project_delete($p_id);
             http_response_code(HTTP_NO_CONTENT);
         }
     } catch (Exception $e) {
@@ -70,7 +70,7 @@ function handle_project($g_id)
     }
 }
 
-function handle_project_tasks($g_id)
+function handle_project_tasks($p_id)
 {
     try {
         $method = get_request_method();
@@ -86,10 +86,10 @@ function handle_project_tasks($g_id)
                 http_response_code(HTTP_BAD_REQUEST);
                 return;
             }
-            project_task_create($g_id, $data);
+            project_task_create($p_id, $data);
             http_response_code(HTTP_CREATED);
         } else if ($method == "GET") {
-            $arr = project_tasks_read($g_id);
+            $arr = project_tasks_read($p_id);
             json_resp($arr);
         }
     } catch (Exception $e) {
