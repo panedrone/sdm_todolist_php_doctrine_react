@@ -2,8 +2,7 @@ A project demonstrating how to use [SQL DAL Maker](https://github.com/panedrone/
 
 Front-end is written in React.js. RDBMS is SQLite3.
 
-demo-go.png
-![demo-go.png](demo-go.png)
+![sdm-todo-app.png](sdm-todo-app.png)
 
 sdm.xml
 
