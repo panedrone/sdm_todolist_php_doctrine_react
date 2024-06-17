@@ -17,113 +17,150 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     -->
 
-    <script src="static/react/react.production.min.js"></script>
-    <script src="static/react/react-dom.production.min.js"></script>
+    <!--
+    <script src="static/react.production.min.js"></script>
+    <script src="static/react-dom.production.min.js"></script>
+    -->
+
+    <script src="static/react/react.production.min.js" crossorigin></script>
+    <script src="static/react/react-dom.production.min.js" crossorigin></script>
 
     <script src="static/react/babel.min.js"></script>
 
 </head>
 <body>
 
-<script src="static/app.jsx" type="text/babel"></script>
+<script type="text/babel" src="static/components/event_bus.jsx"></script>
+<script type="text/babel" src="static/components/error_area.jsx"></script>
+<script type="text/babel" src="static/components/form_components.jsx"></script>
 
-<div id="loader"></div>
+<script type="text/babel" src="static/components/api.jsx"></script>
+<script type="text/babel" src="static/components/shared.jsx"></script>
 
-<div class="red-banner" id="serverError"></div>
+<script type="text/babel" src="static/components/project_list.jsx"></script>
+<script type="text/babel" src="static/components/project_details.jsx"></script>
+<script type="text/babel" src="static/components/task_details.jsx"></script>
 
-<h2 id="who-I-am"></h2>
+<script type="text/babel" src="static/components/raw_html.jsx"></script>
+<script type="text/babel" src="static/components/whoiam.jsx"></script>
+
+<script type="text/babel" src="static/app.jsx"></script>
+
+<!--<div id="loader"></div>-->
 
 <table class="bg">
     <tr>
         <td>
-            <table>
-                <tr>
-                    <td>
-                        <table class="section">
-                            <thead>
-                            <tr>
-                                <th>Project</th>
-                                <th class="w1">Tasks Count</th>
-                            </tr>
-                            </thead>
-                            <tbody id="projects">
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table class="controls">
-                            <tr>
-                                <td id="newProjectName">
-                                </td>
-                                <td class="w1" id="projectCreate">
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+            <div class="card">
+                <h2 id="whoiam"></h2>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="red-banner" id="serverError"></div>
+        </td>
+    </tr>
+</table>
+
+<table class="bg">
+    <tr>
+        <td>
+            <div class="card">
+                <table>
+                    <tr>
+                        <td>
+                            <table class="section">
+                                <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th class="w1 nowrap">Tasks Count</th>
+                                </tr>
+                                </thead>
+                                <tbody id="projects">
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="controls">
+                                <tr>
+                                    <td id="newProjectName">
+                                    </td>
+                                    <td class="w1" id="projectCreate">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </td>
         <td id="projectDetails" style="display:none;">
-            <table>
-                <tr>
-                    <td id="projectActions">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table class="section">
-                            <tr>
-                                <th class="w1">Date</th>
-                                <th>Subject</th>
-                                <th class="w1">Priority</th>
-                            </tr>
-                            <tbody id="tasks">
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table class="controls">
-                            <tr>
-                                <td id="newTaskSubject">
-                                </td>
-                                <td class="w1" id="taskCreate">
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+            <div class="card">
+                <table>
+                    <tr>
+                        <td id="projectActions">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="section">
+                                <tr>
+                                    <th class="w1">Date</th>
+                                    <th>Subject</th>
+                                    <th class="w1">Priority</th>
+                                </tr>
+                                <tbody id="tasks">
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="controls">
+                                <tr>
+                                    <td id="newTaskSubject">
+                                    </td>
+                                    <td class="w1" id="taskCreate">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </td>
         <td id="taskForm" style="padding:2px;display:none;">
 
-            <div id="taskActions"></div>
+            <div class="card">
 
-            <table class="edit-form">
-                <tr>
-                    <td class="form-label">Date</td>
-                    <td id="t_date">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="form-label">Subject</td>
-                    <td class="w100" id="t_subject">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="form-label w1">Priority 1..10</td>
-                    <td id="t_priority">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" id="t_comments">
-                    </td>
-                </tr>
-            </table>
-            <div class="task-error" id="taskError">
+                <div id="taskActions"></div>
+
+                <table class="edit-form">
+                    <tr>
+                        <td class="form-label">Date</td>
+                        <td id="t_date">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form-label">Subject</td>
+                        <td class="w100" id="t_subject">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form-label w1 nowrap">Priority 1..10</td>
+                        <td id="t_priority">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" id="t_comments">
+                        </td>
+                    </tr>
+                </table>
+                <div class="task-error" id="taskError">
+                </div>
             </div>
         </td>
     </tr>
